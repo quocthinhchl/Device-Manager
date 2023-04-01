@@ -1,17 +1,45 @@
-import React, { StrictMode } from 'react';
+import React, { StrictMode, useState } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import 'antd/dist/reset.css';
 import './assets/styles/index.css';
+import Login from './pages/Authorization/Login/Login';
+import { Route, Router, useNavigate } from 'react-router-dom';
+import { Switch } from 'antd';
+import { BrowserRouter } from 'react-router-dom/dist';
+import AppRoutes from './components/AppRoutes/AppRoutes';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
+// const [isLoggedIn, setIsLoggedIn] = useState(false);
+// const handleLogin = () => {
+//   setIsLoggedIn(true);
+// };
 
 root.render(
   <StrictMode>
-    <App />
+    {/* <Router>
+      <Switch>
+        <Route path="">
+          {' '}
+          {isLoggedIn ? (
+            <Redirect to="/App" />
+          ) : (
+            <Login onLogin={handleLogin} />
+          )}{' '}
+        </Route>
+        <Route path="/App">
+          {' '}
+          {isLoggedIn ? <App /> : <Redirect to="/" />}{' '}
+        </Route>
+      </Switch>
+    </Router> */}
+    <BrowserRouter>
+      <Login />
+      {/* <AppRoutes /> */}
+    </BrowserRouter>
   </StrictMode>
 );
 
