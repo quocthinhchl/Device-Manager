@@ -4,14 +4,14 @@ import { ProfileOutlined, MailOutlined, SettingOutlined, AppstoreOutlined } from
 import Sider from 'antd/es/layout/Sider';
 import { useNavigate } from 'react-router-dom';
 const items = [{
-    key: '/users',
+    key: '/dashboard/users',
     icon: <ProfileOutlined />,
     label: 'Users',
-    children: [{
-        key: '/users',
-        icon: <ProfileOutlined />,
-        label: 'Users',
-    }]
+    // children: [{
+    //     key: '/users',
+    //     icon: <ProfileOutlined />,
+    //     label: 'Users',
+    // }]
 }
     , {
     key: '/device',

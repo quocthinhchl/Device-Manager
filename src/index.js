@@ -37,7 +37,8 @@ root.render(
       </Switch>
     </Router> */}
     <BrowserRouter>
-      <Login />
+      {/* <Login /> */}
+      <App />
       {/* <AppRoutes /> */}
     </BrowserRouter>
   </StrictMode>

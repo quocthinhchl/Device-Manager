@@ -10,7 +10,6 @@ import {
   MenuUnfoldOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
-import styled from 'styled-components';
 const { Header, Sider, Content } = Layout;
 
 const url =
