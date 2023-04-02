@@ -7,7 +7,7 @@ function AppRoutes() {
     // <BrowserRouter>
     <Routes>
       {/* <Route path="/" element={<App />}></Route> */}
-      <Route path="/dashboard/users" element={<ViewProfile />}></Route>
+      <Route path="users" element={<ViewProfile />}></Route>
       <Route path="/device" element={<ViewProfile />}></Route>
     </Routes>
     // </BrowserRouter>
