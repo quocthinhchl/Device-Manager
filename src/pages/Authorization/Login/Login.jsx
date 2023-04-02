@@ -11,9 +11,12 @@ const onFinishFailed = errorInfo => {
 };
 const Login = () => {
   const navigate = useNavigate();
-  const onFinish = values => {
-    navigate('/');
-  };
+
+  const handleLogin = () => {
+
+
+    navigate('/dashboard');
+  }
   return (
     <Row justify="center">
       <Form
@@ -25,7 +28,6 @@ const Login = () => {
         initialValues={{
           remember: true,
         }}
-        onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
@@ -64,7 +66,7 @@ const Login = () => {
             span: 16,
           }}
         >
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" onClick={handleLogin}>
             Login
           </Button>
         </Form.Item>
