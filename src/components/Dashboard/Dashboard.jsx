@@ -17,15 +17,13 @@ function Dashboard() {
             <Sidebar collapsed={collapsed} />
             <Layout>
                 <Navbar toggle={toggleSidebar} />
-                
-                    <Routes>
-                        <Route path="users" element={<ViewProfile />} />
-                        {/* <Route path="/device" element={<ViewProfile />}></Route> */}
-                        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-                    </Routes>
 
+                <Routes>
+                    <Route path="users" element={<ViewProfile />} />
+                    {/* <Route path="/device" element={<ViewProfile />}></Route> */}
+                    {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+                </Routes>
                 {/* <PageContent /> */}
-
             </Layout>
         </div>
     );
