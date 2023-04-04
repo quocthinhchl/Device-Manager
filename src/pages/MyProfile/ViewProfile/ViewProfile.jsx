@@ -89,7 +89,9 @@ const ViewProfile = () => {
                         <Button style={buttonStyle } onClick={() => {
                              navigate("update");
                             }}>Update Profile</Button>
-                            <Button>Change Password</Button>
+                            <Button onClick={() => {
+                             navigate("change");
+                            }} >Change Password</Button>
                         </Space>
                     </Row>
                 </Col>
