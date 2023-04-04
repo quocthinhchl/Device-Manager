@@ -13,6 +13,7 @@ import {
 } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
 const url =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
 
@@ -44,6 +45,7 @@ const ViewProfile = () => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+    const navigate = useNavigate();
     return (
         <>
             <PathName>My Profile</PathName>
@@ -83,7 +85,10 @@ const ViewProfile = () => {
                     <Divider />
                     <Row>
                         <Space>
-                            <Button style={buttonStyle}>Update Profile</Button>
+                            
+                        <Button style={buttonStyle } onClick={() => {
+                             navigate("update");
+                            }}>Update Profile</Button>
                             <Button>Change Password</Button>
                         </Space>
                     </Row>
