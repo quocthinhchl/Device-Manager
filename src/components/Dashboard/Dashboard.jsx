@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router";
 import ViewProfile from "../../pages/MyProfile/ViewProfile/ViewProfile";
 import UpdateProfile from "../../pages/UpdateProfile/UpdateProfile/UpdateProfile";
 import { BrowserRouter } from "react-router-dom";
+import ChangePass from "../../pages/ChangePassword/ChangePassWord/ChangePassword";
 
 function Dashboard() {
     const [collapsed, setIsSidebarOpen] = useState(false);
@@ -20,13 +21,11 @@ function Dashboard() {
                 <Navbar toggle={toggleSidebar} />
 
                 <Routes>
-                    <Route path="users" element={<ViewProfile />} >
+                    <Route path="users" element={<ViewProfile />} />
+                
                     <Route path="users/update" element={<UpdateProfile />} />
-                    </Route>
-                    {/* <Route path="update" element={<UpdateProfile />} ></Route> */}
+                    <Route path="users/Change" element={<ChangePass />} />
                     
-                    {/* <Route path="/device" element={<ViewProfile />}></Route> */}
-                    {/* <Route path="/dashboard" element={<Dashboard />} /> */}
                 </Routes>
                 {/* <PageContent /> */}
             </Layout>

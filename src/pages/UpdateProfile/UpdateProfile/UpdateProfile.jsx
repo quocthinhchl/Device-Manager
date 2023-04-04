@@ -1,25 +1,24 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { useState } from "react";
 import {
-  Layout,
-  Select,
+  
   theme,
-  Checkbox,
-  Col,
-  Avatar,
-  Row,
   Button,
   Space,
   Input,
   Form,
-  InputNumber,
+  
   DatePicker,
   Modal,
   Upload,
   message,
+  Divider,
+  
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { Content } from "antd/es/layout/layout";
+import styled from 'styled-components';
 
 
 
@@ -35,15 +34,26 @@ const beforeUpload = (file) => {
   if (!isJpgOrPng) {
     message.error("You can only upload JPG/PNG file!");
   }
-  // const isLt2M = file.size / 1024 / 1024 < 2;
-  // if (!isLt2M) {
-  //   message.error("Image must smaller than 2MB!");
-  // }
-  // return isJpgOrPng && isLt2M;
+  
   return isJpgOrPng;
 };
 
 const UpdateProfile = () => {
+  const buttonStyle = {
+    backgroundColor: '#8767E1',
+    color: '#fff',
+};
+const PathName = styled.p`
+margin: 10px 25px 0px 20px;
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 32px;
+color: #111111;
+`;
+
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -87,23 +97,24 @@ const UpdateProfile = () => {
 
   return (
     <>
-      <h5 style={{ margin: "10px 25px 0px 20px" }}>Update Profile</h5>
+       <PathName>Update Profile</PathName>
       <Content
         style={{
-          margin: "24px 16px",
-          padding: 24,
+          margin: "15px 16px",
+          padding:  18 ,
+          height: "100%",
 
           background: colorBgContainer,
           display: "flex",
           flexDirection: "collumn",
-          maxHeight: 600,
+          
         }}
       >
         <div
           style={{
             width: "30%",
             paddingLeft: 20,
-            height: 800,
+            flexGrow: 1,
           }}
         >
           <Upload
@@ -134,12 +145,13 @@ const UpdateProfile = () => {
         <div
           style={{
             width: "70%",
-
-            height: "100%",
+           
+            
+            flexGrow: 1,
           }}
         >
           <Form
-            autoComplete="off"
+            // autoComplete="off"
             layout="vertical"
             onFinish={(values) => {
               console.log({ values });
@@ -156,10 +168,10 @@ const UpdateProfile = () => {
                   required: true,
                   message: "Please enter your name",
                 },
-                { whitespace: true },
+                // { whitespace: true },
                 { min: 3 },
               ]}
-              hasFeedback
+              
             >
               <Input placeholder="Type your name" />
             </Form.Item>
@@ -177,7 +189,7 @@ const UpdateProfile = () => {
                 },
                 { type: "email", message: "Please enter a valid email" },
               ]}
-              hasFeedback
+              
             >
               <Input
                 placeholder="Type your email"
@@ -194,7 +206,7 @@ const UpdateProfile = () => {
                     message: "Please provide your date of birth",
                   },
                 ]}
-                hasFeedback
+                
               >
                 <DatePicker
                   style={{ width: "100%" }}
@@ -217,26 +229,11 @@ const UpdateProfile = () => {
               </Form.Item>
             </div>
             <Form.Item label="Address:">
-              <Input.Group compact>
-                {/* <Form.Item
-                  name={["address", "province"]}
-                  noStyle
-                  rules={[{ required: true, message: "Province is required" }]}
-                >
-                  <Select placeholder="Select province">
-                    <Option value="HN">Hà Nội</Option>
-                    <Option value="HCm">Hồ Chí Minh</Option>
-                  </Select>
-                </Form.Item> */}
-                <Form.Item
-                // name={["address", "street"]}
-                // noStyle
-                // rules={[{ required: true, message: "Street is required" }]}
-                >
-                  <Input style={{ width: "100%" }} placeholder="Input street" />
+              
+                
+                  <Input style={{ width: "100%" }} placeholder="Input Address" />
                 </Form.Item>
-              </Input.Group>
-            </Form.Item>
+              
             <Form.Item label="Role:">
               <Input
                 style={{ width: "100%" }}
@@ -245,35 +242,17 @@ const UpdateProfile = () => {
                 disabled
               />
             </Form.Item>
-            {/* <Form.Item
-              name="agreement"
-              wrapperCol={{ span: 24 }}
-              valuePropName="checked"
-              rules={[
-                {
-                  validator: (_, value) =>
-                    value
-                      ? Promise.resolve()
-                      : Promise.reject(
-                          "To proceed, you need to agree with our terms and conditions"
-                        ),
-                },
-              ]}
-            >
-              <Checkbox>
-                {" "}
-                Agree to our <a href="#">Terms and Conditions</a>
-              </Checkbox>
-            </Form.Item> */}
+            
 
             <Form.Item wrapperCol={{ span: 24 }}>
+            
               <Space>
-                <Button block type="primary" htmlType="submit">
+                <Button block style={buttonStyle } htmlType="submit">
                   Submit
                 </Button>
-                <Button
+                <Button 
                   onClick={() => {
-                    navigate("/users");
+                    navigate("/dashboard/users");
                   }}
                 >
                   Back
