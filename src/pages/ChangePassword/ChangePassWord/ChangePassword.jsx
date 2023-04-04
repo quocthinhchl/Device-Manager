@@ -100,12 +100,12 @@ const ChangePass = () => {
                   required: true,
                 },
                 { min: 6 },
-                {
-                  validator: (_, value) =>
-                    value && value.includes("A")
-                      ? Promise.resolve()
-                      : Promise.reject("Password does not match criteria."),
-                },
+                // {
+                //   validator: (_, value) =>
+                //     value && value.includes("A")
+                //       ? Promise.resolve()
+                //       : Promise.reject("Password does not match criteria."),
+                // },
                 {
                   pattern: new RegExp(
                     /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]*$/
