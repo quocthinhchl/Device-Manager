@@ -70,17 +70,17 @@ const ChangePass = () => {
             }}
           >
             <Form.Item
-              label="Old Passord"
+              label="Current Password "
               name={"Password"}
               rules={[
-                { required: true, message: "Input your Password" },
-                { min: 6 },
+                { required: true, message: "Input Your Password" },
+                
                 {
                   pattern: new RegExp(
-                    /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]*$/
+                    /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
                   ),
                   message:
-                    " Password should be include at least 1 letter, 1 number and 1 special character!",
+                    " Password should be 6-20 characters and include at least 1 letter, 1 number and 1 special character!",
                 },
               ]}
             >
@@ -98,8 +98,10 @@ const ChangePass = () => {
               rules={[
                 {
                   required: true,
+                  message:
+                    " Input Your New Password",
                 },
-                { min: 6 },
+                
                 // {
                 //   validator: (_, value) =>
                 //     value && value.includes("A")
@@ -108,15 +110,17 @@ const ChangePass = () => {
                 // },
                 {
                   pattern: new RegExp(
-                    /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]*$/
+                    /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
                   ),
                   message:
-                    " Password should be include at least 1 letter, 1 number and 1 special character!",
+                    " Password should be 6-20 characters and include at least 1 letter, 1 number and 1 special character!",
                 },
               ]}
               
             >
-              <Input.Password placeholder="Type your password" />
+              <Input.Password placeholder="Type your password" iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                } />
             </Form.Item>
 
             <Form.Item
@@ -126,6 +130,8 @@ const ChangePass = () => {
               rules={[
                 {
                   required: true,
+                  message:
+                    " Input Your Confirm Password",
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
@@ -139,15 +145,17 @@ const ChangePass = () => {
                 }),
                  {
                   pattern: new RegExp(
-                    /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]*$/
+                    /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
                   ),
                   message:
-                    " Password should be include at least 1 letter, 1 number and 1 special character!",
+                    " Password should be 6-20 characters and include at least 1 letter, 1 number and 1 special character!",
                 },
               ]}
               
             >
-              <Input.Password placeholder="Confirm your password" />
+              <Input.Password placeholder="Confirm your password" iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                } />
             </Form.Item>
 
             <Form.Item wrapperCol={{ span: 24 }}>
