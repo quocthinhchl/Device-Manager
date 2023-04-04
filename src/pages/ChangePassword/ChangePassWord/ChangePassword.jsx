@@ -71,10 +71,17 @@ const ChangePass = () => {
           >
             <Form.Item
               label="Old Passord"
-              name={"pass"}
+              name={"Password"}
               rules={[
                 { required: true, message: "Input your Password" },
                 { min: 6 },
+                {
+                  pattern: new RegExp(
+                    /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]*$/
+                  ),
+                  message:
+                    " Password should be include at least 1 letter, 1 number and 1 special character!",
+                },
               ]}
             >
               <Input.Password
@@ -98,6 +105,13 @@ const ChangePass = () => {
                     value && value.includes("A")
                       ? Promise.resolve()
                       : Promise.reject("Password does not match criteria."),
+                },
+                {
+                  pattern: new RegExp(
+                    /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]*$/
+                  ),
+                  message:
+                    " Password should be include at least 1 letter, 1 number and 1 special character!",
                 },
               ]}
               
@@ -123,6 +137,13 @@ const ChangePass = () => {
                     );
                   },
                 }),
+                 {
+                  pattern: new RegExp(
+                    /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]*$/
+                  ),
+                  message:
+                    " Password should be include at least 1 letter, 1 number and 1 special character!",
+                },
               ]}
               
             >
