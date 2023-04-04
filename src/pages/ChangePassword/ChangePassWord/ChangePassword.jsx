@@ -94,7 +94,7 @@ const ChangePass = () => {
 
             <Form.Item
               name="password"
-              label="Password"
+              label="New Password"
               rules={[
                 {
                   required: true,
