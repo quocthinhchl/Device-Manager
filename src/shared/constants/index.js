@@ -1,1 +1,1 @@
-export const ACCESS_TOKEN = 'at';
+export const ACCESS_TOKEN = 'null';

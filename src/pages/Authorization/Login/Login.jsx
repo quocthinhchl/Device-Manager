@@ -10,7 +10,32 @@ const isLogin = false;
 const LoginBg = styled.div`
     height:100vh;
     width:100vw;
-    align-items:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .ant-row form{
+      /* width: 488px;
+      height: 488px; */
+      background: #FFFFFF;
+      box-shadow: 0px 4px 55px rgba(0, 0, 0, 0.07);
+      border-radius: 16px;
+    }
+    
+`
+const Title = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center; 
+    
+    .h1{
+      font-family: 'Poppins';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 28px;
+    }
 `
 
 const onFinishFailed = errorInfo => {
@@ -21,22 +46,29 @@ const Login = () => {
 
   const handleLogin = () => {
     const email = document.getElementById('email').value;
-    const passWord = document.getElementById('passWord').value;
-    console.log(email + " " + passWord);
+    const password = document.getElementById('password').value;
+    // console.log(email + " " + password);
     const data = {
       "identifier": `${email}`,
-      "password": `${passWord}`
+      "password": `${password}`
     }
     axiosInstance.post("auth/local", data).then((res) => {
-      console.log(res);
-      // navigate('/dashboard');
+      let a = []
+      a = res
 
-      // console.log(a);
+      if (ACCESS_TOKEN === 'null') {
+        console.log(33);
+      }
+      // ACCESS_TOKEN = 'test'
+      console.log(ACCESS_TOKEN);
+
+      navigate('/dashboard');
     }).
 
       catch((error) => {
         console.log(error.response.data.error.message);
-        alert(error.response.data.error.message)
+        // alert(error.response.data.error.message)
+        // navigate('/dashboard');
       })
   }
   return (
@@ -48,15 +80,21 @@ const Login = () => {
           layout="vertical"
           style={{
             width: 400,
+            margin: 32
           }}
           initialValues={{
             remember: true,
           }}
+          onFinish={handleLogin}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          <h1>Welcome</h1>
-          <p>Log in to your account</p>
+
+          <Title>
+            <h1>Welcome</h1>
+            <p>Log in to your account</p>
+          </Title>
+
           <Form.Item
             label="Email"
             name="Email"
@@ -81,16 +119,17 @@ const Login = () => {
               },
             ]}
           >
-            <Input.Password placeholder="Enter password" id='passWord' />
+            <Input.Password placeholder="Enter password" id='password' />
           </Form.Item>
 
           <Form.Item
             wrapperCol={{
-              offset: 8,
+              // offset: 8,
               span: 16,
             }}
+
           >
-            <Button type="primary" htmlType="submit" onClick={handleLogin}>
+            <Button type="primary" htmlType="submit" style={{ width: 400, }} >
               Login
             </Button>
           </Form.Item>
