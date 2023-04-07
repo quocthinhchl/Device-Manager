@@ -9,6 +9,7 @@ import {
   Space,
   Input,
   Form,
+  Divider,
   
 } from "antd";
 import { Content } from "antd/es/layout/layout";
@@ -157,6 +158,7 @@ const ChangePass = () => {
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                 } />
             </Form.Item>
+            <Divider />
 
             <Form.Item wrapperCol={{ span: 24 }}>
               <Space>
