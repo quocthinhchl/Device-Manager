@@ -5,9 +5,9 @@ import Navbar from "../Navbar/Navbar";
 import PageContent from "../PageContent/PageContent";
 import { Route, Routes } from "react-router";
 import ViewProfile from "../../pages/MyProfile/ViewProfile/ViewProfile";
-import UpdateProfile from "../../pages/UpdateProfile/UpdateProfile/UpdateProfile";
+import UpdateProfile from "../../pages/MyProfile/UpdateProfile/UpdateProfile/UpdateProfile";
 import { BrowserRouter } from "react-router-dom";
-import ChangePass from "../../pages/ChangePassword/ChangePassWord/ChangePassword";
+import ChangePass from "../../pages/MyProfile/ChangePassword/ChangePassWord/ChangePassword";
 
 function Dashboard() {
     const [collapsed, setIsSidebarOpen] = useState(false);

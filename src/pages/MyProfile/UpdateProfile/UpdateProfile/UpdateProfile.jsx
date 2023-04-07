@@ -19,6 +19,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { Content } from "antd/es/layout/layout";
 import styled from 'styled-components';
+import { UploadContainer } from "./style";
 
 
 
@@ -42,6 +43,9 @@ const UpdateProfile = () => {
   const buttonStyle = {
     backgroundColor: '#8767E1',
     color: '#fff',
+    width:150,
+    
+    
 };
 const PathName = styled.p`
 margin: 10px 25px 0px 20px;
@@ -52,6 +56,15 @@ font-size: 18px;
 line-height: 32px;
 color: #111111;
 `;
+const Content = styled.div`
+    margin: 15px 16px;
+    padding: 24px;
+    background: #ffffff;
+  
+    border-radius:10px
+    
+  `;
+
 
 
   const {
@@ -94,30 +107,31 @@ color: #111111;
       </div>
     </div>
   );
+  
 
   return (
     <>
        <PathName>Update Profile</PathName>
       <Content
         style={{
-          margin: "15px 16px",
-          padding:  18 ,
-          height: "100%",
-
-          background: colorBgContainer,
+        
           display: "flex",
-          flexDirection: "collumn",
+          flexDirection: "row",
+          border: '1px  ',
+          
+          flexWrap:'wrap',
+          
           
         }}
       >
         <div
           style={{
-            width: "30%",
+            width: "40%",
             paddingLeft: 20,
             flexGrow: 1,
           }}
         >
-          <Upload
+          <UploadContainer
             action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             listType="picture-circle"
             fileList={fileList}
@@ -126,7 +140,7 @@ color: #111111;
             beforeUpload={beforeUpload}
           >
             {fileList.length >= 1 ? null : uploadButton}
-          </Upload>
+          </UploadContainer>
           <Modal
             open={previewOpen}
             title={previewTitle}
@@ -144,14 +158,13 @@ color: #111111;
         </div>
         <div
           style={{
-            width: "70%",
-           
-            
+            width: "60%",
             flexGrow: 1,
           }}
         >
-          <Form
-            // autoComplete="off"
+          <Form 
+                      id="myForm"          
+            autoComplete="off"
             layout="vertical"
             onFinish={(values) => {
               console.log({ values });
@@ -159,6 +172,7 @@ color: #111111;
             onFinishFailed={(error) => {
               console.log({ error });
             }}
+            
           >
             <Form.Item
               name="fullName"
@@ -196,7 +210,8 @@ color: #111111;
                 value={"hung@gmail.com"}
               ></Input>
             </Form.Item>
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex", width:'100%'}}>
+            <Space size={'large'}>
               <Form.Item
                 name="dob"
                 label="Date of Birth:"
@@ -209,7 +224,8 @@ color: #111111;
                 
               >
                 <DatePicker
-                  style={{ width: "100%" }}
+                  style={{ width: "100%",
+                   }}
                   picker="date"
                   placeholder="Chose date of birth"
                 />
@@ -227,6 +243,7 @@ color: #111111;
               >
                 <Input style={{ width: "100%" }} />
               </Form.Item>
+              </Space>
             </div>
             <Form.Item label="Address:">
               
@@ -244,23 +261,34 @@ color: #111111;
             </Form.Item>
             
 
-            <Form.Item wrapperCol={{ span: 24 }}>
-            
-              <Space>
-                <Button block style={buttonStyle } htmlType="submit">
+          </Form>
+          
+        </div>
+        
+        <div style={{
+          width:"100%",
+           
+        }} > 
+        <Divider />
+         
+          <Space >
+                <Button block style={buttonStyle } form="myForm" key="submit" htmlType="submit">
                   Submit
                 </Button>
                 <Button 
                   onClick={() => {
                     navigate("/dashboard/users");
                   }}
+                  style={{
+                    width:120,
+                    
+                  }}
                 >
                   Back
                 </Button>
               </Space>
-            </Form.Item>
-          </Form>
-        </div>
+              </div>
+             
       </Content>
     </>
   );
