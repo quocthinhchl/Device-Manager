@@ -1,18 +1,23 @@
 import './App.css';
 import Sidebar from './components/Sidebar/Sidebar';
 import { Layout } from 'antd';
-import PageContent from './components/PageContent/PageContent';
 import Login from './pages/Authorization/Login/Login';
-import { Route, Router, Routes } from 'react-router';
-import ViewProfile from './pages/MyProfile/ViewProfile/ViewProfile';
+import { Route, Router, Routes, useNavigate } from 'react-router';
 import Dashboard from './components/Dashboard/Dashboard';
-// import Navbar from './components/Navbar/Navbar';
+import useToken from './useToken';
+
 
 function App() {
+  const { token, setToken } = useToken();
+
+  // if (!token) {
+  //   return <Login setToken={setToken} />
+  // }
   return (
     <div className="App">
+      {/* <Dashboard setToken={setToken} /> */}
       <Routes>
-        <Route path="/" index element={<Login />} />
+        <Route path="/" index element={<Login setToken={setToken} />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
       </Routes>
     </div>

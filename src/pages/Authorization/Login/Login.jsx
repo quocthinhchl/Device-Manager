@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components'
 import { Button, Checkbox, Form, Input, Col, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -41,9 +41,25 @@ const Title = styled.div`
 const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo);
 };
-const Login = () => {
-  const navigate = useNavigate();
 
+async function loginUser(data) {
+  return axiosInstance.post("auth/local", data).then(res => res.jwt).catch((error) => {
+    console.log(error.response.data.error.message);
+  })
+}
+
+const Login = ({ setToken }) => {
+  const navigate = useNavigate();
+  const [identifier, setUserName] = useState();
+  const [password, setPassword] = useState();
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const token = await loginUser({
+      identifier,
+      password
+    });
+    setToken(token);
+  }
   const handleLogin = () => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -63,13 +79,9 @@ const Login = () => {
       console.log(ACCESS_TOKEN);
 
       navigate('/dashboard');
-    }).
-
-      catch((error) => {
-        console.log(error.response.data.error.message);
-        // alert(error.response.data.error.message)
-        // navigate('/dashboard');
-      })
+    }).catch((error) => {
+      console.log(error.response.data.error.message);
+    })
   }
   return (
     <LoginBg>
@@ -85,11 +97,10 @@ const Login = () => {
           initialValues={{
             remember: true,
           }}
-          onFinish={handleLogin}
+          onFinish={handleSubmit}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-
           <Title>
             <h1>Welcome</h1>
             <p>Log in to your account</p>
@@ -106,7 +117,7 @@ const Login = () => {
               },
             ]}
           >
-            <Input placeholder="Enter email" id='email' />
+            <Input placeholder="Enter email" id='email' onChange={e => setUserName(e.target.value)} />
           </Form.Item>
 
           <Form.Item
@@ -119,7 +130,7 @@ const Login = () => {
               },
             ]}
           >
-            <Input.Password placeholder="Enter password" id='password' />
+            <Input.Password placeholder="Enter password" id='password' onChange={e => setPassword(e.target.value)} />
           </Form.Item>
 
           <Form.Item
@@ -129,7 +140,7 @@ const Login = () => {
             }}
 
           >
-            <Button type="primary" htmlType="submit" style={{ width: 400, }} >
+            <Button type="primary" htmlType="submit" style={{ width: 400, }} onClick={handleSubmit}>
               Login
             </Button>
           </Form.Item>

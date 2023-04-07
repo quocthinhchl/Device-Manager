@@ -2,8 +2,14 @@ import React from 'react';
 import { Col, Layout, Menu, Space, Avatar, Row, Dropdown } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import Login from '../../pages/Authorization/Login/Login';
 const url =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
+
+function logOut() {
+  sessionStorage.removeItem("token");
+  window.location.reload()
+}
 const Navbar = props => {
   const InforUser = styled.div`
     margin-top: -4px;
@@ -45,7 +51,7 @@ const Navbar = props => {
   };
   const menu = (
     <Menu>
-      <Menu.Item key="logout">Logout</Menu.Item>
+      <Menu.Item key="logout" onClick={logOut}>Logout</Menu.Item>
     </Menu>
   );
   return (
