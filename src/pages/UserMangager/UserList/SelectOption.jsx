@@ -1,4 +1,3 @@
-import { CopyOutlined } from '@ant-design/icons';
 import {
     Dropdown,
     Space,
@@ -7,11 +6,11 @@ import { DownOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 const items = [
     {
-        label: <a href="https://www.antgroup.com">1st menu item</a>,
+        label: <a href="#">1st menu item</a>,
         key: '0',
     },
     {
-        label: <a href="https://www.aliyun.com">2nd menu item</a>,
+        label: <a href="#">2nd menu item</a>,
         key: '1',
     },
     {

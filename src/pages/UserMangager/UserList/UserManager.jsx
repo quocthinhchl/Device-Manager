@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, Col, Input, Pagination, Row, Select, Space, Table, theme } from "antd";
 import { Content } from "antd/es/layout/layout";
-import UserTable from "./UserTable";
 import styled from "styled-components";
 import { SearchOutlined, ShrinkOutlined } from "@ant-design/icons";
 import SelectOption from "./SelectOption";
+import UserTable from "./UserTable";
 const options = [];
 const handleChange = (value) => {
     console.log(`Selected: ${value}`);
