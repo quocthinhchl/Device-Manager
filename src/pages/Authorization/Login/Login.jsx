@@ -6,7 +6,6 @@ import AppRoutes from '../../../components/AppRoutes/AppRoutes';
 import axiosInstance from '../../../shared/services/http-client';
 import { ACCESS_TOKEN } from '../../../shared/constants';
 
-const isLogin = false;
 const LoginBg = styled.div`
     height:100vh;
     width:100vw;
