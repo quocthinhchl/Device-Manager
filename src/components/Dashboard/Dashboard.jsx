@@ -10,7 +10,7 @@ import { BrowserRouter } from "react-router-dom";
 import ChangePass from "../../pages/MyProfile/ChangePassword/ChangePassWord/ChangePassword";
 import UserDetails from "../../pages/UserMangager/UserDetails/UserDetails";
 import UpdateUser from "../../pages/UserMangager/UpdateUser/UpdateUser";
-import UserManager from "../../pages/UserMangager/UserManager";
+import UserManager from "../../pages/UserMangager/UserList/UserManager";
 
 function Dashboard() {
     const [collapsed, setIsSidebarOpen] = useState(false);
@@ -24,7 +24,7 @@ function Dashboard() {
                 <Navbar toggle={toggleSidebar} />
 
                 <Routes>
-                    <Route path="users" element={<ViewProfile />} />
+                    <Route path="users" element={<UserManager />} />
                     {/* <Route path="users" element={<UserManager />} /> */}
 
 

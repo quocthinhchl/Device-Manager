@@ -21,10 +21,11 @@ const url =
 const ViewProfile = () => {
     const [useUser, setUser] = useState()
     useEffect(() => {
-        axiosInstance.get("/users/me").then(res => {
+        axiosInstance.get("/users/me?populate=role,avatar").then(res => {
             setUser(res);
         })
     }, {});
+    console.log(11111);
     const buttonStyle = {
         backgroundColor: '#8767E1',
         color: '#fff',

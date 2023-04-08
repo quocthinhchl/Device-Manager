@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Layout, Menu, Space, Avatar, Row, Dropdown } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import Login from '../../pages/Authorization/Login/Login';
+import axiosInstance from '../../shared/services/http-client';
 const url =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
 
@@ -11,6 +11,14 @@ function logOut() {
   window.location.reload()
 }
 const Navbar = props => {
+  const [useUser, setUser] = useState()
+  useEffect(() => {
+    axiosInstance.get("/users/me?populate=role,avatar").then(res => {
+      setUser(res);
+    })
+  }, {});
+  console.log(11111);
+
   const InforUser = styled.div`
     margin-top: -4px;
     .ant-row:last-child {
@@ -64,11 +72,11 @@ const Navbar = props => {
         <Col>
           <Row justify={'space-between'}>
             <AvatarUser>
-              <Avatar src={url} />
+              <Avatar src={useUser.avatar} />
             </AvatarUser>
             <InforUser>
-              <Row>Ha Nguyen</Row>
-              <Row>Admin</Row>
+              <Row>{useUser.fullname}</Row>
+              <Row>{useUser.role.name}</Row>
             </InforUser>
           </Row>
         </Col>
