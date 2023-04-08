@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Menu } from 'antd';
+import { Menu } from 'antd';
 import { ProfileOutlined } from '@ant-design/icons';
 import Sider from 'antd/es/layout/Sider';
 import { useNavigate } from 'react-router-dom';
@@ -10,20 +10,20 @@ const items = [
         key: '/dashboard/users',
         icon: <UserIcon />,
         label: 'Users',
-        // children: [{
-        //     key: '/users',
-        //     icon: <UserIcon />,
-        //     label: 'Users'
-        // }]
+        children: [{
+            key: '/users',
+            icon: <UserIcon />,
+            label: 'Users'
+        }]
     },
     {
-        key: '/device',
+        key: '/dashboard/device',
         icon: <UserIcon />,
         label: 'Device',
     },
 ];
 const SideBar = styled.div`
-  .ant-layout-sider .ant-layout-sider-children ul {
+  .ant-layout-sider .ant-layout-sider-children > ul {
     margin-top: 35px;
   }
   .ant-layout-sider .ant-layout-sider-children ul li span{
@@ -42,7 +42,6 @@ const SideBar = styled.div`
     top: 25px;
     color: #111111;
   }
-
 `;
 const Sidebar = props => {
     const navigate = useNavigate();

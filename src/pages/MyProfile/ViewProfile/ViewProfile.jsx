@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Layout,
     Menu,
@@ -14,10 +14,17 @@ import {
 import { UserOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
+import axiosInstance from '../../../shared/services/http-client';
 const url =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
 
 const ViewProfile = () => {
+    const [useUser, setUser] = useState()
+    useEffect(() => {
+        axiosInstance.get("/users/me").then(res => {
+            setUser(res);
+        })
+    }, {});
     const buttonStyle = {
         backgroundColor: '#8767E1',
         color: '#fff',
@@ -38,7 +45,7 @@ const ViewProfile = () => {
     background: #ffffff;
     display: flex;
     flex-direction: column;
-    border-radius:10px
+    border-radius:10px;
     
   `;
     const [collapsed, setCollapsed] = useState(false);
@@ -46,6 +53,7 @@ const ViewProfile = () => {
         token: { colorBgContainer },
     } = theme.useToken();
     const navigate = useNavigate();
+    console.log(useUser);
     return (
         <>
             <PathName>My Profile</PathName>
@@ -69,28 +77,26 @@ const ViewProfile = () => {
                             }}
                         >
                             <Descriptions title="" layout="vertical" column={2}>
-                                <Descriptions.Item label="Name">Zhou Maomao</Descriptions.Item>
-                                <Descriptions.Item label="Email">1810000000</Descriptions.Item>
-                                <Descriptions.Item label="Phone Number">
-                                    Hangzhou, Zhejiang
-                                </Descriptions.Item>
-                                <Descriptions.Item label="DOB">25/01/1992</Descriptions.Item>
+                                <Descriptions.Item label="Name">{useUser.fullname}</Descriptions.Item>
+                                <Descriptions.Item label="Email">{useUser.email}</Descriptions.Item>
+                                <Descriptions.Item label="Phone Number">{useUser.phoneNumber}</Descriptions.Item>
+                                <Descriptions.Item label="DOB">{useUser.dob}</Descriptions.Item>
                                 <Descriptions.Item label="Address">
                                     Cau Giay, Ha noi
                                 </Descriptions.Item>
-                                <Descriptions.Item label="Role">empty</Descriptions.Item>
+                                <Descriptions.Item label="Role"></Descriptions.Item>
                             </Descriptions>
                         </Col>
                     </Row>
                     <Divider />
                     <Row>
                         <Space>
-                            
-                        <Button style={buttonStyle } onClick={() => {
-                             navigate("update");
+
+                            <Button style={buttonStyle} onClick={() => {
+                                navigate("update");
                             }}>Update Profile</Button>
                             <Button onClick={() => {
-                             navigate("change");
+                                navigate("change");
                             }} >Change Password</Button>
                         </Space>
                     </Row>

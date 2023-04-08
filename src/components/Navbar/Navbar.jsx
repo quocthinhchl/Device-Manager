@@ -51,6 +51,7 @@ const Navbar = props => {
   };
   const menu = (
     <Menu>
+      <Menu.Item key="logout" onClick={logOut}>My profile</Menu.Item>
       <Menu.Item key="logout" onClick={logOut}>Logout</Menu.Item>
     </Menu>
   );
