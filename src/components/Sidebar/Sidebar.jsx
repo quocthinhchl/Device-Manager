@@ -10,11 +10,22 @@ const items = [
         key: '/dashboard/users',
         icon: <UserIcon />,
         label: 'Users',
-        // children: [{
-        //     key: '/users',
-        //     icon: <UserIcon />,
-        //     label: 'Users'
-        // }]
+        children: [{
+            key: '/dashboard/users',
+            icon: <UserIcon />,
+            label: 'My profile',
+            children: [{
+                key: '/dashboard/users/update',
+                icon: <UserIcon />,
+                label: 'Update user'
+            }]
+        },
+        {
+            key: '/dashboard/users',
+            icon: <UserIcon />,
+            label: 'User list'
+        }
+        ]
     },
     {
         key: '/device',

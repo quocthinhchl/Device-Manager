@@ -8,6 +8,9 @@ import ViewProfile from "../../pages/MyProfile/ViewProfile/ViewProfile";
 import UpdateProfile from "../../pages/MyProfile/UpdateProfile/UpdateProfile/UpdateProfile";
 import { BrowserRouter } from "react-router-dom";
 import ChangePass from "../../pages/MyProfile/ChangePassword/ChangePassWord/ChangePassword";
+import UserDetails from "../../pages/UserMangager/UserDetails/UserDetails";
+import UpdateUser from "../../pages/UserMangager/UpdateUser/UpdateUser";
+import UserManager from "../../pages/UserMangager/UserManager";
 
 function Dashboard() {
     const [collapsed, setIsSidebarOpen] = useState(false);
@@ -22,10 +25,12 @@ function Dashboard() {
 
                 <Routes>
                     <Route path="users" element={<ViewProfile />} />
-                
-                    <Route path="users/update" element={<UpdateProfile />} />
+                    {/* <Route path="users" element={<UserManager />} /> */}
+
+
+                    <Route path="users/update" element={<UpdateUser />} />
                     <Route path="users/Change" element={<ChangePass />} />
-                    
+
                 </Routes>
                 {/* <PageContent /> */}
             </Layout>
