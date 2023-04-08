@@ -9,6 +9,7 @@ import {
   Space,
   Input,
   Form,
+  Divider,
   
 } from "antd";
 import { Content } from "antd/es/layout/layout";
@@ -32,6 +33,14 @@ const ChangePass = () => {
     line-height: 32px;
     color: #111111;
     `;
+    const Content = styled.div`
+    margin: 15px 16px;
+    padding: 24px;
+    background: #ffffff;
+    
+    border-radius:10px
+    
+  `;
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -42,23 +51,15 @@ const ChangePass = () => {
       <PathName>Change password</PathName>
       <Content
         style={{
-          margin: "24px 16px",
-          padding: 24,
-          height:"100%",
-
-          background: colorBgContainer,
-          display: "flex",
-          flexDirection: "collumn",
+             
+          width: "35%",
           
         }}
       >
-        <div
-          style={{
-            width: "70%",
-
-            height: "100%",
-          }}
-        >
+        
+        
+        
+          <p>Now you can create a new password for your acconut</p>
           <Form
             autoComplete="off"
             layout="vertical"
@@ -157,6 +158,7 @@ const ChangePass = () => {
                   visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                 } />
             </Form.Item>
+            <Divider />
 
             <Form.Item wrapperCol={{ span: 24 }}>
               <Space>
@@ -173,7 +175,7 @@ const ChangePass = () => {
               </Space>
             </Form.Item>
           </Form>
-        </div>
+      
       </Content>
     </>
   );
