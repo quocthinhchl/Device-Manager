@@ -19,12 +19,12 @@ const url =
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
 
 const ViewProfile = () => {
-    const [useUser, setUser] = useState()
+    const [useUser, setUser] = useState('')
     useEffect(() => {
-        axiosInstance.get("/users/me").then(res => {
+        axiosInstance.get("/users/me?populate=role,avatar,address").then(res => {
             setUser(res);
         })
-    }, {});
+    }, []);
     const buttonStyle = {
         backgroundColor: '#8767E1',
         color: '#fff',
@@ -53,7 +53,6 @@ const ViewProfile = () => {
         token: { colorBgContainer },
     } = theme.useToken();
     const navigate = useNavigate();
-    console.log(useUser);
     return (
         <>
             <PathName>My Profile</PathName>
