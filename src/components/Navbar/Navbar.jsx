@@ -11,13 +11,12 @@ function logOut() {
   window.location.reload()
 }
 const Navbar = props => {
-  const [useUser, setUser] = useState()
+  const [useUser, setUser] = useState('')
   useEffect(() => {
     axiosInstance.get("/users/me?populate=role,avatar").then(res => {
       setUser(res);
     })
   }, {});
-  console.log(11111);
 
   const InforUser = styled.div`
     margin-top: -4px;
@@ -76,7 +75,7 @@ const Navbar = props => {
             </AvatarUser>
             <InforUser>
               <Row>{useUser.fullname}</Row>
-              <Row>{useUser.role.name}</Row>
+              <Row></Row>
             </InforUser>
           </Row>
         </Col>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { Layout } from "antd";
 import Navbar from "../Navbar/Navbar";
@@ -11,8 +11,14 @@ import ChangePass from "../../pages/MyProfile/ChangePassword/ChangePassWord/Chan
 import UserDetails from "../../pages/UserMangager/UserDetails/UserDetails";
 import UpdateUser from "../../pages/UserMangager/UpdateUser/UpdateUser";
 import UserManager from "../../pages/UserMangager/UserList/UserManager";
-
+import axiosInstance from "../../shared/services/http-client";
 function Dashboard() {
+    const [useUser, setUser] = useState()
+    useEffect(() => {
+        axiosInstance.get("users/me").then(res => {
+            setUser(res);
+        })
+    }, {});
     const [collapsed, setIsSidebarOpen] = useState(false);
     const toggleSidebar = () => {
         setIsSidebarOpen(!collapsed);
@@ -24,6 +30,7 @@ function Dashboard() {
                 <Navbar toggle={toggleSidebar} />
 
                 <Routes>
+                    <Route path="/" element={<ViewProfile />} />
                     <Route path="users" element={<UserManager />} />
                     {/* <Route path="users" element={<UserManager />} /> */}
 
