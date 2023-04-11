@@ -5,15 +5,24 @@ import Login from './pages/Authorization/Login/Login';
 import { Route, Router, Routes, useNavigate } from 'react-router';
 import Dashboard from './components/Dashboard/Dashboard';
 import useToken from './useToken';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+
+
+function getToken() {
+  const tokenString = localStorage.getItem('token');
+  return tokenString
+}
 
 function App() {
-  const { token, setToken } = useToken();
+  // const { token, setToken } = useToken();
+  const [token, setToken] = useState(getToken())
+  function GetToken(userToken) {
+    setToken(userToken);
+    localStorage.setItem('token', userToken);
+  }
+
   const navigate = useNavigate();
-  // if (!token) {
-  //   return <Login setToken={setToken} />
-  // }
   useEffect(() => {
     if (!token) {
       navigate('/')
@@ -21,12 +30,11 @@ function App() {
       navigate('/dashboard')
     }
     // return navigate('/')
-  }, [token])
+  }, [localStorage.getItem('token')])
   return (
     <div className="App">
-      {/* <Dashboard setToken={setToken} /> */}
       <Routes>
-        <Route path="/" index element={<Login setToken={setToken} />} />
+        <Route path="/" index element={<Login setToken={GetToken} />} />
         <Route path="/dashboard/*" element={<Dashboard setToken={setToken} />} />
       </Routes>
     </div>

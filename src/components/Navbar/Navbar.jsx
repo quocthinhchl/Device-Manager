@@ -3,12 +3,16 @@ import { Col, Layout, Menu, Space, Avatar, Row, Dropdown } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import axiosInstance from '../../shared/services/http-client';
+import { useNavigate } from 'react-router';
+
 const url =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
 
 
 const Navbar = ({ props, setToken }) => {
   const [useUser, setUser] = useState('')
+  const navigate = useNavigate();
+
   useEffect(() => {
     axiosInstance.get("/users/me?populate=role,avatar").then(res => {
       setUser(res);
@@ -17,10 +21,13 @@ const Navbar = ({ props, setToken }) => {
 
   function logOut() {
     localStorage.removeItem("token");
-    const token = localStorage.getItem('token');
-    setToken(token)
+
+    setToken(null)
   }
 
+  function myProfile() {
+    navigate('/dashboard')
+  }
   const InforUser = styled.div`
     margin-top: -4px;
     .ant-row:last-child {
@@ -61,7 +68,7 @@ const Navbar = ({ props, setToken }) => {
   };
   const menu = (
     <Menu>
-      <Menu.Item key="logout" onClick={logOut}>My profile</Menu.Item>
+      <Menu.Item key="myProfile" onClick={myProfile}>My profile</Menu.Item>
       <Menu.Item key="logout" onClick={logOut}>Logout</Menu.Item>
     </Menu>
   );
