@@ -11,7 +11,7 @@ const items = [
         icon: <UserIcon />,
         label: 'Users',
         children: [{
-            key: '/users',
+            key: '/dashboard/users',
             icon: <UserIcon />,
             label: 'Users'
         }]

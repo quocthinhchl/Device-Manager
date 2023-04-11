@@ -6,17 +6,20 @@ import axiosInstance from '../../shared/services/http-client';
 const url =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
 
-function logOut() {
-  sessionStorage.removeItem("token");
-  window.location.reload()
-}
-const Navbar = props => {
+
+const Navbar = ({ props, setToken }) => {
   const [useUser, setUser] = useState('')
   useEffect(() => {
     axiosInstance.get("/users/me?populate=role,avatar").then(res => {
       setUser(res);
     })
   }, {});
+
+  function logOut() {
+    localStorage.removeItem("token");
+    const token = localStorage.getItem('token');
+    setToken(token)
+  }
 
   const InforUser = styled.div`
     margin-top: -4px;

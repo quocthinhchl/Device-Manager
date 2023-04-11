@@ -12,7 +12,7 @@ import UserDetails from "../../pages/UserMangager/UserDetails/UserDetails";
 import UpdateUser from "../../pages/UserMangager/UpdateUser/UpdateUser";
 import UserManager from "../../pages/UserMangager/UserList/UserManager";
 import axiosInstance from "../../shared/services/http-client";
-function Dashboard() {
+function Dashboard({ setToken }) {
     const [useUser, setUser] = useState()
     useEffect(() => {
         axiosInstance.get("users/me").then(res => {
@@ -27,7 +27,7 @@ function Dashboard() {
         <div className="App">
             <Sidebar collapsed={collapsed} />
             <Layout>
-                <Navbar toggle={toggleSidebar} />
+                <Navbar toggle={toggleSidebar} setToken={setToken} />
 
                 <Routes>
                     <Route path="/" element={<ViewProfile />} />
