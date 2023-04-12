@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { SearchOutlined, ShrinkOutlined } from "@ant-design/icons";
 import SelectOption from "./SelectOption";
 import UserTable from "./UserTable";
+import { useLocation } from "react-router";
 const options = [];
 const handleChange = (value) => {
     console.log(`Selected: ${value}`);
@@ -37,6 +38,9 @@ function UserManager() {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+
+    let location = useLocation();
+    console.log(22, location.pathname);
 
     return (
         <UserLayout>
