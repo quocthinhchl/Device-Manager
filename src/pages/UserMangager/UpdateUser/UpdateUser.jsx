@@ -44,7 +44,7 @@ export default function UpdateUser() {
                     <Descriptions title="" layout="vertical" column={3}>
                         <Descriptions.Item label="">
                             <FormItem label="Email"
-                                name="Email"
+                                name="Nam"
                                 rules={[
                                     {
                                         required: true,
