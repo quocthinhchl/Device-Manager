@@ -33,7 +33,7 @@ function Dashboard({ setToken }) {
                 <Routes>
                     <Route path="/" element={<ViewProfile />} />
                     <Route path="users" element={<UserManager />} />
-                    <Route path="creuser" element={<CreateUser />} />
+                    <Route path="create" element={<CreateUser />} />
 
                     {/* <Route path="users" element={<UserManager />} /> */}
 
