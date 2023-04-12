@@ -14,7 +14,13 @@ const items = [
             key: '/dashboard/users',
             icon: <UserIcon />,
             label: 'Users'
-        }]
+        },
+        {
+            key: '/dashboard/create',
+            icon: <UserIcon />,
+            label: 'Create User'
+        }
+        ]
     },
     {
         key: '/dashboard/device',

@@ -29,26 +29,48 @@ const CreateUser = () => {
   //         setUser(res);
   //     })
   // }, []);
-  const [checkV, setCheckV] = useState([]);
 
+  const options = [
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Option 3', value: 'option3' },
+  ];
+
+  const [checkV, setCheckV] = useState([]);
   const onChange = (checkedValues) => {
     console.log("checked = ", checkedValues);
-    setCheckV(...checkedValues);
+
+    // setCheckV([])
+    setCheckV(checkedValues);
+    // var n = checkV.length
+    // checkV.splice(0, n)
+    // checkV.push(checkedValues)
     console.log(checkV);
     // render();
   };
 
-  //   function render() {
-  //     const devices = checkV.map((dv) => {
-  //       return `
-  //             <p>${dv} asdkasdasoid</p>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // handle form submission
+  };
 
-  //         `;
-  //     });
-  //     return {
-  //       __html: devices.join(""),
-  //     };
-  //   }
+
+
+  function render() {
+    const devices = checkV.map((dv) => {
+      // return dv.map((d) => {
+      return `
+              <p>${dv} asdkasdasoid</p>
+
+          `;
+    })
+    // return dv
+
+    console.log(devices);
+    return {
+      __html: devices.join(""),
+    };
+  }
 
   const buttonStyle = {
     backgroundColor: "#8767E1",
@@ -97,6 +119,7 @@ const CreateUser = () => {
                   remember: true,
                 }}
                 autoComplete="off"
+                onSubmit={handleSubmit}
               >
                 <Row>
                   <Col span={8} style={{ paddingRight: 16 }}>
@@ -351,6 +374,8 @@ const CreateUser = () => {
                               width: "100%",
                             }}
                             onChange={onChange}
+                            // options={options}
+                            value={checkV}
                           >
                             <Row>
                               <Col span={8}>
@@ -369,11 +394,12 @@ const CreateUser = () => {
                                 <Checkbox value="E">E</Checkbox>
                               </Col>
                             </Row>
+
                           </Checkbox.Group>
                         </Col>
 
                         <Col span={12}>
-                          {/* <div dangerouslySetInnerHTML={render()}></div> */}
+                          <div dangerouslySetInnerHTML={render()}></div>
                         </Col>
                       </Row>
                     </FormItem>
