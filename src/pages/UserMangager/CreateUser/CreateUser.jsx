@@ -14,7 +14,7 @@ import {
   DatePicker,
   Checkbox,
 } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../shared/services/http-client";
@@ -29,12 +29,7 @@ const CreateUser = () => {
   //         setUser(res);
   //     })
   // }, []);
-
-  const options = [
-    { label: 'Option 1', value: 'option1' },
-    { label: 'Option 2', value: 'option2' },
-    { label: 'Option 3', value: 'option3' },
-  ];
+  const deleteicon = DeleteOutlined;
 
   const [checkV, setCheckV] = useState([]);
   const onChange = (checkedValues) => {
@@ -54,16 +49,14 @@ const CreateUser = () => {
     // handle form submission
   };
 
-
-
   function render() {
     const devices = checkV.map((dv) => {
       // return dv.map((d) => {
       return `
-              <p>${dv} asdkasdasoid</p>
+              <p>${dv} </p>
 
           `;
-    })
+    });
     // return dv
 
     console.log(devices);
@@ -76,6 +69,7 @@ const CreateUser = () => {
     backgroundColor: "#8767E1",
     color: "#fff",
   };
+
   const PathName = styled.p`
     margin: 10px 25px 0px 20px;
     font-family: "Poppins";
@@ -87,8 +81,8 @@ const CreateUser = () => {
   `;
 
   const Content = styled.div`
-    margin: 15px 16px;
-    padding: 24px;
+    margin: 10px 15px;
+    padding: 18px;
     background: #ffffff;
     display: flex;
     flex-direction: column;
@@ -134,7 +128,10 @@ const CreateUser = () => {
                         },
                       ]}
                     >
-                      <Input size="large" placeholder="Enter ower Name" />
+                      <Input
+                        size="default size"
+                        placeholder="Enter ower Name"
+                      />
                     </FormItem>
                   </Col>
                   <Col span={8} style={{ paddingRight: 16 }}>
@@ -151,7 +148,7 @@ const CreateUser = () => {
                       ]}
                     >
                       <Input
-                        size="large"
+                        size="default size"
                         placeholder="Enter ower email"
                         id="email"
                       />
@@ -170,7 +167,10 @@ const CreateUser = () => {
                         },
                       ]}
                     >
-                      <Input size="large" placeholder="Enter ower username" />
+                      <Input
+                        size="default size"
+                        placeholder="Enter ower username"
+                      />
                     </FormItem>
                   </Col>
                   <Col span={8} style={{ paddingRight: 16 }}>
@@ -192,7 +192,10 @@ const CreateUser = () => {
                         },
                       ]}
                     >
-                      <Input size="large" placeholder="Enter ower Password" />
+                      <Input
+                        size="default size"
+                        placeholder="Enter ower Password"
+                      />
                     </FormItem>
                   </Col>
                   <Col span={8} style={{ paddingRight: 16 }}>
@@ -209,7 +212,10 @@ const CreateUser = () => {
                         { min: 9 },
                       ]}
                     >
-                      <Input size="large" placeholder="Enter ower email" />
+                      <Input
+                        size="default size"
+                        placeholder="Enter ower email"
+                      />
                     </FormItem>
                   </Col>
                   <Col span={8}>
@@ -226,7 +232,7 @@ const CreateUser = () => {
                       ]}
                     >
                       <Select
-                        size="large"
+                        size="default size"
                         showSearch
                         style={{ width: "100%" }}
                         placeholder=" Select ower Gender"
@@ -269,7 +275,7 @@ const CreateUser = () => {
                       ]}
                     >
                       <DatePicker
-                        size="large"
+                        size="default size"
                         style={{ width: "100%" }}
                         picker="date"
                         placeholder="Chose date of birth"
@@ -290,7 +296,7 @@ const CreateUser = () => {
                       ]}
                     >
                       <Select
-                        size="large"
+                        size="default size"
                         showSearch
                         style={{ width: "100%" }}
                         placeholder=" Select ower Role"
@@ -330,7 +336,7 @@ const CreateUser = () => {
                       ]}
                     >
                       <Select
-                        size="large"
+                        size="default size"
                         showSearch
                         style={{ width: "100%" }}
                         placeholder=" Select ower Status"
@@ -358,15 +364,19 @@ const CreateUser = () => {
                   </Col>
 
                   <Col span={24}>
-                    {" "}
                     <FormItem label="Devices" name="Devices" rules={[{}]}>
-                      <Row style={{}}>
-                        <Col span={12} style={{ paddingRight: 16 }}>
+                      <Row style={{ border: "1px solid #dcd2d2" }}>
+                        <Col
+                          span={12}
+                          style={{
+                            padding: "10px 10px 10px 10px",
+                          }}
+                        >
                           <Search
                             placeholder="input search text"
                             allowClear
                             enterButton="Search"
-                            size="large"
+                            size="default size"
                             onSearch={onSearch}
                           />
                           <Checkbox.Group
@@ -377,29 +387,44 @@ const CreateUser = () => {
                             // options={options}
                             value={checkV}
                           >
-                            <Row>
-                              <Col span={8}>
-                                <Checkbox value="A">A</Checkbox>
+                            <Row style={{ paddingTop: 10 }}>
+                              <Col span={12}>
+                                <Checkbox value="Garage ABC">
+                                  Garage ABC
+                                </Checkbox>
                               </Col>
-                              <Col span={8}>
-                                <Checkbox value="B">B</Checkbox>
+                              <Col span={24}>
+                                <Checkbox value="TLS">TLS</Checkbox>
                               </Col>
-                              <Col span={8}>
-                                <Checkbox value="C">C</Checkbox>
+                              <Col span={24}>
+                                <Checkbox value="AHC">AHC</Checkbox>
                               </Col>
-                              <Col span={8}>
-                                <Checkbox value="D">D</Checkbox>
+                              <Col span={24}>
+                                <Checkbox value="CB Garage">CB Garage</Checkbox>
                               </Col>
-                              <Col span={8}>
-                                <Checkbox value="E">E</Checkbox>
+                              <Col span={24}>
+                                <Checkbox value="UCQ">UCQ</Checkbox>
                               </Col>
                             </Row>
-
                           </Checkbox.Group>
                         </Col>
 
-                        <Col span={12}>
-                          <div dangerouslySetInnerHTML={render()}></div>
+                        <Col
+                          span={12}
+                          style={{
+                            borderLeft: "1px solid #dcd2d2",
+                            padding: 10,
+                          }}
+                        >
+                          <p style={{ fontWeight: "bold" }}>
+                            Seclect Devices ({checkV.length})
+                          </p>
+                          <div>
+                            <div
+                              style={{ fontSize: 12 }}
+                              dangerouslySetInnerHTML={render()}
+                            ></div>
+                          </div>
                         </Col>
                       </Row>
                     </FormItem>
@@ -408,9 +433,9 @@ const CreateUser = () => {
               </Form>
             </Col>
           </Row>
-          <Divider />
-          <Row>
-            <Space>
+
+          <Row style={{ borderTop: "1px solid #dcd2d2" }}>
+            <Space style={{ paddingTop: 10 }}>
               <Button
                 block
                 style={buttonStyle}
