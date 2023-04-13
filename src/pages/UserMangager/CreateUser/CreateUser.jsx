@@ -124,13 +124,13 @@ const CreateUser = () => {
                         {
                           required: true,
 
-                          message: "Please input ower Name!",
+                          message: "Please input owner Name!",
                         },
                       ]}
                     >
                       <Input
                         size="default size"
-                        placeholder="Enter ower Name"
+                        placeholder="Enter owner Name"
                       />
                     </FormItem>
                   </Col>
@@ -143,13 +143,13 @@ const CreateUser = () => {
                         {
                           required: true,
                           type: "email",
-                          message: "Please input ower Email!",
+                          message: "Please input owner Email!",
                         },
                       ]}
                     >
                       <Input
                         size="default size"
-                        placeholder="Enter ower email"
+                        placeholder="Enter owner email"
                         id="email"
                       />
                     </FormItem>
@@ -163,13 +163,13 @@ const CreateUser = () => {
                         {
                           required: true,
 
-                          message: "Please input ower UserName!",
+                          message: "Please input owner UserName!",
                         },
                       ]}
                     >
                       <Input
                         size="default size"
-                        placeholder="Enter ower username"
+                        placeholder="Enter owner username"
                       />
                     </FormItem>
                   </Col>
@@ -181,7 +181,7 @@ const CreateUser = () => {
                         {
                           required: true,
 
-                          message: "Please input ower Password!",
+                          message: "Please input owner Password!",
                         },
                         {
                           pattern: new RegExp(
@@ -194,7 +194,7 @@ const CreateUser = () => {
                     >
                       <Input
                         size="default size"
-                        placeholder="Enter ower Password"
+                        placeholder="Enter owner Password"
                       />
                     </FormItem>
                   </Col>
@@ -207,14 +207,14 @@ const CreateUser = () => {
                         {
                           required: true,
 
-                          message: "Please input ower PhoneNumber!",
+                          message: "Please input owner PhoneNumber!",
                         },
                         { min: 9 },
                       ]}
                     >
                       <Input
                         size="default size"
-                        placeholder="Enter ower email"
+                        placeholder="Enter owner email"
                       />
                     </FormItem>
                   </Col>
@@ -227,7 +227,7 @@ const CreateUser = () => {
                         {
                           required: true,
 
-                          message: "Please input ower Gender!",
+                          message: "Please input owner Gender!",
                         },
                       ]}
                     >
@@ -235,7 +235,7 @@ const CreateUser = () => {
                         size="default size"
                         showSearch
                         style={{ width: "100%" }}
-                        placeholder=" Select ower Gender"
+                        placeholder=" Select owner Gender"
                         optionFilterProp="children"
                         filterOption={(input, option) =>
                           (option?.label ?? "").includes(input)
@@ -270,7 +270,7 @@ const CreateUser = () => {
                         {
                           required: true,
 
-                          message: "Please input ower DOB!",
+                          message: "Please input owner DOB!",
                         },
                       ]}
                     >
@@ -291,7 +291,7 @@ const CreateUser = () => {
                         {
                           required: true,
 
-                          message: "Please input ower Role!",
+                          message: "Please input owner Role!",
                         },
                       ]}
                     >
@@ -299,7 +299,7 @@ const CreateUser = () => {
                         size="default size"
                         showSearch
                         style={{ width: "100%" }}
-                        placeholder=" Select ower Role"
+                        placeholder=" Select owner Role"
                         optionFilterProp="children"
                         filterOption={(input, option) =>
                           (option?.label ?? "").includes(input)
@@ -331,7 +331,7 @@ const CreateUser = () => {
                         {
                           required: true,
 
-                          message: "Please input ower Status!",
+                          message: "Please input owner Status!",
                         },
                       ]}
                     >
@@ -339,7 +339,7 @@ const CreateUser = () => {
                         size="default size"
                         showSearch
                         style={{ width: "100%" }}
-                        placeholder=" Select ower Status"
+                        placeholder=" Select owner Status"
                         optionFilterProp="children"
                         filterOption={(input, option) =>
                           (option?.label ?? "").includes(input)
