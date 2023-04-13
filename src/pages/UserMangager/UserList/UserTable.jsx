@@ -10,13 +10,15 @@ const UserTable = () => {
     const TableData = styled.div`
     width:100%;
         .ant-table-thead{
-            background-color:#DDE4EE
+            background-color:#DDE4EE;
         }
     `
-    const [useData, setData] = useState();
+    const [useData, setData] = useState([]);
+    const [useDataDevices, setDataDevices] = useState([]);
     useEffect(() => {
-        axiosInstance.get("/users").then(res => {
+        axiosInstance.get("/users?filters[fullname][$contains]=&filters[blocked][$eq]=false&populate=devices").then(res => {
             setData(res);
+            setDataDevices(res.devices)
         })
     }, []);
     const columns = [
@@ -42,8 +44,14 @@ const UserTable = () => {
         },
         {
             title: 'Status',
-            dataIndex: 'confirmed',
-            key: 'confirmed',
+            dataIndex: 'name',
+            key: 'name',
+            render: (text, useDataDevices) => (
+                <span>
+                    <p>
+                        {useDataDevices.code}
+                    </p>
+                </span>)
         },
         {
             title: 'Actions',
@@ -66,7 +74,7 @@ const UserTable = () => {
         },
 
     ];
-
+    console.log(useDataDevices);
     return (
         <TableData>
             <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} />

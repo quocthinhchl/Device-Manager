@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import { useState } from 'react';
 const items = [
     {
         label: <a href="#">1st menu item</a>,
@@ -28,21 +29,30 @@ const DropDown = styled.div`
         padding-right:8px;
     }
 `
-const SelectOption = () => (
-    <DropDown>
-        <Dropdown
-            menu={{
-                items,
-            }}
-            trigger={['click']}
-        >
-            <a onClick={(e) => e.preventDefault()}>
-                <Space>
-                    Option
-                    <DownOutlined />
-                </Space>
-            </a>
-        </Dropdown>
-    </DropDown>
-);
+const SelectOption = (props) => {
+    const [childData, setChildData] = useState("");
+
+    const handleInputChange = (event) => {
+        setChildData(event.target.value);
+        props.onDataChanged(event.target.value);
+    };
+    return (
+        <>
+            <Dropdown
+                menu={{
+                    items,
+                }}
+                trigger={['click']}
+                onChange={handleInputChange}
+            >
+                <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                        Option
+                        <DownOutlined />
+                    </Space>
+                </a>
+            </Dropdown>
+        </>
+    )
+};
 export default SelectOption;
