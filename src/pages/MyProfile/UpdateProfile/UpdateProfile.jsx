@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { Content } from "antd/es/layout/layout";
 import styled from "styled-components";
 import { UploadContainer } from "./style";
-import axiosInstance from "../../../../shared/services/http-client";
+import axiosInstance from "../../../shared/services/http-client";
 import moment from "moment";
 
 const getBase64 = (file) =>

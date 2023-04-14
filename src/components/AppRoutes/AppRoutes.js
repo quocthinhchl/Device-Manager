@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ViewProfile from '../../pages/MyProfile/ViewProfile/ViewProfile';
 import App from '../../App';
-import UpdateProfile from '../../pages/MyProfile/UpdateProfile/UpdateProfile/UpdateProfile';
-import ChangePass from '../../pages/MyProfile/ChangePassword/ChangePassWord/ChangePassword';
+import UpdateProfile from '../../pages/MyProfile/UpdateProfile/UpdateProfile';
+import ChangePass from '../../pages/MyProfile/ChangePassword/ChangePassword';
 function AppRoutes() {
   return (
     // <BrowserRouter>
