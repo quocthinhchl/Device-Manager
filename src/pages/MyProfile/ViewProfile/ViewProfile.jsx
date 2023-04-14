@@ -85,9 +85,7 @@ const ViewProfile = () => {
                   {useUser.phoneNumber}
                 </Descriptions.Item>
                 <Descriptions.Item label="DOB">{useUser.dob}</Descriptions.Item>
-                <Descriptions.Item label="Address">
-                  Cau Giay, Ha noi
-                </Descriptions.Item>
+
                 <Descriptions.Item label="Role"></Descriptions.Item>
               </Descriptions>
             </Col>

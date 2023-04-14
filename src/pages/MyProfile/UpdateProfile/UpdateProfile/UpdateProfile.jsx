@@ -187,7 +187,7 @@ const UpdateProfile = () => {
               />
             </Form.Item>
             <Form.Item name="fullName" label="Username:">
-              <Input placeholder="Username" disabled />
+              <Input disabled defaultValue={useUser.username} />
             </Form.Item>
 
             <Form.Item
@@ -205,6 +205,7 @@ const UpdateProfile = () => {
                 placeholder="Type your email"
                 value={"hung@gmail.com"}
                 defaultValue={useUser.email}
+                disabled
               ></Input>
             </Form.Item>
             <div style={{ display: "flex", width: "100%" }}>
@@ -245,9 +246,6 @@ const UpdateProfile = () => {
                 </Form.Item>
               </Space>
             </div>
-            <Form.Item label="Address:">
-              <Input style={{ width: "100%" }} placeholder="Input Address" />
-            </Form.Item>
 
             <Form.Item label="Role:">
               <Input
