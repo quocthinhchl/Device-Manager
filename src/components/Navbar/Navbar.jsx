@@ -17,7 +17,7 @@ const Navbar = (props) => {
     axiosInstance.get("/users/me?populate=role,avatar").then(res => {
       setUser(res);
     })
-  }, {});
+  }, []);
 
   function logOut() {
     localStorage.removeItem("token");
@@ -75,6 +75,7 @@ const Navbar = (props) => {
       <Menu.Item key="logout" onClick={logOut}>Logout</Menu.Item>
     </Menu>
   );
+  console.log("porps", props.userData);
   return (
     <NavBar>
       <IconCollapse>
@@ -84,11 +85,11 @@ const Navbar = (props) => {
         <Col>
           <Row justify={'space-between'}>
             <AvatarUser>
-              <Avatar src={useUser.avatar} />
+              <Avatar />
             </AvatarUser>
             <InforUser>
-              <Row>{useUser.fullname}</Row>
-              <Row></Row>
+              <Row>{props.userData.fullname}</Row>
+              <Row>{props.userData.role.name}</Row>
             </InforUser>
           </Row>
         </Col>

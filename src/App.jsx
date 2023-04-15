@@ -4,7 +4,6 @@ import { Layout } from 'antd';
 import Login from './pages/Authorization/Login/Login';
 import { Route, Router, Routes, useNavigate } from 'react-router';
 import Dashboard from './components/Dashboard/Dashboard';
-import useToken from './useToken';
 import { useEffect, useState } from 'react';
 
 

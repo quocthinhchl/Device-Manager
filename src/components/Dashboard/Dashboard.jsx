@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { Layout } from "antd";
 import Navbar from "../Navbar/Navbar";
-import PageContent from "../PageContent/PageContent";
 import { Route, Routes } from "react-router";
 import ViewProfile from "../../pages/MyProfile/ViewProfile/ViewProfile";
 import UpdateProfile from "../../pages/MyProfile/UpdateProfile/UpdateProfile/UpdateProfile";
@@ -14,12 +13,12 @@ import UserManager from "../../pages/UserMangager/UserList/UserManager";
 import CreateUser from "../../pages/UserMangager/CreateUser/CreateUser";
 import axiosInstance from "../../shared/services/http-client";
 function Dashboard({ setToken }) {
-  const [useUser, setUser] = useState();
+  const [user, setUser] = useState();
   useEffect(() => {
-    axiosInstance.get("users/me").then((res) => {
+    axiosInstance.get("users/me?populate=role,avatar").then((res) => {
       setUser(res);
     });
-  }, {});
+  }, []);
   const [collapsed, setIsSidebarOpen] = useState(false);
   const toggleSidebar = () => {
     setIsSidebarOpen(!collapsed);
@@ -28,10 +27,10 @@ function Dashboard({ setToken }) {
     <div className="App">
       <Sidebar collapsed={collapsed} />
       <Layout>
-        <Navbar toggle={toggleSidebar} setToken={setToken} />
+        {user && <Navbar toggle={toggleSidebar} setToken={setToken} userData={user} />}
 
         <Routes>
-          <Route path="/" element={<ViewProfile />} />
+          {user && <Route path="/" element={<ViewProfile userData={user} />} />}
           <Route path="users" element={<UserManager />} />
           <Route path="create" element={<CreateUser />} />
 

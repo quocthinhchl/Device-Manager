@@ -3,14 +3,13 @@ import { Button, Col, Input, Pagination, Row, Select, Space, Table, theme } from
 // import { useDebounce } from 'use-debounce';
 import styled from "styled-components";
 import { SearchOutlined, ShrinkOutlined } from "@ant-design/icons";
-import SelectOption from "./SelectOption";
 import UserTable from "./UserTable";
 import { useLocation } from "react-router";
 const options = [{
-    value: 'active',
+    value: '0',
     label: 'Active',
 }, {
-    value: 'inactive',
+    value: '1',
     label: 'Inactive',
 },];
 const handleChange = (value) => {
@@ -64,6 +63,7 @@ const Content = styled.div`
 function UserManager() {
     const [selectedValue, setSelectedValue] = useState('fullname');
     const [keyWord, setKeyWord] = useState('');
+    const [blocked, setBlocked] = useState(0);
     // const [debouncedSearchTerm] = useDebounce(keyWord, 500);
 
     // const filteredData = data.filter(item =>
@@ -72,7 +72,9 @@ function UserManager() {
     function handleSelect(value) {
         setSelectedValue(value);
     }
-
+    function handleSelectBlocked(value) {
+        setBlocked(value);
+    }
     const handleSearchValueChange = (event) => {
         setKeyWord(event.target.value);
     };
@@ -122,8 +124,8 @@ function UserManager() {
                                     }}
                                 >
                                     <Select
-                                        defaultValue="Status"
-                                        onChange={handleChange}
+                                        defaultValue="Active"
+                                        onChange={handleSelectBlocked}
                                         style={{
                                             width: 200,
                                         }}
@@ -134,7 +136,7 @@ function UserManager() {
                         </Space>
                     </Row>
                     <Row>
-                        <UserTable selectOption={selectedValue} keyWord={keyWord} />
+                        <UserTable selectOption={selectedValue} keyWord={keyWord} blocked={blocked} />
                     </Row>
                 </Space>
             </Content>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { Avatar, Table } from 'antd';
 import { useDebounce } from 'use-debounce';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import styled from 'styled-components';
@@ -17,9 +17,9 @@ const UserTable = (props) => {
     const [useData, setData] = useState([]);
     useEffect(() => {
         renderData()
-    }, [props.selectOption, props.keyWord]);
+    }, [props.selectOption, props.keyWord, props.blocked]);
     function renderData() {
-        axiosInstance.get(`/users?populate=devices&filters[${props.selectOption}][$contains]=${props.keyWord}`).then(res => {
+        axiosInstance.get(`/users?populate=devices&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`).then(res => {
             setData(res);
         }, [])
     }
@@ -34,6 +34,11 @@ const UserTable = (props) => {
             title: 'Name',
             dataIndex: 'username',
             key: 'username',
+            render: (text, useDataDevices) => (
+                <td class="ant-table-cell" scope="col">
+                    <Avatar src={useDataDevices.avatar} /> {useDataDevices.fullname}
+                </td>
+            )
         },
         {
             title: 'Email',
