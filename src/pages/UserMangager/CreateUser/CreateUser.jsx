@@ -23,14 +23,6 @@ import Search from "antd/es/transfer/search";
 
 const onSearch = (value) => console.log(value);
 const CreateUser = () => {
-  // const [useUser, setUser] = useState('')
-  // useEffect(() => {
-  //     axiosInstance.get("/users/me?populate=role,avatar,address").then(res => {
-  //         setUser(res);
-  //     })
-  // }, []);
-  const deleteicon = DeleteOutlined;
-
   const [checkV, setCheckV] = useState([]);
   const onChange = (checkedValues) => {
     console.log("checked = ", checkedValues);
