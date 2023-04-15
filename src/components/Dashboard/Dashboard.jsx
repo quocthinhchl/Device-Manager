@@ -14,37 +14,35 @@ import UserManager from "../../pages/UserMangager/UserList/UserManager";
 import CreateUser from "../../pages/UserMangager/CreateUser/CreateUser";
 import axiosInstance from "../../shared/services/http-client";
 function Dashboard({ setToken }) {
-    const [useUser, setUser] = useState()
-    useEffect(() => {
-        axiosInstance.get("users/me").then(res => {
-            setUser(res);
-        })
-    }, {});
-    const [collapsed, setIsSidebarOpen] = useState(false);
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!collapsed);
-    }
-    return (
-        <div className="App">
-            <Sidebar collapsed={collapsed} />
-            <Layout>
-                <Navbar toggle={toggleSidebar} setToken={setToken} />
+  const [useUser, setUser] = useState();
+  useEffect(() => {
+    axiosInstance.get("users/me").then((res) => {
+      setUser(res);
+    });
+  }, {});
+  const [collapsed, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!collapsed);
+  };
+  return (
+    <div className="App">
+      <Sidebar collapsed={collapsed} />
+      <Layout>
+        <Navbar toggle={toggleSidebar} setToken={setToken} />
 
-                <Routes>
-                    <Route path="/" element={<ViewProfile />} />
-                    <Route path="users" element={<UserManager />} />
-                    <Route path="create" element={<CreateUser />} />
+        <Routes>
+          <Route path="/" element={<ViewProfile />} />
+          <Route path="users" element={<UserManager />} />
+          <Route path="create" element={<CreateUser />} />
 
-                    {/* <Route path="users" element={<UserManager />} /> */}
+          {/* <Route path="users" element={<UserManager />} /> */}
 
-
-                    <Route path="users/update" element={<UpdateUser />} />
-                    <Route path="users/Change" element={<ChangePass />} />
-
-                </Routes>
-                {/* <PageContent /> */}
-            </Layout>
-        </div>
-    );
+          <Route path="update" element={<UpdateProfile />} />
+          <Route path="Change" element={<ChangePass />} />
+        </Routes>
+        {/* <PageContent /> */}
+      </Layout>
+    </div>
+  );
 }
 export default Dashboard;
