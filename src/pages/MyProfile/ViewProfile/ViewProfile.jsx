@@ -18,7 +18,7 @@ import axiosInstance from "../../../shared/services/http-client";
 const url =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU";
 
-const ViewProfile = () => {
+const ViewProfile = (props) => {
   const [useUser, setUser] = useState("");
   useEffect(() => {
     axiosInstance.get("/users/me?populate=role,avatar,address").then((res) => {
@@ -65,7 +65,7 @@ const ViewProfile = () => {
                 flexGrow: 1,
               }}
             >
-              <Avatar size={200} src={url} />
+              <Avatar size={200} src={props.userData.avatar} />
             </Col>
             <Col
               span={16}
@@ -76,19 +76,16 @@ const ViewProfile = () => {
             >
               <Descriptions title="" layout="vertical" column={2}>
                 <Descriptions.Item label="Name">
-                  {useUser.fullname}
+                  {props.userData.fullname}
                 </Descriptions.Item>
                 <Descriptions.Item label="Email">
-                  {useUser.email}
+                  {props.userData.email}
                 </Descriptions.Item>
                 <Descriptions.Item label="Phone Number">
-                  {useUser.phoneNumber}
+                  {props.userData.phoneNumber}
                 </Descriptions.Item>
-                <Descriptions.Item label="DOB">{useUser.dob}</Descriptions.Item>
-                <Descriptions.Item label="Address">
-                  Cau Giay, Ha noi
-                </Descriptions.Item>
-                <Descriptions.Item label="Role"></Descriptions.Item>
+                <Descriptions.Item label="DOB">{props.userData.dob}</Descriptions.Item>
+                <Descriptions.Item label="Role">{props.userData.role.name}</Descriptions.Item>
               </Descriptions>
             </Col>
           </Row>

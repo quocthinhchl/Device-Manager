@@ -9,7 +9,6 @@ import Login from './pages/Authorization/Login/Login';
 import { Route, Router, useNavigate } from 'react-router-dom';
 import { Switch } from 'antd';
 import { BrowserRouter } from 'react-router-dom/dist';
-import AppRoutes from './components/AppRoutes/AppRoutes';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
