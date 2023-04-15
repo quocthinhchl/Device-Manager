@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
+import { useDebounce } from 'use-debounce';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import styled from 'styled-components';
 import axiosInstance from '../../../shared/services/http-client';
 function handleEdit(id) {
     console.log(id);
 }
-const UserTable = () => {
+const UserTable = (props) => {
     const TableData = styled.div`
     width:100%;
         .ant-table-thead{
@@ -14,13 +15,15 @@ const UserTable = () => {
         }
     `
     const [useData, setData] = useState([]);
-    const [useDataDevices, setDataDevices] = useState([]);
     useEffect(() => {
-        axiosInstance.get("/users?filters[fullname][$contains]=&filters[blocked][$eq]=false&populate=devices").then(res => {
+        renderData()
+    }, [props.selectOption, props.keyWord]);
+    function renderData() {
+        axiosInstance.get(`/users?populate=devices&filters[${props.selectOption}][$contains]=${props.keyWord}`).then(res => {
             setData(res);
-            setDataDevices(res.devices)
-        })
-    }, []);
+        }, [])
+    }
+    console.log(1111, props.selectOption, props.keyWord);
     const columns = [
         {
             title: '#',
@@ -44,14 +47,13 @@ const UserTable = () => {
         },
         {
             title: 'Status',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'status',
+            key: 'status',
             render: (text, useDataDevices) => (
-                <span>
-                    <p>
-                        {useDataDevices.code}
-                    </p>
-                </span>)
+                <td class="ant-table-cell" scope="col">
+                    {(useDataDevices.blocked == false) ? "Active" : "Inactive"}
+                </td>
+            )
         },
         {
             title: 'Actions',
@@ -69,15 +71,12 @@ const UserTable = () => {
                         <a onClick={() => handleEdit(useData)} ><DeleteOutlined /></a>
                     </span>
                 </span>
-
             ),
         },
-
     ];
-    console.log(useDataDevices);
     return (
         <TableData>
-            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} />
+            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 5 }} />
         </TableData>
     );
 };

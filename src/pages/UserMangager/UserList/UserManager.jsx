@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import { Button, Col, Input, Pagination, Row, Select, Space, Table, theme } from "antd";
-import { Content } from "antd/es/layout/layout";
+// import { useDebounce } from 'use-debounce';
 import styled from "styled-components";
 import { SearchOutlined, ShrinkOutlined } from "@ant-design/icons";
 import SelectOption from "./SelectOption";
 import UserTable from "./UserTable";
-import { Option } from "antd/es/mentions";
-const options = [];
+import { useLocation } from "react-router";
+const options = [{
+    value: 'active',
+    label: 'Active',
+}, {
+    value: 'inactive',
+    label: 'Inactive',
+},];
 const handleChange = (value) => {
     console.log(`Selected: ${value}`);
 };
@@ -15,7 +21,7 @@ const UserLayout = styled.div`
     display:flex;
     justify-content:'space-evenly';
     flex-direction:'column';
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
     .ant-table-cell a{
         margin:0px 3px;
     }
@@ -39,41 +45,49 @@ const UserLayout = styled.div`
     .ant-space-compact{
         border:1px solid #CBCBCB;
         border-radius: 5px;
-;
     }
 `
+const buttonStyle = {
+    backgroundColor: '#8767E1',
+    color: '#fff',
+};
+const Content = styled.div`
+    margin: 26px 20px;
+    padding: 24px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    border-radius:5px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    width:100%;
+`;
 function UserManager() {
-    const [option, setOption] = useState("");
-    const [isOpen, setIsOpen] = useState(false);
-    const handleDataChange = (newData) => {
-        setOption(newData);
-        console.log(11, option);
-    };
-    const {
-        token: { colorBgContainer },
-    } = theme.useToken();
+    const [selectedValue, setSelectedValue] = useState('fullname');
+    const [keyWord, setKeyWord] = useState('');
+    // const [debouncedSearchTerm] = useDebounce(keyWord, 500);
 
+    // const filteredData = data.filter(item =>
+    //     item[searchType].toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    // );
+    function handleSelect(value) {
+        setSelectedValue(value);
+    }
+
+    const handleSearchValueChange = (event) => {
+        setKeyWord(event.target.value);
+    };
+    let location = useLocation();
+    console.log(22, location.pathname);
     return (
         <UserLayout>
-            <Content
-                style={{
-                    margin: '24px 16px',
-                    padding: 24,
-                    background: colorBgContainer,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    flexDirection: 'column'
-                }}
-                justify={'center'}
-            >
+            <Content>
                 <Space direction='vertical' size={24}  >
-
                     <Row justify={"space-between"}>
                         <Col>
                             <h3>All User</h3>
                         </Col>
                         <Col>
-                            <Button type="primary">Add User</Button>
+                            <Button style={buttonStyle}>Add User</Button>
                         </Col>
                     </Row>
 
@@ -86,17 +100,18 @@ function UserManager() {
                                         style={{
                                             width: 120,
                                         }}
+                                        onChange={handleSelect}
                                         options={[
                                             {
-                                                value: 'Email',
+                                                value: 'email',
                                                 label: 'Email',
                                             }, {
-                                                value: 'Name',
+                                                value: 'fullname',
                                                 label: 'Name',
                                             },
                                         ]}
                                     />
-                                    <Input suffix={<SearchOutlined />} />
+                                    <Input suffix={<SearchOutlined />} onChange={handleSearchValueChange} enterButton />
                                 </Space.Compact>
                             </Col>
                             <Col>
@@ -119,7 +134,7 @@ function UserManager() {
                         </Space>
                     </Row>
                     <Row>
-                        <UserTable />
+                        <UserTable selectOption={selectedValue} keyWord={keyWord} />
                     </Row>
                 </Space>
             </Content>

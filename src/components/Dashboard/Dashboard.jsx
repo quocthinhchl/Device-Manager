@@ -11,6 +11,7 @@ import ChangePass from "../../pages/MyProfile/ChangePassword/ChangePassWord/Chan
 import UserDetails from "../../pages/UserMangager/UserDetails/UserDetails";
 import UpdateUser from "../../pages/UserMangager/UpdateUser/UpdateUser";
 import UserManager from "../../pages/UserMangager/UserList/UserManager";
+import CreateUser from "../../pages/UserMangager/CreateUser/CreateUser";
 import axiosInstance from "../../shared/services/http-client";
 function Dashboard({ setToken }) {
     const [useUser, setUser] = useState()
@@ -32,6 +33,8 @@ function Dashboard({ setToken }) {
                 <Routes>
                     <Route path="/" element={<ViewProfile />} />
                     <Route path="users" element={<UserManager />} />
+                    <Route path="create" element={<CreateUser />} />
+
                     {/* <Route path="users" element={<UserManager />} /> */}
 
 

@@ -9,7 +9,7 @@ const url =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
 
 
-const Navbar = ({ props, setToken }) => {
+const Navbar = (props) => {
   const [useUser, setUser] = useState('')
   const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ const Navbar = ({ props, setToken }) => {
   function logOut() {
     localStorage.removeItem("token");
 
-    setToken(null)
+    props.setToken(null)
   }
 
   function myProfile() {
@@ -54,6 +54,9 @@ const Navbar = ({ props, setToken }) => {
     width: 100%;
     height: 64px;
     padding: 16px;
+    .ant-dropdown-menu{
+      margin-top: 14px;
+    }
   `;
   const IconCollapse = styled.div`
     color: #212121;
