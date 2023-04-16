@@ -26,8 +26,12 @@ const UserTable = (props) => {
         }, [])
     }
 
-    function handleEdit(id) {
+    function handleDetail(id) {
         navigate(`/dashboard/users/detail/${id}`)
+    }
+
+    function handleEdit(id) {
+        navigate(`/dashboard/users/edit/${id}`)
     }
 
     console.log(1111, props.selectOption, props.keyWord);
@@ -74,10 +78,10 @@ const UserTable = (props) => {
             render: (text, useData) => (
                 <span>
                     <span>
-                        <a onClick={() => handleEdit(useData.id)}><EyeOutlined /></a>
+                        <a onClick={() => handleDetail(useData.id)}><EyeOutlined /></a>
                     </span>
                     <span>
-                        <a onClick={() => handleEdit(useData)} ><EditOutlined /></a>
+                        <a onClick={() => handleEdit(useData.id)} ><EditOutlined /></a>
                     </span>
                     <span>
                         <a onClick={() => handleEdit(useData)} ><DeleteOutlined /></a>

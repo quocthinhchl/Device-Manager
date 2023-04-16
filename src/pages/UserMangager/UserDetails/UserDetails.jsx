@@ -1,7 +1,8 @@
-import { Descriptions, List, Skeleton } from "antd";
+import { Button, Descriptions, List, Row, Skeleton, Space } from "antd";
 import React, { useEffect, useState } from "react"
 import styled from "styled-components";
 import axiosInstance from "../../../shared/services/http-client";
+import { useNavigate } from "react-router";
 
 const PathName = styled.p`
     margin: 10px 25px 0px 20px;
@@ -54,15 +55,21 @@ export default function UserDetails({ userId }) {
 
     const [user, setUser] = useState("");
     const [DVS, setDVS] = useState([]);
+    const navigate = useNavigate();
 
     const id = userId.pathname.substring(userId.pathname.lastIndexOf('/') + 1);
-    console.log("id", id);
     useEffect(() => {
         axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
             setUser(res);
             setDVS(res.devices)
         });
     }, []);
+
+    function HandleDelete() {
+        console.log(id);
+        axiosInstance.delete(`users/${id}`)
+        navigate("/dashboard/users")
+    }
 
     return (
         <>
@@ -127,6 +134,34 @@ export default function UserDetails({ userId }) {
                         />
                     </Devices>
                 </DevicesList>
+
+                <Row style={{ borderTop: "1px solid #dcd2d2", marginTop: "32px" }}>
+                    <Space style={{ paddingTop: 24 }}>
+                        <Button
+                            style={{
+                                background: "#8767E1",
+                                color: "#F1F4F9"
+                            }}
+                            onClick={() => {
+                                navigate(`/dashboard/users/edit/${id}`);
+                            }}
+                        >
+                            Edit
+                        </Button>
+                        <Button
+                            style={{
+                                color: "#8767E1"
+                            }}
+                            onClick={() => {
+                                console.log(id);
+                                axiosInstance.delete(`users/${id}`)
+                                navigate("/dashboard/users")
+                            }}
+                        >
+                            Delete
+                        </Button>
+                    </Space>
+                </Row>
             </Content>
 
         </>
