@@ -17,6 +17,7 @@ const LoginBg = styled.div`
       background: #FFFFFF;
       box-shadow: 0px 4px 55px rgba(0, 0, 0, 0.07);
       border-radius: 16px;
+      padding: 20px;
     }
     
 `
@@ -138,7 +139,7 @@ const Login = ({ setToken }) => {
             }}
 
           >
-            <Button type="primary" htmlType="submit" style={{ width: 400, }} onClick={handleSubmit}>
+            <Button type="primary" htmlType="submit" style={{ width: 360, }} onClick={handleSubmit}>
               Login
             </Button>
           </Form.Item>
