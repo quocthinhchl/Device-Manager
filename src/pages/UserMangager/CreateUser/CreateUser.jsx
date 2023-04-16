@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
   theme,
-  Descriptions,
   Col,
-  Avatar,
   Row,
   Button,
   Space,
-  Divider,
   Input,
   Form,
   Select,
   DatePicker,
-  Checkbox,
 } from "antd";
 import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
@@ -391,9 +387,7 @@ const CreateUser = () => {
                             onSearch={onSearch}
                           />
                           {/* <Checkbox.Group
-                            style={{
-                              width: "100%",
-                            }}
+                            
                             onChange={onChange}
                             // options={options}
                             value={checkV}
