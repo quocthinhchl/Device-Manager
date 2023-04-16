@@ -503,7 +503,7 @@ const CreateUser = () => {
                                     handleDeleteButtonClick(checkedItem)
                                   }
                                   src={icon}
-                                  className={" "}
+                                  className={""}
                                   alt=""
                                   height={22}
                                   width={22}
