@@ -37,6 +37,7 @@ function Dashboard({ setToken }) {
                     <Route path="users" element={<UserManager />} />
                     <Route path="create" element={<CreateUser />} />
                     <Route path="users/detail/:id" element={<UserDetails userId={Location} />} />
+                    <Route path="users/edit/:id" element={<UpdateUser userId={Location} />} />
 
 
                     {/* <Route path="users" element={<UserManager />} /> */}
