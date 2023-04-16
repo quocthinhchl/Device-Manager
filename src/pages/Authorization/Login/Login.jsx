@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components'
 import { Button, Checkbox, Form, Input, Col, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import AppRoutes from '../../../components/AppRoutes/AppRoutes';
 import axiosInstance from '../../../shared/services/http-client';
 import { ACCESS_TOKEN } from '../../../shared/constants';
 

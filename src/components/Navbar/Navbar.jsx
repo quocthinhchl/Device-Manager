@@ -9,7 +9,7 @@ const url =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
 
 
-const Navbar = ({ props, setToken }) => {
+const Navbar = (props) => {
   const [useUser, setUser] = useState('')
   const navigate = useNavigate();
 
@@ -17,12 +17,12 @@ const Navbar = ({ props, setToken }) => {
     axiosInstance.get("/users/me?populate=role,avatar").then(res => {
       setUser(res);
     })
-  }, {});
+  }, []);
 
   function logOut() {
     localStorage.removeItem("token");
 
-    setToken(null)
+    props.setToken(null)
   }
 
   function myProfile() {
@@ -54,6 +54,9 @@ const Navbar = ({ props, setToken }) => {
     width: 100%;
     height: 64px;
     padding: 16px;
+    .ant-dropdown-menu{
+      margin-top: 14px;
+    }
   `;
   const IconCollapse = styled.div`
     color: #212121;
@@ -72,6 +75,7 @@ const Navbar = ({ props, setToken }) => {
       <Menu.Item key="logout" onClick={logOut}>Logout</Menu.Item>
     </Menu>
   );
+  console.log("porps", props.userData);
   return (
     <NavBar>
       <IconCollapse>
@@ -81,11 +85,11 @@ const Navbar = ({ props, setToken }) => {
         <Col>
           <Row justify={'space-between'}>
             <AvatarUser>
-              <Avatar src={useUser.avatar} />
+              <Avatar />
             </AvatarUser>
             <InforUser>
-              <Row>{useUser.fullname}</Row>
-              <Row></Row>
+              <Row>{props.userData.fullname}</Row>
+              <Row>{props.userData.role.name}</Row>
             </InforUser>
           </Row>
         </Col>
