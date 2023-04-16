@@ -84,8 +84,12 @@ const ViewProfile = (props) => {
                 <Descriptions.Item label="Phone Number">
                   {props.userData.phoneNumber}
                 </Descriptions.Item>
-                <Descriptions.Item label="DOB">{props.userData.dob}</Descriptions.Item>
-                <Descriptions.Item label="Role">{props.userData.role.name}</Descriptions.Item>
+                <Descriptions.Item label="DOB">
+                  {props.userData.dob}
+                </Descriptions.Item>
+                <Descriptions.Item label="Role">
+                  {props.userData.role.name}
+                </Descriptions.Item>
               </Descriptions>
             </Col>
           </Row>

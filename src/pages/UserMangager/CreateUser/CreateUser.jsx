@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
   theme,
-  Descriptions,
   Col,
-  Avatar,
   Row,
   Button,
   Space,
-  Divider,
   Input,
   Form,
   Select,
   DatePicker,
-  Checkbox,
 } from "antd";
 import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
@@ -20,50 +16,58 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../shared/services/http-client";
 import FormItem from "antd/es/form/FormItem";
 import Search from "antd/es/transfer/search";
+import icon from "../../../assets/images/Delete.png";
 
 const onSearch = (value) => console.log(value);
 const CreateUser = () => {
-  // const [useUser, setUser] = useState('')
-  // useEffect(() => {
-  //     axiosInstance.get("/users/me?populate=role,avatar,address").then(res => {
-  //         setUser(res);
-  //     })
-  // }, []);
-  const deleteicon = DeleteOutlined;
-
-  const [checkV, setCheckV] = useState([]);
-  const onChange = (checkedValues) => {
-    console.log("checked = ", checkedValues);
-
-    // setCheckV([])
-    setCheckV(checkedValues);
-    // var n = checkV.length
-    // checkV.splice(0, n)
-    // checkV.push(checkedValues)
-    console.log(checkV);
-    // render();
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    // handle form submission
+  };
+  const [checkedItems, setCheckedItems] = useState([]);
+
+  const handleCheckboxChange = (event) => {
+    const itemName = event.target.name;
+
+    setCheckedItems((prevCheckedItems) => {
+      if (prevCheckedItems.includes(itemName)) {
+        return prevCheckedItems.filter(
+          (checkedItem) => checkedItem !== itemName
+        );
+      } else {
+        return [...prevCheckedItems, itemName];
+      }
+    });
   };
 
-  function render() {
-    const devices = checkV.map((dv) => {
-      // return dv.map((d) => {
-      return `
-              <p>${dv} </p>
+  const handleDeleteButtonClick = (itemName) => {
+    setCheckedItems((prevCheckedItems) =>
+      prevCheckedItems.filter((checkedItem) => checkedItem !== itemName)
+    );
+  };
+  // const [checkV, setCheckV] = useState([]);
+  // const onChange = (checkedValues) => {
+  //   console.log("checked = ", checkedValues);
 
-          `;
-    });
-    // return dv
+  //   setCheckV(checkedValues);
 
-    console.log(devices);
-    return {
-      __html: devices.join(""),
-    };
-  }
+  //   console.log(checkV);
+  // };
+
+  // function render() {
+  //   const devices = checkV.map((dv) => {
+  //     // return dv.map((d) => {
+  //     return `
+  //           <div style="display: flex; justify-content: space-between; "> <p>${dv} </p>  <img  src=${icon}  alt=""  height="20px" width="20px"/ > </div>
+
+  //         `;
+  //   });
+  //   // return dv
+
+  //   console.log(devices);
+  //   return {
+  //     __html: devices.join(""),
+  //   };
+  // }
 
   const buttonStyle = {
     backgroundColor: "#8767E1",
@@ -93,6 +97,7 @@ const CreateUser = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+
   return (
     <>
       <PathName>Add New User</PathName>
@@ -370,6 +375,8 @@ const CreateUser = () => {
                           span={12}
                           style={{
                             padding: "10px 10px 10px 10px",
+                            display: "flex",
+                            flexDirection: "column",
                           }}
                         >
                           <Search
@@ -379,10 +386,8 @@ const CreateUser = () => {
                             size="default size"
                             onSearch={onSearch}
                           />
-                          <Checkbox.Group
-                            style={{
-                              width: "100%",
-                            }}
+                          {/* <Checkbox.Group
+                            
                             onChange={onChange}
                             // options={options}
                             value={checkV}
@@ -406,7 +411,53 @@ const CreateUser = () => {
                                 <Checkbox value="UCQ">UCQ</Checkbox>
                               </Col>
                             </Row>
-                          </Checkbox.Group>
+                          </Checkbox.Group> */}
+
+                          <label style={{ paddingTop: 10 }}>
+                            <input
+                              type="checkbox"
+                              name="Garage ABC"
+                              checked={checkedItems.includes("Garage ABC")}
+                              onChange={handleCheckboxChange}
+                            />
+                            Garage ABC
+                          </label>
+                          <label>
+                            <input
+                              type="checkbox"
+                              name="TLS"
+                              checked={checkedItems.includes("TLS")}
+                              onChange={handleCheckboxChange}
+                            />
+                            TLS
+                          </label>
+                          <label>
+                            <input
+                              type="checkbox"
+                              name="AHC"
+                              checked={checkedItems.includes("AHC")}
+                              onChange={handleCheckboxChange}
+                            />
+                            AHC
+                          </label>
+                          <label>
+                            <input
+                              type="checkbox"
+                              name="CB Garage"
+                              checked={checkedItems.includes("CB Garage")}
+                              onChange={handleCheckboxChange}
+                            />
+                            CB Garage
+                          </label>
+                          <label>
+                            <input
+                              type="checkbox"
+                              name="UCQ"
+                              checked={checkedItems.includes("UCQ")}
+                              onChange={handleCheckboxChange}
+                            />
+                            UCQ
+                          </label>
                         </Col>
 
                         <Col
@@ -416,7 +467,7 @@ const CreateUser = () => {
                             padding: 10,
                           }}
                         >
-                          <p style={{ fontWeight: "bold" }}>
+                          {/* <p style={{ fontWeight: "bold" }}>
                             Seclect Devices ({checkV.length})
                           </p>
                           <div>
@@ -424,6 +475,35 @@ const CreateUser = () => {
                               style={{ fontSize: 12 }}
                               dangerouslySetInnerHTML={render()}
                             ></div>
+                          </div> */}
+                          <p style={{ fontWeight: "bold" }}>
+                            Seclect Devices ({checkedItems.length})
+                          </p>
+
+                          <div>
+                            {checkedItems.map((checkedItem) => (
+                              <div
+                                className={""}
+                                key={checkedItem}
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                <p style={{ fontSize: 11 }}> {checkedItem}</p>
+
+                                <img
+                                  onClick={() =>
+                                    handleDeleteButtonClick(checkedItem)
+                                  }
+                                  src={icon}
+                                  className={""}
+                                  alt=""
+                                  height={22}
+                                  width={22}
+                                />
+                              </div>
+                            ))}
                           </div>
                         </Col>
                       </Row>
