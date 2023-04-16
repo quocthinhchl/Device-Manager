@@ -374,7 +374,7 @@ const CreateUser = () => {
 
                   <Col span={24}>
                     <FormItem label="Devices" name="Devices" rules={[{}]}>
-                      <Row style={{ border: "1px solid #dcd2d2" }}>
+                      <Row style={{ border: "1.5px solid #dcd2d2" }}>
                         <Col
                           span={12}
                           style={{
