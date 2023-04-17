@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, Table } from 'antd';
-import { useDebounce } from 'use-debounce';
+// import { useDebounce } from 'use-debounce';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import styled from 'styled-components';
 import axiosInstance from '../../../shared/services/http-client';
-function handleEdit(id) {
-    console.log(id);
-}
+import { useNavigate } from 'react-router';
+
 const UserTable = (props) => {
     const TableData = styled.div`
     width:100%;
@@ -14,7 +13,10 @@ const UserTable = (props) => {
             background-color:#DDE4EE;
         }
     `
+
     const [useData, setData] = useState([]);
+    const navigate = useNavigate();
+
     useEffect(() => {
         renderData()
     }, [props.selectOption, props.keyWord, props.blocked]);
@@ -23,6 +25,15 @@ const UserTable = (props) => {
             setData(res);
         }, [])
     }
+
+    function handleDetail(id) {
+        navigate(`/dashboard/users/detail/${id}`)
+    }
+
+    function handleEdit(id) {
+        navigate(`/dashboard/users/edit/${id}`)
+    }
+
     console.log(1111, props.selectOption, props.keyWord);
     const columns = [
         {
@@ -67,10 +78,10 @@ const UserTable = (props) => {
             render: (text, useData) => (
                 <span>
                     <span>
-                        <a onClick={() => handleEdit(useData.id)}><EyeOutlined /></a>
+                        <a onClick={() => handleDetail(useData.id)}><EyeOutlined /></a>
                     </span>
                     <span>
-                        <a onClick={() => handleEdit(useData)} ><EditOutlined /></a>
+                        <a onClick={() => handleEdit(useData.id)} ><EditOutlined /></a>
                     </span>
                     <span>
                         <a onClick={() => handleEdit(useData)} ><DeleteOutlined /></a>

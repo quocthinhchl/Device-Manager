@@ -17,6 +17,7 @@ const LoginBg = styled.div`
       background: #FFFFFF;
       box-shadow: 0px 4px 55px rgba(0, 0, 0, 0.07);
       border-radius: 16px;
+      padding: 20px;
     }
     
 `
@@ -42,7 +43,8 @@ const onFinishFailed = errorInfo => {
 
 async function loginUser(data) {
   return axiosInstance.post("auth/local", data).then(res => res.jwt).catch((error) => {
-    console.log(error.response.data.error.message);
+    alert(error.response.data.error.message);
+
   })
 }
 
@@ -56,31 +58,14 @@ const Login = ({ setToken }) => {
       identifier,
       password
     });
-    setToken(token);
-  }
-  const handleLogin = () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    // console.log(email + " " + password);
-    const data = {
-      "identifier": `${email}`,
-      "password": `${password}`
+    // console.log(token);
+    if (token) {
+      setToken(token);
+
     }
-    axiosInstance.post("auth/local", data).then((res) => {
-      let a = []
-      a = res
 
-      if (ACCESS_TOKEN === 'null') {
-        console.log(33);
-      }
-      // ACCESS_TOKEN = 'test'
-      console.log(ACCESS_TOKEN);
-
-      navigate('/dashboard');
-    }).catch((error) => {
-      console.log(error.response.data.error.message);
-    })
   }
+
   return (
     <LoginBg>
 
@@ -138,7 +123,7 @@ const Login = ({ setToken }) => {
             }}
 
           >
-            <Button type="primary" htmlType="submit" style={{ width: 400, }} onClick={handleSubmit}>
+            <Button type="primary" htmlType="submit" style={{ width: 360, }} onClick={handleSubmit}>
               Login
             </Button>
           </Form.Item>
