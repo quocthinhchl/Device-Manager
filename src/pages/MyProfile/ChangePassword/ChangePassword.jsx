@@ -1,9 +1,19 @@
 import React, { useState } from "react";
-import { Layout, theme, Button, Space, Input, Form, Divider } from "antd";
+import {
+  Layout,
+  theme,
+  Button,
+  Space,
+  Input,
+  Form,
+  Divider,
+  message,
+} from "antd";
 import { Content } from "antd/es/layout/layout";
 import { useNavigate, Link } from "react-router-dom";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import styled from "styled-components";
+import axiosInstance from "../../../shared/services/http-client";
 
 const ChangePass = () => {
   const buttonStyle = {
@@ -30,6 +40,25 @@ const ChangePass = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+  const onFinish = (values) => {
+    const data = {
+      currentPassword: values.current_password,
+      password: values.new_password,
+      passwordConfirmation: values.confirm_password,
+    };
+    axiosInstance
+      .post("/auth/change-password", data)
+      .then((response) => {
+        if (response != null) {
+          window.location.reload();
+          message.success("correct");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Current Password Incorrect");
+      });
+  };
 
   return (
     <>

@@ -36,7 +36,7 @@ const beforeUpload = (file) => {
   return isJpgOrPng;
 };
 
-const UpdateProfile = () => {
+const UpdateProfile = (props) => {
   const [useUser, setUser] = useState("");
   useEffect(() => {
     axiosInstance.get("/users/me?populate=role,avatar,address").then((res) => {
@@ -107,7 +107,7 @@ const UpdateProfile = () => {
       </div>
     </div>
   );
-  const defaultDate = moment(useUser.dob);
+  const defaultDate = moment(props.userData.dob);
   return (
     <>
       <PathName>Update Profile</PathName>
@@ -183,11 +183,11 @@ const UpdateProfile = () => {
             >
               <Input
                 placeholder="Type your name"
-                defaultValue={useUser.fullname}
+                defaultValue={props.userData.fullname}
               />
             </Form.Item>
             <Form.Item name="fullName" label="Username:">
-              <Input disabled defaultValue={useUser.username} />
+              <Input disabled defaultValue={props.userData.username} />
             </Form.Item>
 
             <Form.Item
@@ -204,7 +204,7 @@ const UpdateProfile = () => {
               <Input
                 placeholder="Type your email"
                 value={"hung@gmail.com"}
-                defaultValue={useUser.email}
+                defaultValue={props.userData.email}
                 disabled
               ></Input>
             </Form.Item>
@@ -240,7 +240,7 @@ const UpdateProfile = () => {
                 >
                   <Input
                     style={{ width: "100%" }}
-                    defaultValue={useUser.phoneNumber}
+                    defaultValue={props.userData.phoneNumber}
                     value={"Admin"}
                   />
                 </Form.Item>
@@ -251,7 +251,7 @@ const UpdateProfile = () => {
               <Input
                 style={{ width: "100%" }}
                 placeholder="role"
-                value={"Admin"}
+                defaultValue={props.userData.role.name}
                 disabled
               />
             </Form.Item>
