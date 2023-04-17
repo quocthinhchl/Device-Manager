@@ -12,7 +12,7 @@ import UpdateUser from "../../pages/UserMangager/UpdateUser/UpdateUser";
 import UserManager from "../../pages/UserMangager/UserList/UserManager";
 import CreateUser from "../../pages/UserMangager/CreateUser/CreateUser";
 import axiosInstance from "../../shared/services/http-client";
-function Dashboard({ setToken }) {
+function Dashboard({ setToken, setLocation }) {
     const [user, setUser] = useState();
     useEffect(() => {
         axiosInstance.get("users/me?populate=role,avatar").then((res) => {
@@ -25,7 +25,7 @@ function Dashboard({ setToken }) {
     };
 
     const Location = useLocation()
-    console.log(Location);
+    setLocation(Location)
     return (
         <div className="App">
             <Sidebar collapsed={collapsed} />

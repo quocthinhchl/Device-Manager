@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Table } from 'antd';
+import { Avatar, Modal, Table } from 'antd';
 // import { useDebounce } from 'use-debounce';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import styled from 'styled-components';
@@ -16,6 +16,8 @@ const UserTable = (props) => {
 
     const [useData, setData] = useState([]);
     const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     useEffect(() => {
         renderData()
@@ -26,12 +28,28 @@ const UserTable = (props) => {
         }, [])
     }
 
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = async () => {
+        // await axiosInstance.delete(`users/${id}`)
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+
     function handleDetail(id) {
         navigate(`/dashboard/users/detail/${id}`)
     }
 
     function handleEdit(id) {
         navigate(`/dashboard/users/edit/${id}`)
+    }
+
+    function handleDelete(id) {
+        showModal()
     }
 
     console.log(1111, props.selectOption, props.keyWord);
@@ -84,7 +102,7 @@ const UserTable = (props) => {
                         <a onClick={() => handleEdit(useData.id)} ><EditOutlined /></a>
                     </span>
                     <span>
-                        <a onClick={() => handleEdit(useData)} ><DeleteOutlined /></a>
+                        <a onClick={() => handleDelete(useData.id)} ><DeleteOutlined /></a>
                     </span>
                 </span>
             ),
@@ -93,6 +111,9 @@ const UserTable = (props) => {
     return (
         <TableData>
             <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 5 }} />
+            <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <p>Bạn có chắc chắn muốn xoá không?</p>
+            </Modal>
         </TableData>
     );
 };
