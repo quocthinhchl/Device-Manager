@@ -4,7 +4,7 @@ import { Button, Col, Input, Pagination, Row, Select, Space, Table, theme } from
 import styled from "styled-components";
 import { SearchOutlined, ShrinkOutlined } from "@ant-design/icons";
 import UserTable from "./UserTable";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 const options = [{
     value: '0',
     label: 'Active',
@@ -64,6 +64,7 @@ function UserManager() {
     const [selectedValue, setSelectedValue] = useState('fullname');
     const [keyWord, setKeyWord] = useState('');
     const [blocked, setBlocked] = useState(0);
+    const navigate = useNavigate()
     // const [debouncedSearchTerm] = useDebounce(keyWord, 500);
 
     // const filteredData = data.filter(item =>
@@ -89,7 +90,7 @@ function UserManager() {
                             <h3>All User</h3>
                         </Col>
                         <Col>
-                            <Button style={buttonStyle}>Add User</Button>
+                            <Button style={buttonStyle} onClick={() => { navigate('/dashboard/users_list/create') }}> Add User</Button>
                         </Col>
                     </Row>
 

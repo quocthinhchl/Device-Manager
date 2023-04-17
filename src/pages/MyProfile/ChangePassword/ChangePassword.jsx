@@ -178,7 +178,7 @@ const ChangePass = () => {
               </Button>
               <Button
                 onClick={() => {
-                  navigate("/dashboard/users");
+                  navigate("/dashboard/myprofile");
                 }}
               >
                 Back

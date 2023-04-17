@@ -10,27 +10,35 @@ const items = [
         key: '/dashboard/users',
         icon: <UserIcon />,
         label: 'Users',
-        children: [{
-            key: '/dashboard/users',
-            icon: <UserIcon />,
-            label: 'Users'
-        },
-        {
-            key: '/dashboard/create',
-            icon: <UserIcon />,
-            label: 'Create User'
-        },
-        {
-            key: '/dashboard/detail',
-            icon: <UserIcon />,
-            label: 'User detail'
-        }
+        children: [
+            {
+                key: '/dashboard/myprofile',
+                icon: <UserIcon />,
+                label: 'My Profile'
+            },
+            {
+                key: '/dashboard/users_list',
+                icon: <UserIcon />,
+                label: 'User List'
+            },
+
+            // {
+            //     key: '/dashboard/create',
+            //     icon: <UserIcon />,
+            //     label: 'Create User'
+            // },
+            // {
+            //     key: '/dashboard/detail',
+            //     icon: <UserIcon />,
+            //     label: 'User detail'
+            // }
         ]
     },
     {
         key: '/dashboard/device',
         icon: <UserIcon />,
         label: 'Device',
+
     },
 ];
 const SideBar = styled.div`

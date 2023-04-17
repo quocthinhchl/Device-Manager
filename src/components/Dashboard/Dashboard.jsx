@@ -36,23 +36,23 @@ function Dashboard({ setToken }) {
 
                 <Routes>
                     {user && <Route path="/" element={<ViewProfile userData={user} />} />}
-                    <Route path="users" element={<UserManager />} />
-                    <Route path="create" element={<CreateUser />} />
+                    <Route path="users_list" element={<UserManager />} />
+                    <Route path="users_list/create" element={<CreateUser />} />
+
                     <Route
-                        path="users/detail/:id"
+                        path="users_list/detail/:id"
                         element={<UserDetails userId={Location} />}
                     />
                     <Route
-                        path="users/edit/:id"
+                        path="users_list/edit/:id"
                         element={<UpdateUser userId={Location} />}
                     />
 
-                    {/* <Route path="users" element={<UserManager />} /> */}
-
+                    {user && <Route path="myprofile" element={<ViewProfile userData={user} />} />}
                     {user && (
-                        <Route path="update" element={<UpdateProfile userData={user} />} />
+                        <Route path="myprofile/update" element={<UpdateProfile userData={user} />} />
                     )}
-                    <Route path="Change" element={<ChangePass />} />
+                    <Route path="myprofile/change" element={<ChangePass />} />
                 </Routes>
                 {/* <PageContent /> */}
             </Layout>

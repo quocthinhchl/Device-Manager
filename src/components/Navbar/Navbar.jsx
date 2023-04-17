@@ -20,7 +20,7 @@ const Navbar = (props) => {
   }
 
   function myProfile() {
-    navigate('/dashboard')
+    navigate('/dashboard/myprofile')
   }
   const InforUser = styled.div`
     margin-top: -4px;

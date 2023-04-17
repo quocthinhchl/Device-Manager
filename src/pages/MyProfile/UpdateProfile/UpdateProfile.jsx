@@ -32,17 +32,10 @@ const beforeUpload = (file) => {
   if (!isJpgOrPng) {
     message.error("You can only upload JPG/PNG file!");
   }
-
   return isJpgOrPng;
 };
 
 const UpdateProfile = (props) => {
-  const [useUser, setUser] = useState("");
-  useEffect(() => {
-    axiosInstance.get("/users/me?populate=role,avatar,address").then((res) => {
-      setUser(res);
-    });
-  }, []);
 
   const buttonStyle = {
     backgroundColor: "#8767E1",
@@ -277,7 +270,7 @@ const UpdateProfile = (props) => {
             </Button>
             <Button
               onClick={() => {
-                navigate("/dashboard/users");
+                navigate("/dashboard/myprofile");
               }}
               style={{
                 width: 120,
