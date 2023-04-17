@@ -19,12 +19,6 @@ const url =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU";
 
 const ViewProfile = (props) => {
-  const [useUser, setUser] = useState("");
-  useEffect(() => {
-    axiosInstance.get("/users/me?populate=role,avatar,address").then((res) => {
-      setUser(res);
-    });
-  }, []);
   const buttonStyle = {
     backgroundColor: "#8767E1",
     color: "#fff",

@@ -13,12 +13,6 @@ const Navbar = (props) => {
   const [useUser, setUser] = useState('')
   const navigate = useNavigate();
 
-  useEffect(() => {
-    axiosInstance.get("/users/me?populate=role,avatar").then(res => {
-      setUser(res);
-    })
-  }, []);
-
   function logOut() {
     localStorage.removeItem("token");
 
