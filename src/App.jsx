@@ -2,7 +2,7 @@ import './App.css';
 import Sidebar from './components/Sidebar/Sidebar';
 import { Layout } from 'antd';
 import Login from './pages/Authorization/Login/Login';
-import { Route, Router, Routes, useNavigate } from 'react-router';
+import { Route, Router, Routes, useLocation, useNavigate } from 'react-router';
 import Dashboard from './components/Dashboard/Dashboard';
 import { useEffect, useState } from 'react';
 
@@ -16,25 +16,29 @@ function getToken() {
 function App() {
   // const { token, setToken } = useToken();
   const [token, setToken] = useState(getToken())
+  const [location, setLocation] = useState(useLocation())
   function GetToken(userToken) {
     setToken(userToken);
     localStorage.setItem('token', userToken);
   }
-
   const navigate = useNavigate();
+  console.log(123, location);
   useEffect(() => {
     if (!token) {
       navigate('/')
     } else {
-      navigate('/dashboard')
+      if (location.pathname === '/') {
+        navigate('/dashboard')
+      } else {
+        navigate(`${location.pathname}`)
+      }
     }
-    // return navigate('/')
   }, [localStorage.getItem('token')])
   return (
     <div className="App">
       <Routes>
         <Route path="/" index element={<Login setToken={GetToken} />} />
-        <Route path="/dashboard/*" element={<Dashboard setToken={setToken} />} />
+        <Route path="/dashboard/*" element={<Dashboard setToken={setToken} setLocation={setLocation} />} />
       </Routes>
     </div>
   );

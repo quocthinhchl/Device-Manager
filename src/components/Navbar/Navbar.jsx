@@ -75,7 +75,6 @@ const Navbar = (props) => {
       <Menu.Item key="logout" onClick={logOut}>Logout</Menu.Item>
     </Menu>
   );
-  console.log("porps", props.userData);
   return (
     <NavBar>
       <IconCollapse>

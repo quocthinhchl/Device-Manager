@@ -1,4 +1,4 @@
-import { Button, Descriptions, List, Row, Skeleton, Space } from "antd";
+import { Button, Descriptions, List, Modal, Row, Skeleton, Space } from "antd";
 import React, { useEffect, useState } from "react"
 import styled from "styled-components";
 import axiosInstance from "../../../shared/services/http-client";
@@ -57,6 +57,9 @@ export default function UserDetails({ userId }) {
     const [DVS, setDVS] = useState([]);
     const navigate = useNavigate();
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+
     const id = userId.pathname.substring(userId.pathname.lastIndexOf('/') + 1);
     useEffect(() => {
         axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
@@ -65,11 +68,23 @@ export default function UserDetails({ userId }) {
         });
     }, []);
 
-    function HandleDelete() {
-        console.log(id);
-        axiosInstance.delete(`users/${id}`)
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = async () => {
+        await axiosInstance.delete(`users/${id}`)
+        setIsModalOpen(false);
         navigate("/dashboard/users")
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
+
+    function HandleDelete() {
+        // console.log(id, 'ghjgjghjhgj');
+        showModal()
     }
+
 
     return (
         <>
@@ -103,7 +118,7 @@ export default function UserDetails({ userId }) {
                         {user.phoneNumber}
                     </Descriptions.Item>
                     <Descriptions.Item label="Gender">{user.gender}</Descriptions.Item>
-                    {/* {user.role.name && <Descriptions.Item label="Role">{user.role.name}</Descriptions.Item>} */}
+                    <Descriptions.Item label="Role">{user.role?.name}</Descriptions.Item>
                 </Descriptions>
 
                 <DevicesList>
@@ -152,18 +167,16 @@ export default function UserDetails({ userId }) {
                             style={{
                                 color: "#8767E1"
                             }}
-                            onClick={() => {
-                                console.log(id);
-                                axiosInstance.delete(`users/${id}`)
-                                navigate("/dashboard/users")
-                            }}
+                            onClick={HandleDelete}
                         >
                             Delete
                         </Button>
                     </Space>
                 </Row>
             </Content>
-
+            <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                <p>Bạn có chắc chắn muốn xoá không?</p>
+            </Modal>
         </>
     )
 }
