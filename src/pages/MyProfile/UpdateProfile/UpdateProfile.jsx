@@ -76,6 +76,7 @@ const UpdateProfile = (props) => {
         "https://static.vecteezy.com/system/resources/previews/000/290/610/original/administration-vector-icon.jpg",
     },
   ]);
+
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
