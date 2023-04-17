@@ -12,7 +12,7 @@ import UpdateUser from "../../pages/UserMangager/UpdateUser/UpdateUser";
 import UserManager from "../../pages/UserMangager/UserList/UserManager";
 import CreateUser from "../../pages/UserMangager/CreateUser/CreateUser";
 import axiosInstance from "../../shared/services/http-client";
-function Dashboard({ setToken, setLocation }) {
+function Dashboard({ setToken }) {
     const [user, setUser] = useState();
     useEffect(() => {
         axiosInstance.get("users/me?populate=role,avatar").then((res) => {
@@ -24,25 +24,34 @@ function Dashboard({ setToken, setLocation }) {
         setIsSidebarOpen(!collapsed);
     };
 
-    const Location = useLocation()
-    setLocation(Location)
+    const Location = useLocation();
+    console.log(Location);
     return (
         <div className="App">
             <Sidebar collapsed={collapsed} />
             <Layout>
-                {user && <Navbar toggle={toggleSidebar} setToken={setToken} userData={user} />}
+                {user && (
+                    <Navbar toggle={toggleSidebar} setToken={setToken} userData={user} />
+                )}
 
                 <Routes>
                     {user && <Route path="/" element={<ViewProfile userData={user} />} />}
                     <Route path="users" element={<UserManager />} />
                     <Route path="create" element={<CreateUser />} />
-                    <Route path="users/detail/:id" element={<UserDetails userId={Location} />} />
-                    <Route path="users/edit/:id" element={<UpdateUser userId={Location} />} />
-
+                    <Route
+                        path="users/detail/:id"
+                        element={<UserDetails userId={Location} />}
+                    />
+                    <Route
+                        path="users/edit/:id"
+                        element={<UpdateUser userId={Location} />}
+                    />
 
                     {/* <Route path="users" element={<UserManager />} /> */}
 
-                    <Route path="update" element={<UpdateProfile />} />
+                    {user && (
+                        <Route path="update" element={<UpdateProfile userData={user} />} />
+                    )}
                     <Route path="Change" element={<ChangePass />} />
                 </Routes>
                 {/* <PageContent /> */}
