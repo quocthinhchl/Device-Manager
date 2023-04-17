@@ -41,11 +41,11 @@ const UserTable = (props) => {
 
 
     function handleDetail(id) {
-        navigate(`/dashboard/users/detail/${id}`)
+        navigate(`/dashboard/users_list/detail/${id}`)
     }
 
     function handleEdit(id) {
-        navigate(`/dashboard/users/edit/${id}`)
+        navigate(`/dashboard/users_list/edit/${id}`)
     }
 
     function handleDelete(id) {
