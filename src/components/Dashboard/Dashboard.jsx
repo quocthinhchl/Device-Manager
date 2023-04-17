@@ -27,7 +27,9 @@ function Dashboard({ setToken }) {
     <div className="App">
       <Sidebar collapsed={collapsed} />
       <Layout>
-        {user && <Navbar toggle={toggleSidebar} setToken={setToken} userData={user} />}
+        {user && (
+          <Navbar toggle={toggleSidebar} setToken={setToken} userData={user} />
+        )}
 
         <Routes>
           {user && <Route path="/" element={<ViewProfile userData={user} />} />}
@@ -36,7 +38,9 @@ function Dashboard({ setToken }) {
 
           {/* <Route path="users" element={<UserManager />} /> */}
 
-          <Route path="update" element={<UpdateProfile />} />
+          {user && (
+            <Route path="update" element={<UpdateProfile userData={user} />} />
+          )}
           <Route path="Change" element={<ChangePass />} />
         </Routes>
         {/* <PageContent /> */}

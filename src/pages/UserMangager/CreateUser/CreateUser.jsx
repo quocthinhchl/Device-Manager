@@ -44,30 +44,6 @@ const CreateUser = () => {
       prevCheckedItems.filter((checkedItem) => checkedItem !== itemName)
     );
   };
-  // const [checkV, setCheckV] = useState([]);
-  // const onChange = (checkedValues) => {
-  //   console.log("checked = ", checkedValues);
-
-  //   setCheckV(checkedValues);
-
-  //   console.log(checkV);
-  // };
-
-  // function render() {
-  //   const devices = checkV.map((dv) => {
-  //     // return dv.map((d) => {
-  //     return `
-  //           <div style="display: flex; justify-content: space-between; "> <p>${dv} </p>  <img  src=${icon}  alt=""  height="20px" width="20px"/ > </div>
-
-  //         `;
-  //   });
-  //   // return dv
-
-  //   console.log(devices);
-  //   return {
-  //     __html: devices.join(""),
-  //   };
-  // }
 
   const buttonStyle = {
     backgroundColor: "#8767E1",
@@ -386,32 +362,6 @@ const CreateUser = () => {
                             size="default size"
                             onSearch={onSearch}
                           />
-                          {/* <Checkbox.Group
-                            
-                            onChange={onChange}
-                            // options={options}
-                            value={checkV}
-                          >
-                            <Row style={{ paddingTop: 10 }}>
-                              <Col span={12}>
-                                <Checkbox value="Garage ABC">
-                                  Garage ABC
-                                </Checkbox>
-                              </Col>
-                              <Col span={24}>
-                                <Checkbox value="TLS">TLS</Checkbox>
-                              </Col>
-                              <Col span={24}>
-                                <Checkbox value="AHC">AHC</Checkbox>
-                              </Col>
-                              <Col span={24}>
-                                <Checkbox value="CB Garage">CB Garage</Checkbox>
-                              </Col>
-                              <Col span={24}>
-                                <Checkbox value="UCQ">UCQ</Checkbox>
-                              </Col>
-                            </Row>
-                          </Checkbox.Group> */}
 
                           <label style={{ paddingTop: 10 }}>
                             <input
@@ -467,15 +417,6 @@ const CreateUser = () => {
                             padding: 10,
                           }}
                         >
-                          {/* <p style={{ fontWeight: "bold" }}>
-                            Seclect Devices ({checkV.length})
-                          </p>
-                          <div>
-                            <div
-                              style={{ fontSize: 12 }}
-                              dangerouslySetInnerHTML={render()}
-                            ></div>
-                          </div> */}
                           <p style={{ fontWeight: "bold" }}>
                             Seclect Devices ({checkedItems.length})
                           </p>
