@@ -9,6 +9,9 @@ import {
   Form,
   Select,
   DatePicker,
+  List,
+  Typography,
+  Checkbox,
 } from "antd";
 import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
@@ -73,6 +76,14 @@ const CreateUser = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+
+  const [useUser, setUser] = useState("");
+  const [checkedList, setCheckedList] = useState([]);
+  useEffect(() => {
+    axiosInstance.get("/devices?populate=user.avatar").then((res) => {
+      setUser(res.data);
+    });
+  }, []);
 
   return (
     <>
@@ -363,51 +374,20 @@ const CreateUser = () => {
                             onSearch={onSearch}
                           />
 
-                          <label style={{ paddingTop: 10 }}>
-                            <input
-                              type="checkbox"
-                              name="Garage ABC"
-                              checked={checkedItems.includes("Garage ABC")}
-                              onChange={handleCheckboxChange}
-                            />
-                            Garage ABC
-                          </label>
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="TLS"
-                              checked={checkedItems.includes("TLS")}
-                              onChange={handleCheckboxChange}
-                            />
-                            TLS
-                          </label>
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="AHC"
-                              checked={checkedItems.includes("AHC")}
-                              onChange={handleCheckboxChange}
-                            />
-                            AHC
-                          </label>
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="CB Garage"
-                              checked={checkedItems.includes("CB Garage")}
-                              onChange={handleCheckboxChange}
-                            />
-                            CB Garage
-                          </label>
-                          <label>
-                            <input
-                              type="checkbox"
-                              name="UCQ"
-                              checked={checkedItems.includes("UCQ")}
-                              onChange={handleCheckboxChange}
-                            />
-                            UCQ
-                          </label>
+                          <List
+                            style={{
+                              height: 150,
+                              overflowY: "auto",
+                            }}
+                            bordered
+                            dataSource={useUser}
+                            renderItem={(item) => (
+                              <List.Item>
+
+                                <Checkbox>{item.attributes.name}</Checkbox>
+                              </List.Item>
+                            )}
+                          />
                         </Col>
 
                         <Col
