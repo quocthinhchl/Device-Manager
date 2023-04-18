@@ -15,7 +15,7 @@ import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import styled from "styled-components";
 import axiosInstance from "../../../shared/services/http-client";
 
-const ChangePass = () => {
+const ChangePass = (props) => {
   const buttonStyle = {
     backgroundColor: "#8767E1",
     color: "#fff",
@@ -36,9 +36,13 @@ const ChangePass = () => {
 
     border-radius: 10px;
   `;
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+
+  function logOut() {
+    localStorage.removeItem("token");
+
+    props.setToken(null)
+  }
+
   const navigate = useNavigate();
   const onFinish = (values) => {
     const data = {
@@ -50,7 +54,9 @@ const ChangePass = () => {
       .post("/auth/change-password", data)
       .then((response) => {
         if (response != null) {
-          window.location.reload();
+
+          navigate("/dashboard/myprofile")
+          // logOut()
           message.success("correct");
         }
       })
@@ -72,16 +78,11 @@ const ChangePass = () => {
         <Form
           autoComplete="off"
           layout="vertical"
-          onFinish={(values) => {
-            console.log({ values });
-          }}
-          onFinishFailed={(error) => {
-            console.log({ error });
-          }}
+          onFinish={onFinish}
         >
           <Form.Item
             label="Current Password "
-            name={"Password"}
+            name="current_password"
             rules={[
               { required: true, message: "Input Your Password" },
 
@@ -103,7 +104,7 @@ const ChangePass = () => {
           </Form.Item>
 
           <Form.Item
-            name="password"
+            name="new_password"
             label="New Password"
             rules={[
               {
@@ -111,12 +112,6 @@ const ChangePass = () => {
                 message: " Input Your New Password",
               },
 
-              // {
-              //   validator: (_, value) =>
-              //     value && value.includes("A")
-              //       ? Promise.resolve()
-              //       : Promise.reject("Password does not match criteria."),
-              // },
               {
                 pattern: new RegExp(
                   /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
@@ -135,7 +130,7 @@ const ChangePass = () => {
           </Form.Item>
 
           <Form.Item
-            name="confirmPassword"
+            name="confirm_password"
             label="Confirm Password"
             dependencies={["password"]}
             rules={[
@@ -145,7 +140,7 @@ const ChangePass = () => {
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
+                  if (!value || getFieldValue("new_password") === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(
