@@ -15,7 +15,7 @@ import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import styled from "styled-components";
 import axiosInstance from "../../../shared/services/http-client";
 
-const ChangePass = () => {
+const ChangePass = (props) => {
   const buttonStyle = {
     backgroundColor: "#8767E1",
     color: "#fff",
@@ -37,6 +37,12 @@ const ChangePass = () => {
     border-radius: 10px;
   `;
 
+  function logOut() {
+    localStorage.removeItem("token");
+
+    props.setToken(null)
+  }
+
   const navigate = useNavigate();
   const onFinish = (values) => {
     const data = {
@@ -48,7 +54,9 @@ const ChangePass = () => {
       .post("/auth/change-password", data)
       .then((response) => {
         if (response != null) {
-          window.location.reload();
+
+          navigate("/dashboard/myprofile")
+          // logOut()
           message.success("correct");
         }
       })

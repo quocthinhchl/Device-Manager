@@ -52,7 +52,9 @@ function Dashboard({ setToken }) {
                     {user && (
                         <Route path="myprofile/update" element={<UpdateProfile userData={user} />} />
                     )}
-                    <Route path="myprofile/change" element={<ChangePass />} />
+                    {user && (
+                        <Route path="myprofile/change" element={<ChangePass setToken={setToken} />} />
+                    )}
                 </Routes>
                 {/* <PageContent /> */}
             </Layout>
