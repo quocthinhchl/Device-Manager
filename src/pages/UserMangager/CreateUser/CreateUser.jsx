@@ -93,6 +93,7 @@ const CreateUser = () => {
       blocked: values.status
 
     };
+    console.log(values);
     axiosInstance
       .post("/users", data)
       .then((response) => {
@@ -240,7 +241,7 @@ const CreateUser = () => {
                     {" "}
                     <FormItem
                       label="Phone number"
-                      name="phoneNumber"
+                      name="phonenumber"
                       rules={[
                         {
                           required: true,
