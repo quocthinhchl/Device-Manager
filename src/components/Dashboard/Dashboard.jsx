@@ -12,6 +12,7 @@ import UpdateUser from "../../pages/UserMangager/UpdateUser/UpdateUser";
 import UserManager from "../../pages/UserMangager/UserList/UserManager";
 import CreateUser from "../../pages/UserMangager/CreateUser/CreateUser";
 import axiosInstance from "../../shared/services/http-client";
+import WelcomePage from "../../pages/Welcome/Welcome";
 function Dashboard({ setToken }) {
     const [user, setUser] = useState();
     useEffect(() => {
@@ -55,6 +56,8 @@ function Dashboard({ setToken }) {
                     {user && (
                         <Route path="myprofile/change" element={<ChangePass setToken={setToken} />} />
                     )}
+
+                    <Route path="test" element={<WelcomePage />} />
                 </Routes>
                 {/* <PageContent /> */}
             </Layout>

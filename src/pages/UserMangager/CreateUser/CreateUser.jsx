@@ -12,41 +12,26 @@ import {
   List,
   Typography,
   Checkbox,
+  Table,
+  message,
 } from "antd";
-import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EyeInvisibleOutlined, EyeTwoTone, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../shared/services/http-client";
 import FormItem from "antd/es/form/FormItem";
 import Search from "antd/es/transfer/search";
 import icon from "../../../assets/images/Delete.png";
+import Item from "antd/es/list/Item";
 
 const onSearch = (value) => console.log(value);
 const CreateUser = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-  const [checkedItems, setCheckedItems] = useState([]);
 
-  const handleCheckboxChange = (event) => {
-    const itemName = event.target.name;
 
-    setCheckedItems((prevCheckedItems) => {
-      if (prevCheckedItems.includes(itemName)) {
-        return prevCheckedItems.filter(
-          (checkedItem) => checkedItem !== itemName
-        );
-      } else {
-        return [...prevCheckedItems, itemName];
-      }
-    });
-  };
 
-  const handleDeleteButtonClick = (itemName) => {
-    setCheckedItems((prevCheckedItems) =>
-      prevCheckedItems.filter((checkedItem) => checkedItem !== itemName)
-    );
-  };
 
   const buttonStyle = {
     backgroundColor: "#8767E1",
@@ -77,13 +62,71 @@ const CreateUser = () => {
   } = theme.useToken();
   const navigate = useNavigate();
 
-  const [useUser, setUser] = useState("");
   const [checkedList, setCheckedList] = useState([]);
+  const [deviceNames, setDeviceNames] = useState([]);
+  const [search, setSearch] = useState('');
+
+
+
+
+
+  const handleSearch = (event) => {
+    setSearch(event.target.value);
+  };
+  const handleDelete = (record) => {
+    setCheckedList(checkedList.filter((item) => item.value !== record.value));
+  };
+
+  // const valueList = checkedList.map((item) => item.value);
+
+
+  const onFinish = (values) => {
+    const data = {
+      fullname: values.fullname,
+      username: values.username,
+      email: values.email,
+      dob: values.dob,
+      phoneNumber: values.phonenumber,
+      gender: values.gender,
+      password: values.password,
+      role: parseFloat(values.role),
+      blocked: values.status
+
+    };
+    axiosInstance
+      .post("/users", data)
+      .then((response) => {
+        if (response != null) {
+
+          navigate("/dashboard/myprofile")
+          // logOut()
+          message.success("Succes");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        message.error("Some thing wrong");
+      });
+  };
+
   useEffect(() => {
-    axiosInstance.get("/devices?populate=user.avatar").then((res) => {
-      setUser(res.data);
-    });
-  }, []);
+    const fetchDevices = async () => {
+      try {
+        const response = await axiosInstance.get(`/devices?filters[name][$contains]=${search}`);
+        if (response.data) {
+          setDeviceNames(response.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchDevices();
+  }, [search]);
+  const plainOptions = deviceNames.map((device) => ({
+    label: device.attributes.code,
+    value: device,
+  }));
+
 
   return (
     <>
@@ -101,17 +144,17 @@ const CreateUser = () => {
                 id="myForm"
                 name="basic"
                 layout="vertical"
-                initialValues={{
-                  remember: true,
-                }}
+                // initialValues={{
+                //   remember: true,
+                // }}
                 autoComplete="off"
-                onSubmit={handleSubmit}
+                onFinish={onFinish}
               >
                 <Row>
                   <Col span={8} style={{ paddingRight: 16 }}>
                     <FormItem
                       label="Name"
-                      name="Name"
+                      name="fullname"
                       rules={[
                         {
                           required: true,
@@ -130,7 +173,7 @@ const CreateUser = () => {
                     {" "}
                     <FormItem
                       label="Email"
-                      name="Email"
+                      name="email"
                       rules={[
                         {
                           required: true,
@@ -150,7 +193,7 @@ const CreateUser = () => {
                     {" "}
                     <FormItem
                       label="UserName"
-                      name="Username"
+                      name="username"
                       rules={[
                         {
                           required: true,
@@ -168,7 +211,7 @@ const CreateUser = () => {
                   <Col span={8} style={{ paddingRight: 16 }}>
                     <FormItem
                       label="Password"
-                      name="Password"
+                      name="password"
                       rules={[
                         {
                           required: true,
@@ -184,9 +227,12 @@ const CreateUser = () => {
                         },
                       ]}
                     >
-                      <Input
+                      <Input.Password
                         size="default size"
                         placeholder="Enter owner Password"
+                        iconRender={(visible) =>
+                          visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                        }
                       />
                     </FormItem>
                   </Col>
@@ -194,7 +240,7 @@ const CreateUser = () => {
                     {" "}
                     <FormItem
                       label="Phone number"
-                      name="PhoneNunber"
+                      name="phoneNumber"
                       rules={[
                         {
                           required: true,
@@ -202,6 +248,7 @@ const CreateUser = () => {
                           message: "Please input owner PhoneNumber!",
                         },
                         { min: 9 },
+                        { pattern: /^\d+$/, message: 'Please enter numbers only', },
                       ]}
                     >
                       <Input
@@ -214,7 +261,7 @@ const CreateUser = () => {
                     {" "}
                     <FormItem
                       label="Gender"
-                      name="Gender"
+                      name="gender"
                       rules={[
                         {
                           required: true,
@@ -239,15 +286,15 @@ const CreateUser = () => {
                         }
                         options={[
                           {
-                            value: "1",
+                            value: "male",
                             label: "Male",
                           },
                           {
-                            value: "2",
+                            value: "female",
                             label: "Female",
                           },
                           {
-                            value: "3",
+                            value: "other",
                             label: "Other",
                           },
                         ]}
@@ -257,7 +304,7 @@ const CreateUser = () => {
                   <Col span={8} style={{ paddingRight: 16 }}>
                     <FormItem
                       label="DOB"
-                      name="DOB"
+                      name="dob"
                       rules={[
                         {
                           required: true,
@@ -278,7 +325,7 @@ const CreateUser = () => {
                     {" "}
                     <FormItem
                       label="Role"
-                      name="Role"
+                      name="role"
                       rules={[
                         {
                           required: true,
@@ -303,12 +350,16 @@ const CreateUser = () => {
                         }
                         options={[
                           {
-                            value: "1",
-                            label: "Admin",
+                            value: 1,
+                            label: "Guest",
                           },
                           {
-                            value: "2",
+                            value: 2,
                             label: "User",
+                          },
+                          {
+                            value: 3,
+                            label: "Amin",
                           },
                         ]}
                       />
@@ -318,7 +369,7 @@ const CreateUser = () => {
                     {" "}
                     <FormItem
                       label="Status"
-                      name="Status"
+                      name="status"
                       rules={[
                         {
                           required: true,
@@ -343,11 +394,11 @@ const CreateUser = () => {
                         }
                         options={[
                           {
-                            value: "1",
+                            value: false,
                             label: "Active",
                           },
                           {
-                            value: "2",
+                            value: true,
                             label: "Inactive",
                           },
                         ]}
@@ -366,25 +417,50 @@ const CreateUser = () => {
                             flexDirection: "column",
                           }}
                         >
-                          <Search
+                          <Input
                             placeholder="input search text"
-                            allowClear
-                            enterButton="Search"
+
                             size="default size"
-                            onSearch={onSearch}
+                            onChange={handleSearch}
                           />
 
-                          <List
+                          {/* <List
                             style={{
                               height: 150,
                               overflowY: "auto",
                             }}
                             bordered
-                            dataSource={useUser}
+                            dataSource={items}
                             renderItem={(item) => (
                               <List.Item>
-
-                                <Checkbox>{item.attributes.name}</Checkbox>
+                                <Checkbox.Group  onChange>
+                                  <Checkbox>{item.attributes.name}</Checkbox>
+                                  {console.log(item.attributes)}
+                                </Checkbox.Group>
+                              </List.Item>
+                            )}
+                          /> */}
+                          <List
+                            style={{
+                              height: 150,
+                              overflowY: "auto",
+                            }}
+                            dataSource={plainOptions}
+                            renderItem={(item) => (
+                              <List.Item>
+                                <Checkbox
+                                  value={item.value}
+                                  checked={checkedList.some((o) => o.value === item.value)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setCheckedList([...checkedList, item]);
+                                    } else {
+                                      setCheckedList(checkedList.filter((o) => o.value !== item.value));
+                                    }
+                                  }}
+                                >
+                                  {item.label}
+                                </Checkbox>
                               </List.Item>
                             )}
                           />
@@ -398,33 +474,47 @@ const CreateUser = () => {
                           }}
                         >
                           <p style={{ fontWeight: "bold" }}>
-                            Seclect Devices ({checkedItems.length})
+                            Seclect Devices ({checkedList.length})
                           </p>
+                          <Table
+                            style={{
+                              height: 150,
+                              overflowY: "auto",
+                            }}
+                            pagination={{ hideOnSinglePage: true }}
+                            dataSource={checkedList}
+                            columns={[
+                              {
+                                dataIndex: 'label',
+                                key: 'label',
+                              },
+                              {
 
+
+                                render: (text, record) => (
+
+                                  <img
+                                    style={{
+                                      float: "right"
+                                    }}
+                                    onClick={() =>
+                                      handleDelete(record)
+                                    }
+                                    src={icon}
+                                    className={""}
+                                    alt=""
+                                    height={22}
+                                    width={22}
+                                  />
+                                ),
+                              },
+                            ]}
+
+
+
+                          />
                           <div>
-                            {checkedItems.map((checkedItem) => (
-                              <div
-                                className={""}
-                                key={checkedItem}
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                }}
-                              >
-                                <p style={{ fontSize: 11 }}> {checkedItem}</p>
 
-                                <img
-                                  onClick={() =>
-                                    handleDeleteButtonClick(checkedItem)
-                                  }
-                                  src={icon}
-                                  className={""}
-                                  alt=""
-                                  height={22}
-                                  width={22}
-                                />
-                              </div>
-                            ))}
                           </div>
                         </Col>
                       </Row>

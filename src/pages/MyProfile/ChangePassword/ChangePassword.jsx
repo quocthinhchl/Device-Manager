@@ -57,7 +57,7 @@ const ChangePass = (props) => {
 
           navigate("/dashboard/myprofile")
           // logOut()
-          message.success("correct");
+          message.success("Succes");
         }
       })
       .catch((error) => {
