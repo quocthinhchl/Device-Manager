@@ -25,21 +25,12 @@ import Search from "antd/es/transfer/search";
 import icon from "../../../assets/images/Delete.png";
 import Item from "antd/es/list/Item";
 
-const onSearch = (value) => console.log(value);
-const UpdateUser = ({ userId }) => {
-    const handleSubmit = (e) => {
-        e.preventDefault();
-    };
+const buttonStyle = {
+    backgroundColor: "#8767E1",
+    color: "#fff",
+};
 
-
-
-
-    const buttonStyle = {
-        backgroundColor: "#8767E1",
-        color: "#fff",
-    };
-
-    const PathName = styled.p`
+const PathName = styled.p`
     margin: 10px 25px 0px 20px;
     font-family: "Poppins";
     font-style: normal;
@@ -49,7 +40,7 @@ const UpdateUser = ({ userId }) => {
     color: #111111;
   `;
 
-    const Content = styled.div`
+const Content = styled.div`
     margin: 10px 15px;
     padding: 18px;
     background: #ffffff;
@@ -57,6 +48,16 @@ const UpdateUser = ({ userId }) => {
     flex-direction: column;
     border-radius: 10px;
   `;
+
+const onSearch = (value) => console.log(value);
+const UpdateUser = ({ userId }) => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    };
+
+
+
+
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
@@ -69,6 +70,8 @@ const UpdateUser = ({ userId }) => {
     const [deviceNames, setDeviceNames] = useState([]);
     const [search, setSearch] = useState('');
     const [DVS, setDVS] = useState([]);
+    const [form] = Form.useForm();
+
 
 
     const id = userId.pathname.substring(userId.pathname.lastIndexOf('/') + 1);
@@ -119,17 +122,9 @@ const UpdateUser = ({ userId }) => {
     };
 
     useEffect(() => {
-        const fetchDevices = async () => {
-            try {
-                const response = await axiosInstance.get(`/devices?filters[name][$contains]=${search}`);
-                if (response.data) {
-                    setDeviceNames(response.data);
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchDevices();
+        axiosInstance.get(`/devices?filters[name][$contains]=${search}`).then((res) => {
+            setDeviceNames(res.data);
+        });
         axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
             setUser(res);
             setDVS(res.devices)
@@ -166,10 +161,17 @@ const UpdateUser = ({ userId }) => {
                                 id="myForm"
                                 name="basic"
                                 layout="vertical"
-                                // initialValues={{
-                                //   remember: true,
-                                // }}
+                                initialValues={{
+                                    fullname: user.fullname,
+                                    email: user.email,
+                                    username: user.username,
+                                    password: user.password,
+                                    phoneNumber: user.phoneNumber,
+                                    gender: user.gender,
+
+                                }}
                                 autoComplete="off"
+                                form={form}
                                 onFinish={onFinish}
                             >
                                 <Row>
@@ -188,7 +190,7 @@ const UpdateUser = ({ userId }) => {
                                             <Input
                                                 size="default size"
                                                 placeholder="Enter owner Name"
-                                                defaultValue={user.fullname}
+                                            // defaultValue={user.fullname}
                                             />
                                         </FormItem>
                                     </Col>
@@ -209,7 +211,7 @@ const UpdateUser = ({ userId }) => {
                                                 size="default size"
                                                 placeholder="Enter owner email"
                                                 id="email"
-                                                defaultValue={user.email}
+                                            // defaultValue={user.email}
 
                                             />
                                         </FormItem>
@@ -230,7 +232,7 @@ const UpdateUser = ({ userId }) => {
                                             <Input
                                                 size="default size"
                                                 placeholder="Enter owner username"
-                                                defaultValue={user.username}
+                                            // defaultValue={user.username}
 
                                             />
                                         </FormItem>
@@ -257,7 +259,7 @@ const UpdateUser = ({ userId }) => {
                                             <Input.Password
                                                 size="default size"
                                                 placeholder="Enter owner Password"
-                                                defaultValue={user.password}
+                                                // defaultValue={user.password}
                                                 iconRender={(visible) =>
                                                     visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
                                                 }
@@ -268,7 +270,7 @@ const UpdateUser = ({ userId }) => {
                                         {" "}
                                         <FormItem
                                             label="Phone number"
-                                            name="phonenumber"
+                                            name="phoneNumber"
                                             rules={[
                                                 {
                                                     required: true,
@@ -284,7 +286,7 @@ const UpdateUser = ({ userId }) => {
                                             <Input
                                                 size="default size"
                                                 placeholder="Enter owner email"
-                                                defaultValue={user.phoneNumber}
+                                            // defaultValue={user.phoneNumber}
                                             />
                                         </FormItem>
                                     </Col>
@@ -307,7 +309,7 @@ const UpdateUser = ({ userId }) => {
                                                 style={{ width: "100%" }}
                                                 placeholder=" Select owner Gender"
                                                 optionFilterProp="children"
-                                                defaultValue={user.gender}
+                                                // defaultValue={user.gender}
                                                 filterOption={(input, option) =>
                                                     (option?.label ?? "").includes(input)
                                                 }
