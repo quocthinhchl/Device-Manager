@@ -35,7 +35,7 @@ const items = [
         ]
     },
     {
-        key: '/dashboard/device',
+        key: '/dashboard/device_list',
         icon: <UserIcon />,
         label: 'Device',
 
