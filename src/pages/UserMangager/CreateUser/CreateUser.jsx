@@ -113,7 +113,7 @@ const CreateUser = () => {
 
   const plainOptions = deviceNames.map((device) => ({
     label: device.attributes.name,
-    value: device,
+    value: device.attributes.name,
   }));
 
 
@@ -423,7 +423,7 @@ const CreateUser = () => {
                               <List.Item>
                                 <Checkbox
                                   value={item.value}
-                                  checked={checkedList.some((o) => o.value === item.value)}
+                                  checked={checkedList.some((o) => o.value == item.value)}
                                   onChange={(e) => {
                                     if (e.target.checked) {
                                       setCheckedList([...checkedList, item]);
@@ -432,9 +432,13 @@ const CreateUser = () => {
                                     }
                                   }}
                                 >
-                                  {item.label}
+                                  {item.value}
                                 </Checkbox>
                               </List.Item>
+
+
+
+
                             )}
                           />
                         </Col>
