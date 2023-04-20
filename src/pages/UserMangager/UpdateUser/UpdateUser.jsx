@@ -103,11 +103,11 @@ const UpdateUser = ({ userId }) => {
         };
         console.log(values);
         axiosInstance
-            .post(`/users/${id}`, data)
+            .put(`/users/${id}`, data)
             .then((response) => {
                 if (response != null) {
 
-                    navigate("users_list")
+                    navigate("/dashboard/users_list")
                     // logOut()
                     message.success("Succes");
                 }
@@ -275,7 +275,9 @@ const UpdateUser = ({ userId }) => {
 
                                                     message: "Please input owner PhoneNumber!",
                                                 },
-                                                { min: 9 },
+                                                { min: 10, message: 'Phone number must be at least 10 characters' },
+
+                                                { max: 10, message: 'Phone number must be at most 10 characters' },
                                                 { pattern: /^\d+$/, message: 'Please enter numbers only', },
                                             ]}
                                         >
