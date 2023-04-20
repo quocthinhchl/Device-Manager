@@ -89,7 +89,7 @@ function UserManager() {
                             <h3>All User</h3>
                         </Col>
                         <Col>
-                            <Button style={buttonStyle} onClick={() => { navigate('/users_list/create') }}> Add User</Button>
+                            <Button style={buttonStyle} onClick={() => { navigate('/dashboard/users_list/create') }}> Add User</Button>
                         </Col>
                     </Row>
 

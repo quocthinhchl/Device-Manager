@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import dayjs from 'dayjs';
 import {
     theme,
     Col,
@@ -9,78 +10,149 @@ import {
     Form,
     Select,
     DatePicker,
+    List,
+    Typography,
+    Checkbox,
+    Table,
+    message,
 } from "antd";
-import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EyeInvisibleOutlined, EyeTwoTone, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../shared/services/http-client";
 import FormItem from "antd/es/form/FormItem";
 import Search from "antd/es/transfer/search";
 import icon from "../../../assets/images/Delete.png";
-
-
-const buttonStyle = {
-    backgroundColor: "#8767E1",
-    color: "#fff",
-};
-
-const PathName = styled.p`
-margin: 10px 25px 0px 20px;
-font-family: "Poppins";
-font-style: normal;
-font-weight: 700;
-font-size: 18px;
-line-height: 32px;
-color: #111111;
-`;
-
-const Content = styled.div`
-margin: 10px 15px;
-padding: 18px;
-background: #ffffff;
-display: flex;
-flex-direction: column;
-border-radius: 10px;
-`;
+import Item from "antd/es/list/Item";
 
 const onSearch = (value) => console.log(value);
-export default function UpdateUser() {
-
-    const [checkedItems, setCheckedItems] = useState([]);
-    const navigate = useNavigate();
-
-    const handleCheckboxChange = (event) => {
-        const itemName = event.target.name;
-
-        setCheckedItems((prevCheckedItems) => {
-            if (prevCheckedItems.includes(itemName)) {
-                return prevCheckedItems.filter(
-                    (checkedItem) => checkedItem !== itemName
-                );
-            } else {
-                return [...prevCheckedItems, itemName];
-            }
-        });
-    };
-
+const UpdateUser = ({ userId }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
     };
 
-    const handleDeleteButtonClick = (itemName) => {
-        setCheckedItems((prevCheckedItems) =>
-            prevCheckedItems.filter((checkedItem) => checkedItem !== itemName)
-        );
+
+
+
+    const buttonStyle = {
+        backgroundColor: "#8767E1",
+        color: "#fff",
     };
 
+    const PathName = styled.p`
+    margin: 10px 25px 0px 20px;
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 32px;
+    color: #111111;
+  `;
 
+    const Content = styled.div`
+    margin: 10px 15px;
+    padding: 18px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+  `;
+    const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+    const navigate = useNavigate();
+
+    const [user, setUser] = useState("");
+
+    const [checkedList, setCheckedList] = useState([]);
+    const [deviceNames, setDeviceNames] = useState([]);
+    const [search, setSearch] = useState('');
+    const [DVS, setDVS] = useState([]);
+
+
+    const id = userId.pathname.substring(userId.pathname.lastIndexOf('/') + 1);
+
+
+
+
+
+
+    const handleSearch = (event) => {
+        setSearch(event.target.value);
+    };
+    const handleDelete = (record) => {
+        setCheckedList(checkedList.filter((item) => item.value !== record.value));
+    };
+
+    // const valueList = checkedList.map((item) => item.value);
+
+
+    const onFinish = (values) => {
+        const data = {
+            fullname: values.fullname,
+            username: values.username,
+            email: values.email,
+            dob: values.dob,
+            phoneNumber: values.phonenumber,
+            gender: values.gender,
+            password: values.password,
+            role: parseFloat(values.role),
+            blocked: values.status
+
+        };
+        console.log(values);
+        axiosInstance
+            .post(`/users/${id}`, data)
+            .then((response) => {
+                if (response != null) {
+
+                    navigate("users_list")
+                    // logOut()
+                    message.success("Succes");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                message.error("Some thing wrong");
+            });
+    };
+
+    useEffect(() => {
+        const fetchDevices = async () => {
+            try {
+                const response = await axiosInstance.get(`/devices?filters[name][$contains]=${search}`);
+                if (response.data) {
+                    setDeviceNames(response.data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchDevices();
+        axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
+            setUser(res);
+            setDVS(res.devices)
+            const checkedvalue = DVS.map((device) => ({
+                label: device.name,
+                value: device,
+            }));
+            setCheckedList(checkedvalue)
+            console.log(checkedList);
+        });
+    }, [search]);
+
+
+
+    const plainOptions = deviceNames.map((device) => ({
+        label: device.attributes.name,
+        value: device,
+    }));
+
 
     return (
         <>
-            <PathName>Add New User</PathName>
+            <PathName>Update User</PathName>
             <Content>
                 <Col>
                     <Row>
@@ -94,17 +166,17 @@ export default function UpdateUser() {
                                 id="myForm"
                                 name="basic"
                                 layout="vertical"
-                                initialValues={{
-                                    remember: true,
-                                }}
+                                // initialValues={{
+                                //   remember: true,
+                                // }}
                                 autoComplete="off"
-                                onSubmit={handleSubmit}
+                                onFinish={onFinish}
                             >
                                 <Row>
                                     <Col span={8} style={{ paddingRight: 16 }}>
                                         <FormItem
                                             label="Name"
-                                            name="Name"
+                                            name="fullname"
                                             rules={[
                                                 {
                                                     required: true,
@@ -116,6 +188,7 @@ export default function UpdateUser() {
                                             <Input
                                                 size="default size"
                                                 placeholder="Enter owner Name"
+                                                defaultValue={user.fullname}
                                             />
                                         </FormItem>
                                     </Col>
@@ -123,7 +196,7 @@ export default function UpdateUser() {
                                         {" "}
                                         <FormItem
                                             label="Email"
-                                            name="Email"
+                                            name="email"
                                             rules={[
                                                 {
                                                     required: true,
@@ -136,6 +209,8 @@ export default function UpdateUser() {
                                                 size="default size"
                                                 placeholder="Enter owner email"
                                                 id="email"
+                                                defaultValue={user.email}
+
                                             />
                                         </FormItem>
                                     </Col>
@@ -143,7 +218,7 @@ export default function UpdateUser() {
                                         {" "}
                                         <FormItem
                                             label="UserName"
-                                            name="Username"
+                                            name="username"
                                             rules={[
                                                 {
                                                     required: true,
@@ -155,13 +230,15 @@ export default function UpdateUser() {
                                             <Input
                                                 size="default size"
                                                 placeholder="Enter owner username"
+                                                defaultValue={user.username}
+
                                             />
                                         </FormItem>
                                     </Col>
                                     <Col span={8} style={{ paddingRight: 16 }}>
                                         <FormItem
                                             label="Password"
-                                            name="Password"
+                                            name="password"
                                             rules={[
                                                 {
                                                     required: true,
@@ -177,9 +254,13 @@ export default function UpdateUser() {
                                                 },
                                             ]}
                                         >
-                                            <Input
+                                            <Input.Password
                                                 size="default size"
                                                 placeholder="Enter owner Password"
+                                                defaultValue={user.password}
+                                                iconRender={(visible) =>
+                                                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                                                }
                                             />
                                         </FormItem>
                                     </Col>
@@ -187,7 +268,7 @@ export default function UpdateUser() {
                                         {" "}
                                         <FormItem
                                             label="Phone number"
-                                            name="PhoneNunber"
+                                            name="phonenumber"
                                             rules={[
                                                 {
                                                     required: true,
@@ -195,11 +276,13 @@ export default function UpdateUser() {
                                                     message: "Please input owner PhoneNumber!",
                                                 },
                                                 { min: 9 },
+                                                { pattern: /^\d+$/, message: 'Please enter numbers only', },
                                             ]}
                                         >
                                             <Input
                                                 size="default size"
                                                 placeholder="Enter owner email"
+                                                defaultValue={user.phoneNumber}
                                             />
                                         </FormItem>
                                     </Col>
@@ -207,7 +290,7 @@ export default function UpdateUser() {
                                         {" "}
                                         <FormItem
                                             label="Gender"
-                                            name="Gender"
+                                            name="gender"
                                             rules={[
                                                 {
                                                     required: true,
@@ -222,6 +305,7 @@ export default function UpdateUser() {
                                                 style={{ width: "100%" }}
                                                 placeholder=" Select owner Gender"
                                                 optionFilterProp="children"
+                                                defaultValue={user.gender}
                                                 filterOption={(input, option) =>
                                                     (option?.label ?? "").includes(input)
                                                 }
@@ -232,15 +316,15 @@ export default function UpdateUser() {
                                                 }
                                                 options={[
                                                     {
-                                                        value: "1",
+                                                        value: "male",
                                                         label: "Male",
                                                     },
                                                     {
-                                                        value: "2",
+                                                        value: "female",
                                                         label: "Female",
                                                     },
                                                     {
-                                                        value: "3",
+                                                        value: "other",
                                                         label: "Other",
                                                     },
                                                 ]}
@@ -250,7 +334,7 @@ export default function UpdateUser() {
                                     <Col span={8} style={{ paddingRight: 16 }}>
                                         <FormItem
                                             label="DOB"
-                                            name="DOB"
+                                            name="dob"
                                             rules={[
                                                 {
                                                     required: true,
@@ -260,10 +344,13 @@ export default function UpdateUser() {
                                             ]}
                                         >
                                             <DatePicker
+
+
                                                 size="default size"
                                                 style={{ width: "100%" }}
                                                 picker="date"
                                                 placeholder="Chose date of birth"
+                                                defaultValue={dayjs(user.dob, 'YYYY-MM-DD')}
                                             />
                                         </FormItem>
                                     </Col>
@@ -271,7 +358,7 @@ export default function UpdateUser() {
                                         {" "}
                                         <FormItem
                                             label="Role"
-                                            name="Role"
+                                            name="role"
                                             rules={[
                                                 {
                                                     required: true,
@@ -286,6 +373,7 @@ export default function UpdateUser() {
                                                 style={{ width: "100%" }}
                                                 placeholder=" Select owner Role"
                                                 optionFilterProp="children"
+                                                defaultValue={user.role?.name}
                                                 filterOption={(input, option) =>
                                                     (option?.label ?? "").includes(input)
                                                 }
@@ -296,12 +384,16 @@ export default function UpdateUser() {
                                                 }
                                                 options={[
                                                     {
-                                                        value: "1",
-                                                        label: "Admin",
+                                                        value: 1,
+                                                        label: "User",
                                                     },
                                                     {
-                                                        value: "2",
-                                                        label: "User",
+                                                        value: 2,
+                                                        label: "Public",
+                                                    },
+                                                    {
+                                                        value: 3,
+                                                        label: "Amin",
                                                     },
                                                 ]}
                                             />
@@ -311,7 +403,7 @@ export default function UpdateUser() {
                                         {" "}
                                         <FormItem
                                             label="Status"
-                                            name="Status"
+                                            name="status"
                                             rules={[
                                                 {
                                                     required: true,
@@ -326,6 +418,7 @@ export default function UpdateUser() {
                                                 style={{ width: "100%" }}
                                                 placeholder=" Select owner Status"
                                                 optionFilterProp="children"
+                                                defaultValue={(user.blocked == false) ? 'Active' : 'Inactive'}
                                                 filterOption={(input, option) =>
                                                     (option?.label ?? "").includes(input)
                                                 }
@@ -336,11 +429,11 @@ export default function UpdateUser() {
                                                 }
                                                 options={[
                                                     {
-                                                        value: "1",
+                                                        value: false,
                                                         label: "Active",
                                                     },
                                                     {
-                                                        value: "2",
+                                                        value: true,
                                                         label: "Inactive",
                                                     },
                                                 ]}
@@ -359,59 +452,62 @@ export default function UpdateUser() {
                                                         flexDirection: "column",
                                                     }}
                                                 >
-                                                    <Search
+                                                    <Input
                                                         placeholder="input search text"
-                                                        allowClear
-                                                        enterButton="Search"
+
                                                         size="default size"
-                                                        onSearch={onSearch}
+                                                        onChange={handleSearch}
                                                     />
 
-                                                    <label style={{ paddingTop: 10 }}>
-                                                        <input
-                                                            type="checkbox"
-                                                            name="Garage ABC"
-                                                            checked={checkedItems.includes("Garage ABC")}
-                                                            onChange={handleCheckboxChange}
-                                                        />
-                                                        Garage ABC
-                                                    </label>
-                                                    <label>
-                                                        <input
-                                                            type="checkbox"
-                                                            name="TLS"
-                                                            checked={checkedItems.includes("TLS")}
-                                                            onChange={handleCheckboxChange}
-                                                        />
-                                                        TLS
-                                                    </label>
-                                                    <label>
-                                                        <input
-                                                            type="checkbox"
-                                                            name="AHC"
-                                                            checked={checkedItems.includes("AHC")}
-                                                            onChange={handleCheckboxChange}
-                                                        />
-                                                        AHC
-                                                    </label>
-                                                    <label>
-                                                        <input
-                                                            type="checkbox"
-                                                            name="CB Garage"
-                                                            checked={checkedItems.includes("CB Garage")}
-                                                            onChange={handleCheckboxChange}
-                                                        />
-                                                        CB Garage
-                                                    </label>
-                                                    <label>
-                                                        <input
-                                                            type="checkbox"
-                                                            name="UCQ"
-                                                            checked={checkedItems.includes("UCQ")}
-                                                            onChange={handleCheckboxChange}
-                                                        />
-                                                        UCQ
-                                                    </label>
+                                                    {/* <List
+                            style={{
+                              height: 150,
+                              overflowY: "auto",
+                            }}
+                            bordered
+                            dataSource={items}
+                            renderItem={(item) => (
+                              <List.Item>
+                                <Checkbox.Group  onChange>
+                                  <Checkbox>{item.attributes.name}</Checkbox>
+                                  {console.log(item.attributes)}
+                                </Checkbox.Group>
+                              </List.Item>
+                            )}
+                          /> */}
+                                                    <List
+                                                        style={{
+                                                            height: 150,
+                                                            overflowY: "auto",
+                                                        }}
+                                                        dataSource={plainOptions}
+                                                        // defaultValue={checkedvalue.value}
+
+                                                        renderItem={(item) => (
+                                                            <List.Item>
+                                                                <Checkbox
+                                                                    value={item.value}
+                                                                    // checked={checkedList.some((o) => o.value === plainOptions.value)}
+                                                                    defaultChecked={checkedList.some((o) => o.value === item.value)}
+                                                                    onChange={(e) => {
+                                                                        if (e.target.checked) {
+                                                                            setCheckedList([...checkedList, item]);
+                                                                            console.log(checkedList);
+                                                                        } else {
+                                                                            setCheckedList(checkedList.filter((o) => o.value !== item.value));
+                                                                            console.log(checkedList);
+
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    {item.label}
+                                                                </Checkbox>
+                                                            </List.Item>
+                                                        )}
+                                                    />
+
+
+
                                                 </Col>
 
                                                 <Col
@@ -422,33 +518,47 @@ export default function UpdateUser() {
                                                     }}
                                                 >
                                                     <p style={{ fontWeight: "bold" }}>
-                                                        Seclect Devices ({checkedItems.length})
+                                                        Seclect Devices ({checkedList.length})
                                                     </p>
+                                                    <Table
+                                                        style={{
+                                                            height: 150,
+                                                            overflowY: "auto",
+                                                        }}
+                                                        pagination={{ hideOnSinglePage: true }}
+                                                        dataSource={checkedList}
+                                                        columns={[
+                                                            {
+                                                                dataIndex: 'label',
+                                                                key: 'label',
+                                                            },
+                                                            {
 
+
+                                                                render: (text, record) => (
+
+                                                                    <img
+                                                                        style={{
+                                                                            float: "right"
+                                                                        }}
+                                                                        onClick={() =>
+                                                                            handleDelete(record)
+                                                                        }
+                                                                        src={icon}
+                                                                        className={""}
+                                                                        alt=""
+                                                                        height={20}
+                                                                        width={20}
+                                                                    />
+                                                                ),
+                                                            },
+                                                        ]}
+
+
+
+                                                    />
                                                     <div>
-                                                        {checkedItems.map((checkedItem) => (
-                                                            <div
-                                                                className={""}
-                                                                key={checkedItem}
-                                                                style={{
-                                                                    display: "flex",
-                                                                    justifyContent: "space-between",
-                                                                }}
-                                                            >
-                                                                <p style={{ fontSize: 11 }}> {checkedItem}</p>
 
-                                                                <img
-                                                                    onClick={() =>
-                                                                        handleDeleteButtonClick(checkedItem)
-                                                                    }
-                                                                    src={icon}
-                                                                    className={""}
-                                                                    alt=""
-                                                                    height={22}
-                                                                    width={22}
-                                                                />
-                                                            </div>
-                                                        ))}
                                                     </div>
                                                 </Col>
                                             </Row>
@@ -472,7 +582,7 @@ export default function UpdateUser() {
                             </Button>
                             <Button
                                 onClick={() => {
-                                    navigate("");
+                                    navigate("/dashboard/users_list");
                                 }}
                             >
                                 Back
@@ -484,4 +594,4 @@ export default function UpdateUser() {
         </>
     );
 };
-
+export default UpdateUser;
