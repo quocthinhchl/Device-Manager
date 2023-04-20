@@ -66,7 +66,7 @@ const Sidebar = props => {
     const navigate = useNavigate();
     return (
         <SideBar trigger={null}>
-            <Sider trigger={null} collapsible collapsed={props.collapsed}>
+            <Sider trigger={null} collapsible collapsed={props.collapsed} onClick={() => { navigate('/dashboard') }}>
                 <p>Menu</p>
                 <Menu
                     onClick={item => {

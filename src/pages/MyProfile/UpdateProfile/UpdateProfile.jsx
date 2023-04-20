@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { useEffect, useState } from "react";
+import dayjs from 'dayjs';
 import {
   theme,
   Button,
@@ -218,7 +219,7 @@ const UpdateProfile = (props) => {
                     style={{ width: "100%" }}
                     picker="date"
                     placeholder="Chose date of birth"
-                    defaultValue={defaultDate}
+                    defaultValue={dayjs(props.userData.dob, 'YYYY-MM-DD')}
                   />
                 </Form.Item>
                 <Form.Item

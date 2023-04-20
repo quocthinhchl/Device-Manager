@@ -36,7 +36,7 @@ function Dashboard({ setToken }) {
                 )}
 
                 <Routes>
-                    {user && <Route path="/" element={<ViewProfile userData={user} />} />}
+                    {user && <Route path="/" element={<WelcomePage userData={user} />} />}
                     <Route path="users_list" element={<UserManager />} />
                     <Route path="users_list/create" element={<CreateUser />} />
 
