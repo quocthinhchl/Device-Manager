@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { Layout } from "antd";
 import Navbar from "../Navbar/Navbar";
-import { Route, Routes, useLocation, useParams } from "react-router";
+import { Route, Routes, useLocation, useNavigate, useParams } from "react-router";
 import ViewProfile from "../../pages/MyProfile/ViewProfile/ViewProfile";
 import UpdateProfile from "../../pages/MyProfile/UpdateProfile/UpdateProfile";
 import { BrowserRouter } from "react-router-dom";
@@ -14,20 +14,28 @@ import CreateUser from "../../pages/UserMangager/CreateUser/CreateUser";
 import axiosInstance from "../../shared/services/http-client";
 import WelcomePage from "../../pages/Welcome/Welcome";
 import DeviceManager from "../../pages/Devices/DevicesList/DeviceManager";
+import ErrorPage from "../../pages/Error/Error";
+
 function Dashboard({ setToken }) {
     const [user, setUser] = useState();
+    const navigate = useNavigate();
+    const [collapsed, setIsSidebarOpen] = useState(false);
+    const Location = useLocation();
+
     useEffect(() => {
         axiosInstance.get("users/me?populate=role,avatar").then((res) => {
             setUser(res);
-        });
+        }).catch((error) => {
+            navigate('/dashboard/error')
+
+        })
     }, []);
-    const [collapsed, setIsSidebarOpen] = useState(false);
+
     const toggleSidebar = () => {
         setIsSidebarOpen(!collapsed);
     };
 
-    const Location = useLocation();
-    console.log(Location);
+    // console.log(Location);
     return (
         <div className="App">
             <Sidebar collapsed={collapsed} />
@@ -38,9 +46,19 @@ function Dashboard({ setToken }) {
 
                 <Routes>
                     {user && <Route path="/" element={<WelcomePage userData={user} />} />}
+
+                    {/* My Profile */}
+                    {user && <Route path="myprofile" element={<ViewProfile userData={user} />} />}
+                    {user && (
+                        <Route path="myprofile/update" element={<UpdateProfile userData={user} />} />
+                    )}
+                    {user && (
+                        <Route path="myprofile/change" element={<ChangePass setToken={setToken} />} />
+                    )}
+
+                    {/* User List */}
                     <Route path="users_list" element={<UserManager />} />
                     <Route path="users_list/create" element={<CreateUser />} />
-
                     <Route
                         path="users_list/detail/:id"
                         element={<UserDetails userId={Location} />}
@@ -50,20 +68,14 @@ function Dashboard({ setToken }) {
                         element={<UpdateUser userId={Location} />}
                     />
 
-                    {user && <Route path="myprofile" element={<ViewProfile userData={user} />} />}
-                    {user && (
-                        <Route path="myprofile/update" element={<UpdateProfile userData={user} />} />
-                    )}
-                    {user && (
-                        <Route path="myprofile/change" element={<ChangePass setToken={setToken} />} />
-                    )}
 
+                    {/* Device List */}
                     <Route path="device_list" element={<DeviceManager />} />
 
+                    {/* Error Page */}
+                    <Route path="/error" element={<ErrorPage setToken={setToken} />} />
 
-                    <Route path="test" element={<WelcomePage />} />
                 </Routes>
-                {/* <PageContent /> */}
             </Layout>
         </div>
     );

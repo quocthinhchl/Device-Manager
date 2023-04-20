@@ -102,20 +102,41 @@ const UpdateUser = ({ userId }) => {
                 message.error("Some thing wrong");
             });
     };
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const res = await axiosInstance.get(`users/${id}?populate=devices,role`);
+            setUser(res);
+            setDVS(res.devices);
+            // console.log(55, res);
+        };
+        fetchUser();
+    }, []);
+
+    useEffect(() => {
+        // set default value for fullname field when user state changes
+        if (user) {
+            form.setFieldsValue({
+                fullname: user.fullname,
+                email: user.email,
+                username: user.username,
+                password: user.password,
+                phoneNumber: user.phoneNumber,
+                gender: user.gender,
+                dob: dayjs(user.dob, 'YYYY-MM-DD'),
+                role: user.role?.name,
+                status: (user.blocked === false) ? 'Active' : 'Inactive',
+            });
+        }
+        // console.log(88, user);
+    }, [user]);
+
     useEffect(() => {
         axiosInstance.get(`/devices?filters[name][$contains]=${search}`).then((res) => {
             setDeviceNames(res.data);
         });
 
     }, [search]);
-    useEffect(() => {
-        axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
-            setUser(res);
-            setDVS(res.devices);
-            console.log(user);
-        });
-
-    }, [id]);
 
     useEffect(() => {
         if (DVS.length > 0 && user) {
@@ -126,10 +147,7 @@ const UpdateUser = ({ userId }) => {
             setCheckedList(checkedvalue);
         }
     }, [DVS, user]);
-    const selectedOption = DVS.map((device) => ({
-        label: device.name,
-        value: device.name,
-    }));
+
     const plainOptions = deviceNames.map((device) => ({
         value: device.attributes.name,
         label: device.attributes.name,
@@ -152,12 +170,13 @@ const UpdateUser = ({ userId }) => {
                                 name="basic"
                                 layout="vertical"
                                 initialValues={{
-                                    fullname: user.fullname,
-                                    email: user.email,
-                                    username: user.username,
-                                    password: user.password,
-                                    phoneNumber: user.phoneNumber,
-                                    gender: user.gender,
+                                    // fullname: '',
+                                    // email: '',
+                                    // username: '',
+                                    // password: '',
+                                    // phoneNumber: '',
+                                    // gender: '',
+
                                 }}
                                 autoComplete="off"
                                 form={form}
@@ -340,7 +359,7 @@ const UpdateUser = ({ userId }) => {
                                                 style={{ width: "100%" }}
                                                 picker="date"
                                                 placeholder="Chose date of birth"
-                                                defaultValue={dayjs(user.dob, 'YYYY-MM-DD')}
+                                            // defaultValue={dayjs(user.dob, 'YYYY-MM-DD')}
                                             />
                                         </FormItem>
                                     </Col>
@@ -363,7 +382,7 @@ const UpdateUser = ({ userId }) => {
                                                 style={{ width: "100%" }}
                                                 placeholder=" Select owner Role"
                                                 optionFilterProp="children"
-                                                defaultValue={user.role?.name}
+                                                // defaultValue={user.role?.name}
                                                 filterOption={(input, option) =>
                                                     (option?.label ?? "").includes(input)
                                                 }
@@ -407,7 +426,7 @@ const UpdateUser = ({ userId }) => {
                                                 style={{ width: "100%" }}
                                                 placeholder=" Select owner Status"
                                                 optionFilterProp="children"
-                                                defaultValue={(user.blocked == false) ? 'Active' : 'Inactive'}
+                                                // defaultValue={(user.blocked === false) ? 'Active' : 'Inactive'}
                                                 filterOption={(input, option) =>
                                                     (option?.label ?? "").includes(input)
                                                 }
