@@ -111,7 +111,7 @@ export default function UserDetails({ userId }) {
                     <Descriptions.Item label="Name" >{user.fullname}</Descriptions.Item>
                     <Descriptions.Item label="Email">{user.email}</Descriptions.Item>
                     <Descriptions.Item label="Username">
-                        Hangzhou, Zhejiang
+                        {user.username}
                     </Descriptions.Item>
                     <Descriptions.Item label="DOB">{user.dob}</Descriptions.Item>
                     <Descriptions.Item label="Phone Number">
@@ -129,7 +129,7 @@ export default function UserDetails({ userId }) {
                         fontSize: '15px',
                         lineHeight: '24px',
                         color: '#939393',
-                        margin: 0
+                        margin: 0,
                     }}>Devices:</p>
                     <Devices >
 

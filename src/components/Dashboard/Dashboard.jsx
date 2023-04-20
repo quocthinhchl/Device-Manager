@@ -13,6 +13,7 @@ import UserManager from "../../pages/UserMangager/UserList/UserManager";
 import CreateUser from "../../pages/UserMangager/CreateUser/CreateUser";
 import axiosInstance from "../../shared/services/http-client";
 import WelcomePage from "../../pages/Welcome/Welcome";
+import DeviceManager from "../../pages/Devices/DevicesList/DeviceManager";
 function Dashboard({ setToken }) {
     const [user, setUser] = useState();
     useEffect(() => {
@@ -56,6 +57,9 @@ function Dashboard({ setToken }) {
                     {user && (
                         <Route path="myprofile/change" element={<ChangePass setToken={setToken} />} />
                     )}
+
+                    <Route path="device_list" element={<DeviceManager />} />
+
 
                     <Route path="test" element={<WelcomePage />} />
                 </Routes>
