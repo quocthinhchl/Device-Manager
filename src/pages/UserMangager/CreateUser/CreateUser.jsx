@@ -20,55 +20,47 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../shared/services/http-client";
 import FormItem from "antd/es/form/FormItem";
-import Search from "antd/es/transfer/search";
+
 import icon from "../../../assets/images/Delete.png";
-import Item from "antd/es/list/Item";
+
+
+const buttonStyle = {
+  backgroundColor: "#8767E1",
+  color: "#fff",
+};
+
+const PathName = styled.p`
+  margin: 10px 25px 0px 20px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 32px;
+  color: #111111;
+`;
+
+const Content = styled.div`
+  margin: 10px 15px;
+  padding: 18px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+`;
+
+
 
 
 const CreateUser = () => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
 
 
 
-
-  const buttonStyle = {
-    backgroundColor: "#8767E1",
-    color: "#fff",
-  };
-
-  const PathName = styled.p`
-    margin: 10px 25px 0px 20px;
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 32px;
-    color: #111111;
-  `;
-
-  const Content = styled.div`
-    margin: 10px 15px;
-    padding: 18px;
-    background: #ffffff;
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-  `;
-  const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
   const navigate = useNavigate();
 
   const [checkedList, setCheckedList] = useState([]);
   const [deviceNames, setDeviceNames] = useState([]);
   const [search, setSearch] = useState('');
-
   const [form] = Form.useForm();
-
-
 
 
   const handleSearch = (event) => {
@@ -120,7 +112,7 @@ const CreateUser = () => {
 
 
   const plainOptions = deviceNames.map((device) => ({
-    label: device.attributes.code,
+    label: device.attributes.name,
     value: device,
   }));
 
@@ -144,7 +136,7 @@ const CreateUser = () => {
                 // initialValues={{
                 //   remember: true,
                 // }}
-                autoComplete="off"
+                // autoComplete="off"
                 onFinish={onFinish}
                 form={form}
               >
@@ -417,15 +409,13 @@ const CreateUser = () => {
                             flexDirection: "column",
                           }}
                         >
-                          <Input
 
-                            placeholder="Search for devices ..."
-                            value={search}
-                            onChange={handleSearch} />
+                          <Input suffix={<SearchOutlined />} value={search}
+                            onChange={handleSearch} enterButton />
 
                           <List
                             style={{
-                              height: 150,
+                              height: 140,
                               overflowY: "auto",
                             }}
                             dataSource={plainOptions}
@@ -461,7 +451,7 @@ const CreateUser = () => {
                           </p>
                           <Table
                             style={{
-                              height: 150,
+                              height: 140,
                               overflowY: "auto",
                             }}
                             pagination={{ hideOnSinglePage: true }}
