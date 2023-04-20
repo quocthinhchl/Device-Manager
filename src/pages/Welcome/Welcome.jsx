@@ -43,7 +43,7 @@ const WelcomePage = (props) => {
             <Content>
                 <img src={logo} className="App-logo" alt="logo" />
                 <h1>Welcome home... </h1>
-                <h2 style={{ color: "#33FFFF" }}>tên user</h2>
+                <h2 style={{ color: "#33FFFF" }}>{props.userData.fullname}</h2>
                 <p>
                     {" "}
                     Là dự án tốn bao nhiêu tâm huyết, mô hôi và máu của đội ngũ phát
@@ -57,14 +57,14 @@ const WelcomePage = (props) => {
                     <Button
                         style={buttonStyle}
                         onClick={() => {
-                            navigate("update");
+                            navigate("myprofile/update");
                         }}
                     >
                         Update Profile
                     </Button>
                     <Button
                         onClick={() => {
-                            navigate("change");
+                            navigate("myprofile/change");
                         }}
                     >
                         Change Password
