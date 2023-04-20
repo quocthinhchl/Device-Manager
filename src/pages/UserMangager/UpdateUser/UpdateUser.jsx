@@ -54,10 +54,6 @@ const UpdateUser = ({ userId }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
     };
-
-
-
-
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
@@ -71,15 +67,7 @@ const UpdateUser = ({ userId }) => {
     const [search, setSearch] = useState('');
     const [DVS, setDVS] = useState([]);
     const [form] = Form.useForm();
-
-
-
     const id = userId.pathname.substring(userId.pathname.lastIndexOf('/') + 1);
-
-
-
-
-
 
     const handleSearch = (event) => {
         setSearch(event.target.value);
@@ -87,10 +75,6 @@ const UpdateUser = ({ userId }) => {
     const handleDelete = (record) => {
         setCheckedList(checkedList.filter((item) => item.value !== record.value));
     };
-
-    // const valueList = checkedList.map((item) => item.value);
-
-
     const onFinish = (values) => {
         const data = {
             fullname: values.fullname,
@@ -104,14 +88,12 @@ const UpdateUser = ({ userId }) => {
             blocked: values.status
 
         };
-        console.log(values);
         axiosInstance
             .put(`/users/${id}`, data)
             .then((response) => {
                 if (response != null) {
 
                     navigate("/dashboard/users_list")
-                    // logOut()
                     message.success("Succes");
                 }
             })
@@ -120,30 +102,38 @@ const UpdateUser = ({ userId }) => {
                 message.error("Some thing wrong");
             });
     };
-
     useEffect(() => {
         axiosInstance.get(`/devices?filters[name][$contains]=${search}`).then((res) => {
             setDeviceNames(res.data);
         });
+
+    }, [search]);
+    useEffect(() => {
         axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
             setUser(res);
-            setDVS(res.devices)
+            setDVS(res.devices);
+            console.log(user);
+        });
+
+    }, [id]);
+
+    useEffect(() => {
+        if (DVS.length > 0 && user) {
             const checkedvalue = DVS.map((device) => ({
                 label: device.name,
-                value: device,
+                value: device.name,
             }));
-            setCheckedList(checkedvalue)
-            console.log(checkedList);
-        });
-    }, [search]);
-
-
-
-    const plainOptions = deviceNames.map((device) => ({
-        label: device.attributes.name,
-        value: device,
+            setCheckedList(checkedvalue);
+        }
+    }, [DVS, user]);
+    const selectedOption = DVS.map((device) => ({
+        label: device.name,
+        value: device.name,
     }));
-
+    const plainOptions = deviceNames.map((device) => ({
+        value: device.attributes.name,
+        label: device.attributes.name,
+    }));
 
     return (
         <>
@@ -168,7 +158,6 @@ const UpdateUser = ({ userId }) => {
                                     password: user.password,
                                     phoneNumber: user.phoneNumber,
                                     gender: user.gender,
-
                                 }}
                                 autoComplete="off"
                                 form={form}
@@ -286,7 +275,6 @@ const UpdateUser = ({ userId }) => {
                                             <Input
                                                 size="default size"
                                                 placeholder="Enter owner email"
-                                            // defaultValue={user.phoneNumber}
                                             />
                                         </FormItem>
                                     </Col>
@@ -348,8 +336,6 @@ const UpdateUser = ({ userId }) => {
                                             ]}
                                         >
                                             <DatePicker
-
-
                                                 size="default size"
                                                 style={{ width: "100%" }}
                                                 picker="date"
@@ -411,7 +397,6 @@ const UpdateUser = ({ userId }) => {
                                             rules={[
                                                 {
                                                     required: true,
-
                                                     message: "Please input owner Status!",
                                                 },
                                             ]}
@@ -479,39 +464,31 @@ const UpdateUser = ({ userId }) => {
                               </List.Item>
                             )}
                           /> */}
+
                                                     <List
                                                         style={{
                                                             height: 150,
                                                             overflowY: "auto",
                                                         }}
                                                         dataSource={plainOptions}
-                                                        // defaultValue={checkedvalue.value}
-
                                                         renderItem={(item) => (
                                                             <List.Item>
                                                                 <Checkbox
                                                                     value={item.value}
-                                                                    // checked={checkedList.some((o) => o.value === plainOptions.value)}
-                                                                    defaultChecked={checkedList.some((o) => o.value === item.value)}
+                                                                    checked={checkedList.some((o) => o.value == item.value)}
                                                                     onChange={(e) => {
                                                                         if (e.target.checked) {
                                                                             setCheckedList([...checkedList, item]);
-                                                                            console.log(checkedList);
                                                                         } else {
                                                                             setCheckedList(checkedList.filter((o) => o.value !== item.value));
-                                                                            console.log(checkedList);
-
                                                                         }
                                                                     }}
                                                                 >
-                                                                    {item.label}
+                                                                    {item.value}
                                                                 </Checkbox>
                                                             </List.Item>
                                                         )}
                                                     />
-
-
-
                                                 </Col>
 
                                                 <Col
@@ -533,14 +510,11 @@ const UpdateUser = ({ userId }) => {
                                                         dataSource={checkedList}
                                                         columns={[
                                                             {
-                                                                dataIndex: 'label',
-                                                                key: 'label',
+                                                                dataIndex: 'value',
+                                                                key: 'value',
                                                             },
                                                             {
-
-
                                                                 render: (text, record) => (
-
                                                                     <img
                                                                         style={{
                                                                             float: "right"
@@ -593,8 +567,8 @@ const UpdateUser = ({ userId }) => {
                             </Button>
                         </Space>
                     </Row>
-                </Col>
-            </Content>
+                </Col >
+            </Content >
         </>
     );
 };
