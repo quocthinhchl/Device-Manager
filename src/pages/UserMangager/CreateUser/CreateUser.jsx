@@ -70,6 +70,7 @@ const CreateUser = () => {
 
 
 
+
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
@@ -99,7 +100,7 @@ const CreateUser = () => {
       .then((response) => {
         if (response != null) {
 
-          navigate("/dashboard/myprofile")
+          navigate("users_list")
           // logOut()
           message.success("Succes");
         }
@@ -315,6 +316,8 @@ const CreateUser = () => {
                       ]}
                     >
                       <DatePicker
+
+
                         size="default size"
                         style={{ width: "100%" }}
                         picker="date"
@@ -504,8 +507,8 @@ const CreateUser = () => {
                                     src={icon}
                                     className={""}
                                     alt=""
-                                    height={22}
-                                    width={22}
+                                    height={20}
+                                    width={20}
                                   />
                                 ),
                               },
@@ -539,7 +542,7 @@ const CreateUser = () => {
               </Button>
               <Button
                 onClick={() => {
-                  navigate("");
+                  navigate("users_list");
                 }}
               >
                 Back
