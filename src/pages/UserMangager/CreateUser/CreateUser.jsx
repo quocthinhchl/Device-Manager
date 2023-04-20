@@ -15,7 +15,7 @@ import {
   Table,
   message,
 } from "antd";
-import { DeleteOutlined, EyeInvisibleOutlined, EyeTwoTone, UserOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EyeInvisibleOutlined, EyeTwoTone, SearchOutlined, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../shared/services/http-client";
@@ -24,7 +24,7 @@ import Search from "antd/es/transfer/search";
 import icon from "../../../assets/images/Delete.png";
 import Item from "antd/es/list/Item";
 
-const onSearch = (value) => console.log(value);
+
 const CreateUser = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,7 +66,7 @@ const CreateUser = () => {
   const [deviceNames, setDeviceNames] = useState([]);
   const [search, setSearch] = useState('');
 
-
+  const [form] = Form.useForm();
 
 
 
@@ -111,19 +111,14 @@ const CreateUser = () => {
       });
   };
 
+
   useEffect(() => {
-    const fetchDevices = async () => {
-      try {
-        const response = await axiosInstance.get(`/devices?filters[name][$contains]=${search}`);
-        if (response.data) {
-          setDeviceNames(response.data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchDevices();
+    axiosInstance.get(`/devices?filters[name][$contains]=${search}`).then((res) => {
+      setDeviceNames(res.data);
+    });
   }, [search]);
+
+
   const plainOptions = deviceNames.map((device) => ({
     label: device.attributes.code,
     value: device,
@@ -151,6 +146,7 @@ const CreateUser = () => {
                 // }}
                 autoComplete="off"
                 onFinish={onFinish}
+                form={form}
               >
                 <Row>
                   <Col span={8} style={{ paddingRight: 16 }}>
@@ -422,28 +418,11 @@ const CreateUser = () => {
                           }}
                         >
                           <Input
-                            placeholder="input search text"
 
-                            size="default size"
-                            onChange={handleSearch}
-                          />
+                            placeholder="Search for devices ..."
+                            value={search}
+                            onChange={handleSearch} />
 
-                          {/* <List
-                            style={{
-                              height: 150,
-                              overflowY: "auto",
-                            }}
-                            bordered
-                            dataSource={items}
-                            renderItem={(item) => (
-                              <List.Item>
-                                <Checkbox.Group  onChange>
-                                  <Checkbox>{item.attributes.name}</Checkbox>
-                                  {console.log(item.attributes)}
-                                </Checkbox.Group>
-                              </List.Item>
-                            )}
-                          /> */}
                           <List
                             style={{
                               height: 150,
