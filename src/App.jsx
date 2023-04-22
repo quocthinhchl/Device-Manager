@@ -22,7 +22,7 @@ function App() {
     localStorage.setItem('token', userToken);
   }
   const navigate = useNavigate();
-  console.log(123, location);
+  // console.log(123, location);
   useEffect(() => {
     if (!token) {
       navigate('/')

@@ -22,6 +22,7 @@ const DeviceTable = (props) => {
     useEffect(() => {
         renderData()
     }, [props.selectOption, props.keyWord, props.status]);
+
     function renderData() {
         axiosInstance.get(`/devices?filters[${props.selectOption}][$contains]=${props.keyWord}&filters[status][$eq]=${props.status}&populate=user.avatar`).then(res => {
             setData(res.data);
