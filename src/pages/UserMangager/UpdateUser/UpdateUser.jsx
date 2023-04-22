@@ -150,12 +150,6 @@ const UpdateUser = ({ userId }) => {
         }
     }, [DVS, user]);
 
-    // useEffect(() => {
-    //     if (checkedList.length > 0 && user) {
-    //         const device = checkedList.map((dv) => (dv.value));
-    //         console.log(77, device);
-    //     }
-    // }, [checkedList, user]);
 
     const plainOptions = deviceNames.map((device) => ({
         value: device.id,
@@ -180,12 +174,6 @@ const UpdateUser = ({ userId }) => {
                                 layout="vertical"
                                 initialValues={{
                                     // fullname: user.fullname,
-                                    // email: '',
-                                    // username: '',
-                                    // password: '',
-                                    // phoneNumber: '',
-                                    // gender: '',
-                                    // role: user.role?.name,
 
                                 }}
                                 autoComplete="off"

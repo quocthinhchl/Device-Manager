@@ -62,7 +62,7 @@ const UserTable = (props) => {
         setIsModalOpen(true);
     }
 
-    console.log(1111, props.selectOption, props.keyWord);
+    // console.log(1111, props.selectOption, props.keyWord);
     const columns = [
         {
             title: '#',
