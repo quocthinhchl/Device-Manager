@@ -117,7 +117,7 @@ export default function UserDetails({ userId }) {
                     <Descriptions.Item label="Phone Number">
                         {user.phoneNumber}
                     </Descriptions.Item>
-                    <Descriptions.Item label="Gender">{user.gender}</Descriptions.Item>
+                    <Descriptions.Item label="Gender">{user.gender?.charAt(0).toUpperCase() + user.gender?.slice(1)}</Descriptions.Item>
                     <Descriptions.Item label="Role">{user.role?.name}</Descriptions.Item>
                 </Descriptions>
 
@@ -175,7 +175,7 @@ export default function UserDetails({ userId }) {
                 </Row>
             </Content>
             <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <p>Bạn có chắc chắn muốn xoá không?</p>
+                <p>Bạn có chắc chắn muốn xoá {user.fullname} không?</p>
             </Modal>
         </>
     )

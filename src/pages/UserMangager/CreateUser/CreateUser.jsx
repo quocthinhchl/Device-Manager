@@ -93,7 +93,7 @@ const CreateUser = () => {
       .then((response) => {
         if (response != null) {
 
-          navigate("users_list")
+          navigate("/dashboard/users_list")
           // logOut()
           message.success("Succes");
         }
@@ -519,7 +519,7 @@ const CreateUser = () => {
               </Button>
               <Button
                 onClick={() => {
-                  navigate("users_list");
+                  navigate("/dashboard/users_list");
                 }}
               >
                 Back

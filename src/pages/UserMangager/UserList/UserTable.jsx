@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Modal, Table, Tag } from 'antd';
+import { Avatar, Modal, Table, Tag, notification } from 'antd';
 // import { useDebounce } from 'use-debounce';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import styled from 'styled-components';
@@ -17,6 +17,7 @@ const UserTable = (props) => {
     const [useData, setData] = useState([]);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [currentChoice, setCurrentChoice] = useState('');
 
 
     useEffect(() => {
@@ -28,12 +29,20 @@ const UserTable = (props) => {
         }, [])
     }
 
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
+
     const handleOk = async () => {
-        // await axiosInstance.delete(`users/${id}`)
         setIsModalOpen(false);
+        await axiosInstance.delete(`/users/${currentChoice}`).catch(e => {
+            notification.error({
+                message: 'Lỗi',
+                description: `Lỗi.`,
+            });
+        })
+        notification.success({
+            message: 'Xóa thành công',
+            description: `Xóa thành công`,
+        });
+        renderData()
     };
     const handleCancel = () => {
         setIsModalOpen(false);
@@ -49,7 +58,8 @@ const UserTable = (props) => {
     }
 
     function handleDelete(id) {
-        showModal()
+        setCurrentChoice(id)
+        setIsModalOpen(true);
     }
 
     console.log(1111, props.selectOption, props.keyWord);
@@ -112,7 +122,7 @@ const UserTable = (props) => {
         <TableData>
             <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 5 }} />
             <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <p>Bạn có chắc chắn muốn xoá không?</p>
+                <p>Bạn có chắc chắn muốn xoá {currentChoice?.attributes?.name} không?</p>
             </Modal>
         </TableData>
     );
