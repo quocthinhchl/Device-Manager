@@ -70,8 +70,8 @@ const CreateUser = () => {
     setCheckedList(checkedList.filter((item) => item.value !== record.value));
   };
 
-  // const valueList = checkedList.map((item) => item.value);
-
+  const valueList = checkedList.map((item) => item.label);
+  console.log(valueList);
 
   const onFinish = (values) => {
     const data = {
@@ -83,7 +83,8 @@ const CreateUser = () => {
       gender: values.gender,
       password: values.password,
       role: parseFloat(values.role),
-      blocked: values.status
+      blocked: values.status,
+      devices: valueList,
 
     };
     console.log(values);
@@ -112,8 +113,9 @@ const CreateUser = () => {
 
 
   const plainOptions = deviceNames.map((device) => ({
-    label: device.attributes.name,
-    value: device,
+    label: device,
+    value: device.attributes.name,
+    // list: device,
   }));
 
 
@@ -237,7 +239,9 @@ const CreateUser = () => {
 
                           message: "Please input owner PhoneNumber!",
                         },
-                        { min: 9 },
+                        { min: 10, message: 'Phone number must be at least 10 characters' },
+
+                        { max: 10, message: 'Phone number must be at most 10 characters' },
                         { pattern: /^\d+$/, message: 'Please enter numbers only', },
                       ]}
                     >
@@ -423,7 +427,7 @@ const CreateUser = () => {
                               <List.Item>
                                 <Checkbox
                                   value={item.value}
-                                  checked={checkedList.some((o) => o.value === item.value)}
+                                  checked={checkedList.some((o) => o.value == item.value)}
                                   onChange={(e) => {
                                     if (e.target.checked) {
                                       setCheckedList([...checkedList, item]);
@@ -432,9 +436,13 @@ const CreateUser = () => {
                                     }
                                   }}
                                 >
-                                  {item.label}
+                                  {item.value}
                                 </Checkbox>
                               </List.Item>
+
+
+
+
                             )}
                           />
                         </Col>
@@ -458,8 +466,8 @@ const CreateUser = () => {
                             dataSource={checkedList}
                             columns={[
                               {
-                                dataIndex: 'label',
-                                key: 'label',
+                                dataIndex: 'value',
+                                key: 'value',
                               },
                               {
 
