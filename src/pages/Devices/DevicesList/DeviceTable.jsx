@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Modal, Table, Tag } from 'antd';
+import { Avatar, Modal, Table, Tag, notification } from 'antd';
 // import { useDebounce } from 'use-debounce';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import styled from 'styled-components';
@@ -17,42 +17,46 @@ const DeviceTable = (props) => {
     const [useData, setData] = useState([]);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const [currentChoice, setCurrentChoice] = useState('');
 
     useEffect(() => {
         renderData()
-    }, [props.selectOption, props.keyWord, props.blocked]);
+    }, [props.selectOption, props.keyWord, props.status]);
     function renderData() {
-        axiosInstance.get(`/devices?populate=user.avatarx`).then(res => {
+        axiosInstance.get(`/devices?filters[${props.selectOption}][$contains]=${props.keyWord}&filters[status][$eq]=${props.status}&populate=user.avatar`).then(res => {
             setData(res.data);
-        }, [])
+        }, [useData, isModalOpen])
     }
-
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
     const handleOk = async () => {
-        // await axiosInstance.delete(`users/${id}`)
         setIsModalOpen(false);
+
+        await axiosInstance.delete(`/devices/${currentChoice.id}`).catch(e => {
+            notification.error({
+                message: 'Lỗi',
+                description: `Lỗi.`,
+            });
+        })
+        notification.success({
+            message: 'Xóa thành công',
+            description: `Xóa thành công`,
+        });
+        renderData()
     };
     const handleCancel = () => {
         setIsModalOpen(false);
     };
-
-
     function handleDetail(id) {
-        navigate(`/dashboard/users_list/detail/${id}`)
+        navigate(`/dashboard/device_list/detail/${id}`)
     }
 
     function handleEdit(id) {
-        navigate(`/dashboard/users_list/edit/${id}`)
+        navigate(`/dashboard/device_list/edit/${id}`)
     }
 
-    function handleDelete(id) {
-        showModal()
+    function handleDelete(device) {
+        setCurrentChoice(device)
+        setIsModalOpen(true);
     }
-
-    console.log(1111, props.selectOption, props.keyWord);
     const columns = [
         {
             title: '#',
@@ -80,18 +84,22 @@ const DeviceTable = (props) => {
             dataIndex: 'user',
             key: 'user',
             render: (text, user) => (
-                <td class="ant-table-cell" scope="col">
-                    <Avatar /> {user.attributes.user.data?.attributes.fullname}
-                </td>
+                <span>
+                    {(!user.attributes.user.data) ? <p></p> :
+                        <td class="ant-table-cell" scope="col">
+                            <Avatar src={user.attributes.user.data?.attributes.avatar.data} /> {user.attributes.user.data?.attributes.fullname}
+                        </td>}
+                </span>
             )
         },
-
         {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
             render: (_, code) => (
-                <p> {code.attributes.status}</p >
+                <span>
+                    {(code.attributes.status === "active") ? <Tag color={'green'} key={'active'}> Active </Tag> : <Tag color={'volcano'} key={'active'}> Inactive </Tag>}
+                </span>
             )
         },
         {
@@ -106,18 +114,20 @@ const DeviceTable = (props) => {
                     <span>
                         <a onClick={() => handleEdit(useData.id)} ><EditOutlined /></a>
                     </span>
-                    <span>
-                        <a onClick={() => handleDelete(useData.id)} ><DeleteOutlined /></a>
-                    </span>
+                    {/* <span> */}
+                    <a onClick={(event) => handleDelete(useData, event)} ><DeleteOutlined /></a>
+                    {/* </span> */}
                 </span>
             ),
         },
     ];
+    console.log(currentChoice, 12322);
+
     return (
         <TableData>
             <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 5 }} />
             <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-                <p>Bạn có chắc chắn muốn xoá không?</p>
+                <p>Bạn có chắc chắn muốn xoá {currentChoice?.attributes?.name} không?</p>
             </Modal>
         </TableData>
     );

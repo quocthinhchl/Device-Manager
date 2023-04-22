@@ -1,0 +1,131 @@
+import { Button, Divider, Row, Space, notification, Descriptions, Breadcrumb, Modal } from "antd";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import axiosInstance from "../../../shared/services/http-client";
+import { useNavigate, useParams } from "react-router";
+
+const Content = styled.div`
+    margin: 15px 16px;
+    padding: 24px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    border-radius:10px;
+    overflow: hidden;
+    .ant-form-item .ant-input,.ant-form-item .ant-select{
+        width: 299px;
+        height: 36px;
+    }
+    button{
+        width: 80px;
+        height: 33px;
+    }
+    .ant-form-vertical .ant-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .ant-form-vertical .ant-form-item:last-child{
+        padding-top: 10px
+    }
+`;
+const PathName = styled.p`
+    margin: 10px 25px 0px 20px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 32px;
+    color: #111111;
+  `;
+export default function DeviceDetail() {
+    const [deviceDetail, setDeviceDetail] = useState('');
+    const navigate = useNavigate();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const { id } = useParams();
+
+    const buttonStyle = {
+        backgroundColor: '#8767E1',
+        color: '#fff',
+    };
+
+    useEffect(() => {
+        axiosInstance.get(`/devices/${id}?populate=user.avatar`).then((res) => {
+            setDeviceDetail(res.data)
+        })
+    }, [id])
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+    const handleEdit = () => {
+        navigate(`/dashboard/device_list/edit/${id}`);
+    };
+    const handleDelete = async () => {
+        try {
+            axiosInstance.delete(`/devices/${id}`).catch(e => {
+                notification.error({
+                    message: 'Lỗi',
+                    description: `Lỗi.`,
+                });
+            })
+            notification.success({
+                message: 'Xóa thành công',
+                description: `Xóa thành công ${deviceDetail.attributes?.name}`,
+            });
+            navigate('/dashboard/device_list')
+        } catch (error) {
+
+        }
+    }
+    return (
+        <>
+            <PathName>
+                <Breadcrumb
+                    separator=">"
+                    items={[
+                        {
+                            title: 'All Device',
+                            href: '/dashboard/device_list'
+                        },
+                        {
+                            title: <b>{deviceDetail.attributes?.name}</b>,
+                            href: '',
+                        },
+                    ]}
+                />
+            </PathName>
+            <Content>
+                <Descriptions layout="vertical" column={3} >
+                    <Descriptions.Item label="Code">{deviceDetail.attributes?.code}</Descriptions.Item>
+                    <Descriptions.Item label="Name">{deviceDetail.attributes?.name}</Descriptions.Item>
+                    <Descriptions.Item label="Status">{deviceDetail.attributes?.status}</Descriptions.Item>
+                    <Descriptions.Item label="Address">
+                        {deviceDetail.attributes?.address}
+                    </Descriptions.Item>
+                </Descriptions>
+                <Row>
+                    <Divider />
+                    <Space>
+                        <Button style={buttonStyle} onClick={handleEdit}>Edit</Button>
+                        <Button onClick={showModal}>Delete</Button>
+                    </Space>
+                </Row>
+                <Modal
+                    title="Xác nhận xóa"
+                    visible={isModalVisible}
+                    onOk={handleDelete}
+                    onCancel={handleCancel}
+                    okText="Xóa"
+                    cancelText="Hủy bỏ"
+                >
+                    <p>Bạn có chắc muốn xóa không?</p>
+                </Modal>
+            </Content>
+        </>
+    )
+}
