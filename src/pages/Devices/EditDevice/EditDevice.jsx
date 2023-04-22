@@ -1,9 +1,9 @@
-import { Button, Col, Divider, Form, Input, Row, Select, Space, notification } from "antd";
+import { Button, Col, Divider, Form, Input, Modal, Row, Select, Space, notification } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import axiosInstance from "../../../shared/services/http-client";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 
 const Content = styled.div`
     margin: 15px 16px;
@@ -31,39 +31,80 @@ const Content = styled.div`
         padding-top: 10px
     }
 `;
-export default function AddDevice() {
+export default function EditDevice() {
     const [name, setName] = useState('')
     const [code, setCode] = useState('')
     const [status, setStatus] = useState('active')
     const [address, setAddress] = useState('')
-    const [api, contextHolder] = notification.useNotification();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [deviceDetail, setDeviceDetail] = useState('');
+    const [form] = Form.useForm();
+    const [defaultValues, setDefaultValues] = useState({});
+
+    const { id } = useParams()
     const navigate = useNavigate();
 
+    var data = {
+        data: {
+            name,
+            code,
+            status,
+            address,
+        }
+    }
+    useEffect(() => {
+        axiosInstance.get(`/devices/${id}?populate=user.avatar`).then((res) => {
+            setDeviceDetail(res.data)
+        })
+    }, [id])
+    useEffect(() => {
+        if (deviceDetail) {
+            form.setFieldsValue({
+                code: deviceDetail.attributes.code,
+                name: deviceDetail.attributes.name,
+                status: deviceDetail.attributes.status,
+                address: deviceDetail.attributes.address,
+            })
+        }
+    }, [deviceDetail, form])
+
+    const showModal = (values) => {
+        setIsModalVisible(true);
+        setDefaultValues({
+            code: values.code,
+            name: values.name,
+            status: values.status,
+            address: values.address,
+        });
+        console.log(111, data);
+    };
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
     const handleSubmit = async () => {
-        // event.preventDefault();
         try {
-            const data = {
+            data = {
                 data: {
-                    name: name,
-                    code: code,
-                    status: status,
-                    address: address,
+                    code: defaultValues.code,
+                    name: defaultValues.name,
+                    status: defaultValues.status,
+                    address: defaultValues.address,
                 }
             }
-            const response = await axiosInstance.post("/devices", data).catch((e) => {
-                console.log(11, e);
+            const response = await axiosInstance.put(`/devices/${id}`, data).catch((e) => {
+                console.log(112, data);
                 notification.error({
                     message: 'Lỗi',
-                    description: `Lỗi ${e.response.data.error.details.errors[0].path} ${e.response.data.error.details.errors[0].message}.`,
+                    description: `Lỗi.`,
                 });
             })
             notification.success({
-                message: 'Tạo thành công',
-                description: `Tạo thành công ${response.data.attributes.name}.`,
+                message: 'Cập nhật thành công',
+                description: `Cập nhật thành công ${response.data.attributes.name}.`,
             });
             navigate('/dashboard/device_list');
-
-        } catch (error) {
+        }
+        catch (error) {
             console.log(1111, error);
             notification.error({
                 message: 'Không thể tạo',
@@ -71,6 +112,7 @@ export default function AddDevice() {
             });
         }
     };
+
     const buttonStyle = {
         backgroundColor: '#8767E1',
         color: '#fff',
@@ -90,20 +132,13 @@ export default function AddDevice() {
     const handleGetAddress = (e) => {
         setAddress(e.target.value)
     };
-    const onFinish = (values) => {
-        console.log('Received values of form: ', values);
-        // Do something with the form data, such as submit to an API
-    };
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
     return (
         <Content>
             <Form
                 layout={'vertical'}
-                onFinish={handleSubmit}
-                onFinishFailed={onFinishFailed}
-
+                onFinish={showModal}
+                form={form}
+            // initialValues={defaultValues.data}
             >
                 <Space >
                     <Form.Item name='code' label="Code" rules={[{ required: true, message: 'Please enter device code' }, {
@@ -112,7 +147,7 @@ export default function AddDevice() {
                     }
                     ]}>
                         <Input placeholder="Enter device code"
-                            onChange={handleGetCode}
+                        // onChange={handleGetCode}
                         />
                     </Form.Item>
                     <Form.Item name='name' label="Name" rules={[
@@ -125,10 +160,11 @@ export default function AddDevice() {
                         },
                     ]}>
                         <Input placeholder="Enter device name"
-                            onChange={handleGetName}
+                            // onChange={handleGetName}
+                            name="name"
                         />
                     </Form.Item>
-                    <Form.Item label="Status">
+                    <Form.Item label="Status" name='status'>
                         <Select
                             placeholder="Select a status"
                             options={[
@@ -141,31 +177,42 @@ export default function AddDevice() {
                                     label: 'Inactive',
                                 },
                             ]}
-                            defaultValue={'active'}
-                            onChange={handleGetStatus}
+                        // onChange={handleGetStatus}
                         />
                     </Form.Item>
                 </Space>
                 <Form.Item
-                    name="intro"
+                    name="address"
                     label='Address'
                     rules={[{ required: true, message: 'Please input Intro' }]}
                     style={{ width: '100%', height: 120, paddingBottom: 10 }}
                 >
-                    <Input.TextArea style={{ width: '100%', height: 120 }} onChange={handleGetAddress} />
+
+                    <Input.TextArea style={{ width: '100%', height: 120 }}
+                    // onChange={handleGetAddress} 
+                    />
                 </Form.Item>
                 <Form.Item>
                     <Row>
                         <Divider />
                         <Space>
                             <Button style={buttonStyle} htmlType="submit">Save</Button>
-                            {contextHolder}
                             {/* <Button style={buttonStyle}>Save Fake</Button> */}
                             <Button >Cancel</Button>
                         </Space>
                     </Row>
                 </Form.Item>
             </Form>
+            <Modal
+                title="Xác nhận chỉnh sửa"
+                visible={isModalVisible}
+                onOk={handleSubmit}
+                onCancel={handleCancel}
+                okText="Đồng ý"
+                cancelText="Hủy bỏ"
+            >
+                <p>Bạn có chắc muốn chỉnh sửa không không?</p>
+            </Modal>
         </Content >
     )
 }
