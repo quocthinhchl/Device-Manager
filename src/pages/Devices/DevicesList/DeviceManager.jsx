@@ -7,11 +7,11 @@ import { useLocation, useNavigate } from "react-router";
 import DeviceTable from "./DeviceTable";
 const options = [
     {
-        value: '0',
+        value: 'active',
         label: 'Active',
     },
     {
-        value: '1',
+        value: 'inactive',
         label: 'Inactive',
     }
 ];
@@ -60,9 +60,9 @@ const Content = styled.div`
     width:100%;
 `;
 function DeviceManager() {
-    const [selectedValue, setSelectedValue] = useState('fullname');
+    const [selectedValue, setSelectedValue] = useState('code');
     const [keyWord, setKeyWord] = useState('');
-    const [blocked, setBlocked] = useState(0);
+    const [status, setStatus] = useState('active');
     const navigate = useNavigate();
 
     // const [debouncedSearchTerm] = useDebounce(keyWord, 500);
@@ -74,7 +74,7 @@ function DeviceManager() {
         setSelectedValue(value);
     }
     function handleSelectBlocked(value) {
-        setBlocked(value);
+        setStatus(value);
     }
     const handleSearchValueChange = (event) => {
         setKeyWord(event.target.value);
@@ -86,10 +86,10 @@ function DeviceManager() {
                 <Space direction='vertical' size={24}  >
                     <Row justify={"space-between"}>
                         <Col>
-                            <h3>All User</h3>
+                            <h3>All Device</h3>
                         </Col>
                         <Col>
-                            <Button style={buttonStyle} onClick={() => { navigate('/dashboard/users_list/create') }}> Add User</Button>
+                            <Button style={buttonStyle} onClick={() => { navigate('/dashboard/device_list/create') }}> Add Device</Button>
                         </Col>
                     </Row>
 
@@ -98,17 +98,17 @@ function DeviceManager() {
                             <Col>
                                 <Space.Compact block>
                                     <Select
-                                        defaultValue="Name"
+                                        defaultValue="Code"
                                         style={{
                                             width: 120,
                                         }}
                                         onChange={handleSelect}
                                         options={[
                                             {
-                                                value: 'email',
-                                                label: 'Email',
+                                                value: 'code',
+                                                label: 'Code',
                                             }, {
-                                                value: 'fullname',
+                                                value: 'name',
                                                 label: 'Name',
                                             },
                                         ]}
@@ -136,7 +136,7 @@ function DeviceManager() {
                         </Space>
                     </Row>
                     <Row>
-                        <DeviceTable selectOption={selectedValue} keyWord={keyWord} blocked={blocked} />
+                        <DeviceTable selectOption={selectedValue} keyWord={keyWord} status={status} />
                     </Row>
                 </Space>
             </Content>
