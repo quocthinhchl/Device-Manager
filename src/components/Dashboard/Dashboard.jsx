@@ -15,6 +15,7 @@ import axiosInstance from "../../shared/services/http-client";
 import WelcomePage from "../../pages/Welcome/Welcome";
 import DeviceManager from "../../pages/Devices/DevicesList/DeviceManager";
 import ErrorPage from "../../pages/Error/Error";
+import AddDevice from "../../pages/Devices/AddDevice/AddDevice";
 
 function Dashboard({ setToken }) {
     const [user, setUser] = useState();
@@ -71,6 +72,8 @@ function Dashboard({ setToken }) {
 
                     {/* Device List */}
                     <Route path="device_list" element={<DeviceManager />} />
+                    <Route path="device_list/create" element={<AddDevice />} />
+
 
                     {/* Error Page */}
                     <Route path="/error" element={<ErrorPage setToken={setToken} />} />

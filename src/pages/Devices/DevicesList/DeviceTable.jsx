@@ -21,9 +21,9 @@ const DeviceTable = (props) => {
 
     useEffect(() => {
         renderData()
-    }, [props.selectOption, props.keyWord, props.blocked]);
+    }, [props.selectOption, props.keyWord, props.status]);
     function renderData() {
-        axiosInstance.get(`/devices?populate=user.avatarx`).then(res => {
+        axiosInstance.get(`/devices?filters[${props.selectOption}][$contains]=${props.keyWord}&filters[status][$eq]=${props.status}&populate=user.avatar`).then(res => {
             setData(res.data);
         }, [])
     }
@@ -80,9 +80,12 @@ const DeviceTable = (props) => {
             dataIndex: 'user',
             key: 'user',
             render: (text, user) => (
-                <td class="ant-table-cell" scope="col">
-                    <Avatar /> {user.attributes.user.data?.attributes.fullname}
-                </td>
+                <span>
+                    {(!user.attributes.user.data) ? <p></p> :
+                        <td class="ant-table-cell" scope="col">
+                            <Avatar src={user.attributes.user.data?.attributes.avatar.data} /> {user.attributes.user.data?.attributes.fullname}
+                        </td>}
+                </span>
             )
         },
 
@@ -91,7 +94,9 @@ const DeviceTable = (props) => {
             dataIndex: 'status',
             key: 'status',
             render: (_, code) => (
-                <p> {code.attributes.status}</p >
+                <span>
+                    {(code.attributes.status === "active") ? <Tag color={'green'} key={'active'}> Active </Tag> : <Tag color={'volcano'} key={'active'}> Inactive </Tag>}
+                </span>
             )
         },
         {
