@@ -15,10 +15,12 @@ import {
     Checkbox,
     Table,
     message,
+    notification,
+    Breadcrumb,
 } from "antd";
 import { DeleteOutlined, EyeInvisibleOutlined, EyeTwoTone, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../../shared/services/http-client";
 import FormItem from "antd/es/form/FormItem";
 import Search from "antd/es/transfer/search";
@@ -67,7 +69,10 @@ const UpdateUser = ({ userId }) => {
     const [search, setSearch] = useState('');
     const [DVS, setDVS] = useState([]);
     const [form] = Form.useForm();
-    const id = userId.pathname.substring(userId.pathname.lastIndexOf('/') + 1);
+    // const id = userId.pathname.substring(userId.pathname.lastIndexOf('/') + 1);
+    const { id } = useParams()
+
+    // console.log(11, idU);
 
     const handleSearch = (event) => {
         setSearch(event.target.value);
@@ -83,25 +88,30 @@ const UpdateUser = ({ userId }) => {
             dob: values.dob.format('YYYY-MM-DD'),
             phoneNumber: values.phoneNumber,
             gender: values.gender,
-            password: values.password,
             role: (values.role),
             blocked: values.status,
             devices: checkedList.map((dv) => (dv.value)),
             confirmed: true,
         };
-        console.log(99, data);
+        // console.log(99, data);
         axiosInstance
             .put(`/users/${id}`, data)
             .then((response) => {
                 if (response != null) {
 
                     navigate("/dashboard/users_list")
-                    message.success("Success");
+                    notification.success({
+                        message: 'Update thành công',
+                        description: `Update thành công`,
+                    });
                 }
             })
             .catch((error) => {
                 console.log(error);
-                message.error("Some thing wrong");
+                notification.success({
+                    message: 'Error',
+                    description: `Error`,
+                });
             });
     };
 
@@ -122,7 +132,6 @@ const UpdateUser = ({ userId }) => {
                 fullname: user.fullname,
                 email: user.email,
                 username: user.username,
-                password: user.password,
                 phoneNumber: user.phoneNumber,
                 gender: user.gender,
                 dob: dayjs(user.dob, 'YYYY-MM-DD'),
@@ -158,7 +167,21 @@ const UpdateUser = ({ userId }) => {
 
     return (
         <>
-            <PathName>Update User</PathName>
+            <PathName>
+                <Breadcrumb
+                    separator=">"
+                    items={[
+                        {
+                            title: 'All user',
+                            href: '/dashboard/users_list'
+                        },
+                        {
+                            title: <b>{user.fullname}</b>,
+                            href: '',
+                        },
+                    ]}
+                />
+            </PathName>
             <Content>
                 <Col>
                     <Row>
@@ -243,35 +266,7 @@ const UpdateUser = ({ userId }) => {
                                             />
                                         </FormItem>
                                     </Col>
-                                    <Col span={8} style={{ paddingRight: 16 }}>
-                                        <FormItem
-                                            label="Password"
-                                            name="password"
-                                            rules={[
-                                                {
-                                                    required: true,
 
-                                                    message: "Please input owner Password!",
-                                                },
-                                                {
-                                                    pattern: new RegExp(
-                                                        /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
-                                                    ),
-                                                    message:
-                                                        " Password should be 6-20 characters and include at least 1 letter, 1 number and 1 special character!",
-                                                },
-                                            ]}
-                                        >
-                                            <Input.Password
-                                                size="default size"
-                                                placeholder="Enter owner Password"
-                                                // defaultValue={user.password}
-                                                iconRender={(visible) =>
-                                                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                                                }
-                                            />
-                                        </FormItem>
-                                    </Col>
                                     <Col span={8} style={{ paddingRight: 16 }}>
                                         {" "}
                                         <FormItem
@@ -295,7 +290,7 @@ const UpdateUser = ({ userId }) => {
                                             />
                                         </FormItem>
                                     </Col>
-                                    <Col span={8}>
+                                    <Col span={8} style={{ paddingRight: 16 }}>
                                         {" "}
                                         <FormItem
                                             label="Gender"
@@ -340,7 +335,7 @@ const UpdateUser = ({ userId }) => {
                                             />
                                         </FormItem>
                                     </Col>
-                                    <Col span={8} style={{ paddingRight: 16 }}>
+                                    <Col span={8}>
                                         <FormItem
                                             label="DOB"
                                             name="dob"
@@ -379,14 +374,9 @@ const UpdateUser = ({ userId }) => {
                                                 showSearch
                                                 style={{ width: "100%" }}
                                                 name="role"
-                                                onChange={(value, option) => {
-                                                    form.setFieldsValue({ role: value });
-                                                }}
                                                 placeholder=" Select owner Role"
                                                 optionFilterProp="children"
-                                                optionLabelProp="label"
                                                 getOptionLabel={(option) => option.value.toString()}
-                                                optionValueProp="value"
                                                 // defaultValue={user.role?.name}
                                                 filterOption={(input, option) =>
                                                     (option?.label ?? "").includes(input)
@@ -413,7 +403,7 @@ const UpdateUser = ({ userId }) => {
                                             />
                                         </FormItem>
                                     </Col>
-                                    <Col span={8}>
+                                    <Col span={8} style={{ paddingRight: 16 }}>
                                         {" "}
                                         <FormItem
                                             label="Status"
@@ -484,11 +474,11 @@ const UpdateUser = ({ userId }) => {
                                                             <List.Item>
                                                                 <Checkbox
                                                                     value={item.label}
-                                                                    checked={checkedList.some((o) => o.value === item.value)}
+                                                                    checked={checkedList?.some((o) => o.value === item.value)}
                                                                     onChange={(e) => {
                                                                         if (e.target.checked) {
                                                                             setCheckedList([...checkedList, item]);
-                                                                            // console.log(55, checkedList);
+
                                                                         } else {
                                                                             setCheckedList(checkedList.filter((o) => o.value !== item.value));
                                                                         }
@@ -517,7 +507,7 @@ const UpdateUser = ({ userId }) => {
                                                             overflowY: "auto",
                                                         }}
                                                         pagination={{ hideOnSinglePage: true }}
-                                                        dataSource={checkedList}
+                                                        dataSource={checkedList.sort((a, b) => a.value - b.value)}
                                                         columns={[
                                                             {
                                                                 dataIndex: 'label',
