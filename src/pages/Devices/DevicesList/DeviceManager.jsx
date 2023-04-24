@@ -62,7 +62,7 @@ const Content = styled.div`
 function DeviceManager() {
     const [selectedValue, setSelectedValue] = useState('code');
     const [keyWord, setKeyWord] = useState('');
-    const [status, setStatus] = useState('active');
+    const [status, setStatus] = useState('');
     const navigate = useNavigate();
 
     // const [debouncedSearchTerm] = useDebounce(keyWord, 500);

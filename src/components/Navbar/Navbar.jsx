@@ -69,6 +69,7 @@ const Navbar = (props) => {
       <Menu.Item key="logout" onClick={logOut}>Logout</Menu.Item>
     </Menu>
   );
+  console.log(props.userData.avatar.url, 111);
   return (
     <NavBar>
       <IconCollapse>
@@ -78,7 +79,8 @@ const Navbar = (props) => {
         <Col>
           <Row justify={'space-between'}>
             <AvatarUser>
-              <Avatar />
+              <Avatar src={props.userData.avatar.url} />
+              <img src="props.userData.avatar.url" alt="" />
             </AvatarUser>
             <InforUser>
               <Row>{props.userData.fullname}</Row>

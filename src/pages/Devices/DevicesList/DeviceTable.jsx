@@ -24,7 +24,7 @@ const DeviceTable = (props) => {
     }, [props.selectOption, props.keyWord, props.status]);
 
     function renderData() {
-        axiosInstance.get(`/devices?filters[${props.selectOption}][$contains]=${props.keyWord}&filters[status][$eq]=${props.status}&populate=user.avatar`).then(res => {
+        axiosInstance.get(`/devices?filters[${props.selectOption}][$contains]=${props.keyWord}&filters[status][$contains]=${props.status}&populate=user.avatar`).then(res => {
             setData(res.data);
         }, [useData, isModalOpen])
     }
