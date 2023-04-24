@@ -5,6 +5,7 @@ import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import styled from 'styled-components';
 import axiosInstance from '../../../shared/services/http-client';
 import { useNavigate } from 'react-router';
+import { API } from '../../../shared/constants';
 
 const DeviceTable = (props) => {
     const TableData = styled.div`
@@ -88,7 +89,7 @@ const DeviceTable = (props) => {
                 <span>
                     {(!user.attributes.user.data) ? <p></p> :
                         <td class="ant-table-cell" scope="col">
-                            <Avatar src={user.attributes.user.data?.attributes.avatar.data} /> {user.attributes.user.data?.attributes.fullname}
+                            <Avatar src={API + user.attributes.user.data?.attributes.avatar.data?.attributes.url} /> {user.attributes.user.data?.attributes.fullname}
                         </td>}
                 </span>
             )

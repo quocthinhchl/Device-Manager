@@ -14,6 +14,7 @@ import {
   Checkbox,
   Table,
   message,
+  Breadcrumb,
 } from "antd";
 import { DeleteOutlined, EyeInvisibleOutlined, EyeTwoTone, SearchOutlined, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
@@ -121,7 +122,21 @@ const CreateUser = () => {
 
   return (
     <>
-      <PathName>Add New User</PathName>
+      <PathName>
+        <Breadcrumb
+          separator=">"
+          items={[
+            {
+              title: 'All user',
+              href: '/dashboard/users_list'
+            },
+            {
+              title: <b>Add New User</b>,
+              href: '',
+            },
+          ]}
+        />
+      </PathName>
       <Content>
         <Col>
           <Row>

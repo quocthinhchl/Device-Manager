@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'
-import { Button, Checkbox, Form, Input, Col, Row } from 'antd';
+import { Button, Checkbox, Form, Input, Col, Row, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../shared/services/http-client';
 import { ACCESS_TOKEN } from '../../../shared/constants';
@@ -61,7 +61,10 @@ const Login = ({ setToken }) => {
     // console.log(token);
     if (token) {
       setToken(token);
-
+      notification.success({
+        message: 'Đăng nhập thành công',
+        description: `Đăng nhập thành công`,
+      });
     }
 
   }

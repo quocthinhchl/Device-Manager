@@ -1,8 +1,8 @@
-import { Button, Descriptions, List, Modal, Row, Skeleton, Space } from "antd";
+import { Breadcrumb, Button, Descriptions, List, Modal, Row, Skeleton, Space } from "antd";
 import React, { useEffect, useState } from "react"
 import styled from "styled-components";
 import axiosInstance from "../../../shared/services/http-client";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 const PathName = styled.p`
     margin: 10px 25px 0px 20px;
@@ -58,9 +58,10 @@ export default function UserDetails({ userId }) {
     const navigate = useNavigate();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { id } = useParams()
 
 
-    const id = userId.pathname.substring(userId.pathname.lastIndexOf('/') + 1);
+
     useEffect(() => {
         axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
             setUser(res);
@@ -88,7 +89,21 @@ export default function UserDetails({ userId }) {
 
     return (
         <>
-            <PathName>User Details</PathName>
+            <PathName>
+                <Breadcrumb
+                    separator=">"
+                    items={[
+                        {
+                            title: 'All user',
+                            href: '/dashboard/users_list'
+                        },
+                        {
+                            title: <b>{user.fullname}</b>,
+                            href: '',
+                        },
+                    ]}
+                />
+            </PathName>
             <Content>
                 <Descriptions title="" layout="vertical" column={3}
                     labelStyle={{
