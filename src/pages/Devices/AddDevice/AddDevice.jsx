@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Form, Input, Row, Select, Space, notification } from "antd";
+import { Breadcrumb, Button, Col, Divider, Form, Input, Row, Select, Space, notification } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons';
@@ -31,6 +31,15 @@ const Content = styled.div`
         padding-top: 10px
     }
 `;
+const PathName = styled.p`
+    margin: 10px 25px 0px 20px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 32px;
+    color: #111111;
+  `;
 export default function AddDevice() {
     const [name, setName] = useState('')
     const [code, setCode] = useState('')
@@ -98,74 +107,91 @@ export default function AddDevice() {
         console.log('Failed:', errorInfo);
     };
     return (
-        <Content>
-            <Form
-                layout={'vertical'}
-                onFinish={handleSubmit}
-                onFinishFailed={onFinishFailed}
+        <>
+            <PathName>
+                <Breadcrumb
+                    separator=">"
+                    items={[
+                        {
+                            title: 'All Device',
+                            href: '/dashboard/device_list'
+                        },
+                        {
+                            title: <b>Add a new device</b>,
+                            href: '',
+                        },
+                    ]}
+                />
+            </PathName>
+            <Content>
+                <Form
+                    layout={'vertical'}
+                    onFinish={handleSubmit}
+                    onFinishFailed={onFinishFailed}
 
-            >
-                <Space >
-                    <Form.Item name='code' label="Code" rules={[{ required: true, message: 'Please enter device code' }, {
-                        pattern: /^([a-zA-Z]{3})_([0-9]{2})$/,
-                        message: 'Hay nhap theo format XXX_YY voi YY la 2 so)'
-                    }
-                    ]}>
-                        <Input placeholder="Enter device code"
-                            onChange={handleGetCode}
-                        />
-                    </Form.Item>
-                    <Form.Item name='name' label="Name" rules={[
-                        {
-                            required: true,
-                        },
-                        {
-                            type: 'string',
-                            min: 6,
-                        },
-                    ]}>
-                        <Input placeholder="Enter device name"
-                            onChange={handleGetName}
-                        />
-                    </Form.Item>
-                    <Form.Item label="Status">
-                        <Select
-                            placeholder="Select a status"
-                            options={[
-                                {
-                                    value: 'active',
-                                    label: 'Active',
-                                },
-                                {
-                                    value: 'inactive',
-                                    label: 'Inactive',
-                                },
-                            ]}
-                            defaultValue={'active'}
-                            onChange={handleGetStatus}
-                        />
-                    </Form.Item>
-                </Space>
-                <Form.Item
-                    name="intro"
-                    label='Address'
-                    rules={[{ required: true, message: 'Please input Intro' }]}
-                    style={{ width: '100%', height: 120, paddingBottom: 10 }}
                 >
-                    <Input.TextArea style={{ width: '100%', height: 120 }} onChange={handleGetAddress} />
-                </Form.Item>
-                <Form.Item>
-                    <Row>
-                        <Divider />
-                        <Space>
-                            <Button style={buttonStyle} htmlType="submit">Save</Button>
-                            {contextHolder}
-                            {/* <Button style={buttonStyle}>Save Fake</Button> */}
-                            <Button >Cancel</Button>
-                        </Space>
-                    </Row>
-                </Form.Item>
-            </Form>
-        </Content >
+                    <Space >
+                        <Form.Item name='code' label="Code" rules={[{ required: true, message: 'Please enter device code' }, {
+                            pattern: /^([a-zA-Z]{3})_([0-9]{2})$/,
+                            message: 'Hay nhap theo format XXX_YY voi YY la 2 so)'
+                        }
+                        ]}>
+                            <Input placeholder="Enter device code"
+                                onChange={handleGetCode}
+                            />
+                        </Form.Item>
+                        <Form.Item name='name' label="Name" rules={[
+                            {
+                                required: true,
+                            },
+                            {
+                                type: 'string',
+                                min: 6,
+                            },
+                        ]}>
+                            <Input placeholder="Enter device name"
+                                onChange={handleGetName}
+                            />
+                        </Form.Item>
+                        <Form.Item label="Status">
+                            <Select
+                                placeholder="Select a status"
+                                options={[
+                                    {
+                                        value: 'active',
+                                        label: 'Active',
+                                    },
+                                    {
+                                        value: 'inactive',
+                                        label: 'Inactive',
+                                    },
+                                ]}
+                                defaultValue={'active'}
+                                onChange={handleGetStatus}
+                            />
+                        </Form.Item>
+                    </Space>
+                    <Form.Item
+                        name="intro"
+                        label='Address'
+                        rules={[{ required: true, message: 'Please input Intro' }]}
+                        style={{ width: '100%', height: 120, paddingBottom: 10 }}
+                    >
+                        <Input.TextArea style={{ width: '100%', height: 120 }} onChange={handleGetAddress} />
+                    </Form.Item>
+                    <Form.Item>
+                        <Row>
+                            <Divider />
+                            <Space>
+                                <Button style={buttonStyle} htmlType="submit">Save</Button>
+                                {contextHolder}
+                                {/* <Button style={buttonStyle}>Save Fake</Button> */}
+                                <Button >Cancel</Button>
+                            </Space>
+                        </Row>
+                    </Form.Item>
+                </Form>
+            </Content >
+        </>
     )
 }

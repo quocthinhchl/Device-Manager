@@ -62,7 +62,7 @@ const Content = styled.div`
 function UserManager() {
     const [selectedValue, setSelectedValue] = useState('fullname');
     const [keyWord, setKeyWord] = useState('');
-    const [blocked, setBlocked] = useState(0);
+    const [blocked, setBlocked] = useState('');
     const navigate = useNavigate();
 
     // const [debouncedSearchTerm] = useDebounce(keyWord, 500);
