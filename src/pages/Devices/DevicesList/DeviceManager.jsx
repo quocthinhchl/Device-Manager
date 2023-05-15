@@ -13,7 +13,11 @@ const options = [
     {
         value: 'inactive',
         label: 'Inactive',
-    }
+    },
+    {
+        value: 'all',
+        label: 'All',
+    },
 ];
 const UserLayout = styled.div`
     display:flex;
@@ -72,6 +76,7 @@ function DeviceManager() {
     // );
     function handleSelect(value) {
         setSelectedValue(value);
+        console.log(6666, selectedValue);
     }
     function handleSelectBlocked(value) {
         setStatus(value);
@@ -110,6 +115,10 @@ function DeviceManager() {
                                             }, {
                                                 value: 'name',
                                                 label: 'Name',
+                                            },
+                                            {
+                                                value: 'id',
+                                                label: 'User ID',
                                             },
                                         ]}
                                     />
