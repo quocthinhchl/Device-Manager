@@ -23,14 +23,20 @@ const DeviceTable = (props) => {
     useEffect(() => {
         renderData()
     }, [props.selectOption, props.keyWord, props.status]);
-
     function renderData() {
-        axiosInstance.get(`/devices?filters[${props.selectOption}][$contains]=${props.keyWord}&filters[status][$contains]=${props.status}&populate=user.avatar`).then(res => {
+        let APIUser = '/devices?populate=user.avatar';
+
+        props.selectOption !== 'id' ? APIUser += `&filters[${props.selectOption}][$contains]=${props.keyWord}` : APIUser += `&filters[user][id][$eq]=${props.keyWord}`;
+        props.status !== 'all' ? APIUser += `&filters[status][$eq]=${props.status}` : APIUser += ``;
+        console.log(6, APIUser);
+
+
+        axiosInstance.get(`${APIUser} `).then(res => {
             setData(res.data);
         }, [useData, isModalOpen])
     }
+
     const handleOk = async () => {
-        setIsModalOpen(false);
 
         await axiosInstance.delete(`/devices/${currentChoice.id}`).catch(e => {
             notification.error({
@@ -42,6 +48,7 @@ const DeviceTable = (props) => {
             message: 'Xóa thành công',
             description: `Xóa thành công`,
         });
+        setIsModalOpen(false);
         renderData()
     };
     const handleCancel = () => {
@@ -117,7 +124,7 @@ const DeviceTable = (props) => {
                         <a onClick={() => handleEdit(useData.id)} ><EditOutlined /></a>
                     </span>
                     {/* <span> */}
-                    <a onClick={(event) => handleDelete(useData, event)} ><DeleteOutlined /></a>
+                    <a onClick={() => handleDelete(useData)} ><DeleteOutlined /></a>
                     {/* </span> */}
                 </span>
             ),

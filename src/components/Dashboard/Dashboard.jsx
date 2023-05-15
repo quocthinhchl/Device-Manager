@@ -21,6 +21,7 @@ import EditDevice from "../../pages/Devices/EditDevice/EditDevice";
 
 function Dashboard({ setToken }) {
     const [user, setUser] = useState();
+    const [isAdmin, setisAdmin] = useState(false);
     const navigate = useNavigate();
     const [collapsed, setIsSidebarOpen] = useState(false);
     const Location = useLocation();

@@ -13,7 +13,11 @@ const options = [
     {
         value: 'inactive',
         label: 'Inactive',
-    }
+    },
+    {
+        value: 'all',
+        label: 'All',
+    },
 ];
 const UserLayout = styled.div`
     display:flex;
@@ -62,7 +66,7 @@ const Content = styled.div`
 function DeviceManager() {
     const [selectedValue, setSelectedValue] = useState('code');
     const [keyWord, setKeyWord] = useState('');
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('all');
     const navigate = useNavigate();
 
     // const [debouncedSearchTerm] = useDebounce(keyWord, 500);
@@ -72,6 +76,7 @@ function DeviceManager() {
     // );
     function handleSelect(value) {
         setSelectedValue(value);
+        console.log(6666, selectedValue);
     }
     function handleSelectBlocked(value) {
         setStatus(value);
@@ -111,6 +116,10 @@ function DeviceManager() {
                                                 value: 'name',
                                                 label: 'Name',
                                             },
+                                            {
+                                                value: 'id',
+                                                label: 'User ID',
+                                            },
                                         ]}
                                     />
                                     <Input suffix={<SearchOutlined />} onChange={handleSearchValueChange} enterButton />
@@ -124,7 +133,7 @@ function DeviceManager() {
                                     }}
                                 >
                                     <Select
-                                        defaultValue="Active"
+                                        defaultValue="All"
                                         onChange={handleSelectBlocked}
                                         style={{
                                             width: 200,
