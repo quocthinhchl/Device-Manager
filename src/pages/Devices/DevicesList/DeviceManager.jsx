@@ -66,7 +66,7 @@ const Content = styled.div`
 function DeviceManager() {
     const [selectedValue, setSelectedValue] = useState('code');
     const [keyWord, setKeyWord] = useState('');
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('all');
     const navigate = useNavigate();
 
     // const [debouncedSearchTerm] = useDebounce(keyWord, 500);
@@ -133,7 +133,7 @@ function DeviceManager() {
                                     }}
                                 >
                                     <Select
-                                        defaultValue="Active"
+                                        defaultValue="All"
                                         onChange={handleSelectBlocked}
                                         style={{
                                             width: 200,

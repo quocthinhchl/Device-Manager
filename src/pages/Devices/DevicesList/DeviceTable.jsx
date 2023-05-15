@@ -25,27 +25,20 @@ const DeviceTable = (props) => {
     }, [props.selectOption, props.keyWord, props.status]);
     function renderData() {
         let APIUser = '/devices?populate=user.avatar';
-        // (props.selectOption !== 'id') ? (APIUser += `&filters[${props.selectOption}][$contains]=${props.keyWord}`) :
-        //     (props.selectOption !== 'status') ? (APIUser += `&filters[status][$contains]=${props.status}`) :
-        //         (props.status !== 'all') ? (APIUser += `&filters[user][id][$eq]=${props.keyWord}`) : (APIUser);
 
-        // props.status == 'all' ? APIUser : APIUser += `&filters[status][$contains]=${props.status}`;
         props.selectOption !== 'id' ? APIUser += `&filters[${props.selectOption}][$contains]=${props.keyWord}` : APIUser += `&filters[user][id][$eq]=${props.keyWord}`;
+        props.status !== 'all' ? APIUser += `&filters[status][$eq]=${props.status}` : APIUser += ``;
         console.log(6, APIUser);
-        // axiosInstance.get(`/ devices ? filters[${ props.selectOption }][$contains] = ${ props.keyWord }& filters[status][$contains]=${ props.status }& populate=user.avatar`).then(res => {
-        //     setData(res.data);
-        // }, [useData, isModalOpen])
+
 
         axiosInstance.get(`${APIUser} `).then(res => {
-            // console.log(77, res.data);
-            // console.log(77, res);
             setData(res.data);
         }, [useData, isModalOpen])
     }
-    const handleOk = async () => {
-        setIsModalOpen(false);
 
-        await axiosInstance.delete(`/ devices / ${currentChoice.id} `).catch(e => {
+    const handleOk = async () => {
+
+        await axiosInstance.delete(`/devices/${currentChoice.id}`).catch(e => {
             notification.error({
                 message: 'Lỗi',
                 description: `Lỗi.`,
@@ -55,17 +48,18 @@ const DeviceTable = (props) => {
             message: 'Xóa thành công',
             description: `Xóa thành công`,
         });
+        setIsModalOpen(false);
         renderData()
     };
     const handleCancel = () => {
         setIsModalOpen(false);
     };
     function handleDetail(id) {
-        navigate(`/ dashboard / device_list / detail / ${id} `)
+        navigate(`/dashboard/device_list/detail/${id}`)
     }
 
     function handleEdit(id) {
-        navigate(`/ dashboard / device_list / edit / ${id} `)
+        navigate(`/dashboard/device_list/edit/${id}`)
     }
 
     function handleDelete(device) {
@@ -130,7 +124,7 @@ const DeviceTable = (props) => {
                         <a onClick={() => handleEdit(useData.id)} ><EditOutlined /></a>
                     </span>
                     {/* <span> */}
-                    <a onClick={(event) => handleDelete(useData, event)} ><DeleteOutlined /></a>
+                    <a onClick={() => handleDelete(useData)} ><DeleteOutlined /></a>
                     {/* </span> */}
                 </span>
             ),
