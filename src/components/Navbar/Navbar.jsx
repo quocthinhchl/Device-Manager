@@ -80,7 +80,7 @@ const Navbar = (props) => {
         <Col>
           <Row justify={'space-between'}>
             <AvatarUser>
-              <Avatar src={API + props.userData.avatar.url} />
+              <Avatar src={API + props.userData.avatar?.url} />
             </AvatarUser>
             <InforUser>
               <Row>{props.userData.fullname}</Row>
