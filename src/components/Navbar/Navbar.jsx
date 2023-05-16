@@ -4,6 +4,7 @@ import { MenuOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import axiosInstance from '../../shared/services/http-client';
 import { useNavigate } from 'react-router';
+import { API } from '../../shared/constants';
 
 const url =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
@@ -79,8 +80,7 @@ const Navbar = (props) => {
         <Col>
           <Row justify={'space-between'}>
             <AvatarUser>
-              <Avatar src={props.userData.avatar.url} />
-              <img src="props.userData.avatar.url" alt="" />
+              <Avatar src={API + props.userData.avatar?.url} />
             </AvatarUser>
             <InforUser>
               <Row>{props.userData.fullname}</Row>

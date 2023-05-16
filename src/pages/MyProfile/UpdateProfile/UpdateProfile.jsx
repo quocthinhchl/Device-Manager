@@ -15,11 +15,11 @@ import {
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { Content } from "antd/es/layout/layout";
 import styled from "styled-components";
 import { UploadContainer } from "./style";
 import axiosInstance from "../../../shared/services/http-client";
 import moment from "moment";
+import { API } from "../../../shared/constants";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -35,15 +35,12 @@ const beforeUpload = (file) => {
   }
   return isJpgOrPng;
 };
-
-const UpdateProfile = (props) => {
-
-  const buttonStyle = {
-    backgroundColor: "#8767E1",
-    color: "#fff",
-    width: 150,
-  };
-  const PathName = styled.p`
+const buttonStyle = {
+  backgroundColor: "#8767E1",
+  color: "#fff",
+  width: 150,
+};
+const PathName = styled.p`
     margin: 10px 25px 0px 20px;
     font-family: "Poppins";
     font-style: normal;
@@ -52,7 +49,7 @@ const UpdateProfile = (props) => {
     line-height: 32px;
     color: #111111;
   `;
-  const Content = styled.div`
+const Content = styled.div`
     margin: 15px 16px;
     padding: 24px;
     background: #ffffff;
@@ -60,36 +57,63 @@ const UpdateProfile = (props) => {
     border-radius: 10px;
   `;
 
+const UpdateProfile = (props) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
 
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url:
-        "https://static.vecteezy.com/system/resources/previews/000/290/610/original/administration-vector-icon.jpg",
-    },
-  ]);
-
+  const [previewImage, setPreviewImage] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
+  const [fileList, setFileList] = useState([{
+    url: `${API}${props.userData.avatar.url}`
+  }]);
+  console.log(fileList.url, 'fl');
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
     setPreviewImage(file.url || file.preview);
+
     setPreviewOpen(true);
-    setPreviewTitle(
-      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
-    );
+    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
   };
-  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleBeforeUpload = (file) => {
+    const uploadFile = {
+      uid: file.uid,
+      name: file.name,
+      status: 'uploading',
+    };
+    setFileList((prevList) => [...prevList, uploadFile]);
+    return false; // prevent default upload behavior
+  };
+  console.log(props.userData.id);
+  const handleChange = async ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+    const formData = new FormData();
+    formData.append('ref', 'plugin::users-permissions.user');
+    formData.append('refId', `${props.userData.id}`);
+    formData.append('field', 'avatar');
+    const file = newFileList[0].originFileObj;
+    if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+      alert('Chỉ chấp nhận file ảnh định dạng JPG hoặc PNG');
+      return;
+    }
+    formData.append('files', file);
+    console.log(formData, 'formData');
+    try {
+      const response = await axiosInstance.post('/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.log(error, 11111);
+    }
+  };
   const uploadButton = (
     <div>
       <PlusOutlined />
@@ -111,7 +135,6 @@ const UpdateProfile = (props) => {
           display: "flex",
           flexDirection: "row",
           border: "1px  ",
-
           flexWrap: "wrap",
         }}
       >
@@ -123,25 +146,19 @@ const UpdateProfile = (props) => {
           }}
         >
           <UploadContainer
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             listType="picture-circle"
             fileList={fileList}
             onPreview={handlePreview}
             onChange={handleChange}
-            beforeUpload={beforeUpload}
+            beforeUpload={handleBeforeUpload}
           >
             {fileList.length >= 1 ? null : uploadButton}
           </UploadContainer>
-          <Modal
-            open={previewOpen}
-            title={previewTitle}
-            footer={null}
-            onCancel={handleCancel}
-          >
+          <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
             <img
               alt="example"
               style={{
-                width: "100%",
+                width: '100%',
               }}
               src={previewImage}
             />
