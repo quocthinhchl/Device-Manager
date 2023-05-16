@@ -60,7 +60,7 @@ const ViewProfile = (props) => {
                 flexGrow: 1,
               }}
             >
-              <Avatar size={200} src={API + props.userData.avatar.url} />
+              <Avatar size={200} src={API + props.userData.avatar?.url} />
             </Col>
             <Col
               span={16}

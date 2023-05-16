@@ -5,6 +5,7 @@ import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import styled from 'styled-components';
 import axiosInstance from '../../../shared/services/http-client';
 import { useNavigate } from 'react-router';
+import { API } from '../../../shared/constants';
 
 const UserTable = (props) => {
     const TableData = styled.div`
@@ -24,7 +25,7 @@ const UserTable = (props) => {
         renderData()
     }, [props.selectOption, props.keyWord, props.blocked]);
     function renderData() {
-        axiosInstance.get(`/users?populate=devices&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`).then(res => {
+        axiosInstance.get(`/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`).then(res => {
             setData(res);
         }, [])
     }
@@ -75,7 +76,7 @@ const UserTable = (props) => {
             key: 'username',
             render: (text, useDataDevices) => (
                 <td class="ant-table-cell" scope="col">
-                    <Avatar src={useDataDevices.avatar} /> {useDataDevices.fullname}
+                    <Avatar src={API + useDataDevices.avatar?.url} /> {useDataDevices.fullname}
                 </td>
             )
         },
