@@ -72,7 +72,6 @@ const CreateUser = () => {
   };
 
   const valueList = checkedList.map((item) => item.label);
-  console.log(valueList);
 
   const onFinish = (values) => {
     const data = {
@@ -88,7 +87,6 @@ const CreateUser = () => {
       devices: valueList,
 
     };
-    console.log(values);
     axiosInstance
       .post("/users", data)
       .then((response) => {

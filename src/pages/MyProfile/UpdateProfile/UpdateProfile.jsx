@@ -69,7 +69,6 @@ const UpdateProfile = (props) => {
   const [fileList, setFileList] = useState([{
     url: `${API}${props.userData.avatar.url}`
   }]);
-  console.log(fileList.url, 'fl');
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -89,7 +88,6 @@ const UpdateProfile = (props) => {
     setFileList((prevList) => [...prevList, uploadFile]);
     return false; // prevent default upload behavior
   };
-  console.log(props.userData.id);
   const handleChange = async ({ fileList: newFileList }) => {
     setFileList(newFileList);
     const formData = new FormData();
@@ -102,14 +100,12 @@ const UpdateProfile = (props) => {
       return;
     }
     formData.append('files', file);
-    console.log(formData, 'formData');
     try {
       const response = await axiosInstance.post('/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-      console.log(response.data);
     } catch (error) {
       console.log(error, 11111);
     }

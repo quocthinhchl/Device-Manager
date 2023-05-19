@@ -28,7 +28,6 @@ const DeviceTable = (props) => {
 
         props.selectOption !== 'id' ? APIUser += `&filters[${props.selectOption}][$contains]=${props.keyWord}` : APIUser += `&filters[user][id][$eq]=${props.keyWord}`;
         props.status !== 'all' ? APIUser += `&filters[status][$eq]=${props.status}` : APIUser += ``;
-        console.log(6, APIUser);
 
 
         axiosInstance.get(`${APIUser} `).then(res => {
@@ -130,7 +129,6 @@ const DeviceTable = (props) => {
             ),
         },
     ];
-    console.log(currentChoice, 12322);
 
     return (
         <TableData>
