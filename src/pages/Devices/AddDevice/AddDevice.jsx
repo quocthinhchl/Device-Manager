@@ -128,7 +128,6 @@ export default function AddDevice() {
                     layout={'vertical'}
                     onFinish={handleSubmit}
                     onFinishFailed={onFinishFailed}
-
                 >
                     <Space >
                         <Form.Item name='code' label="Code" rules={[{ required: true, message: 'Please enter device code' }, {
