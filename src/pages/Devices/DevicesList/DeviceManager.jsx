@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button, Col, Input, Row, Select, Space, Table, notification, theme } from "antd";
 // import { useDebounce } from 'use-debounce';
 import styled from "styled-components";
 import { SearchOutlined, ShrinkOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router";
 import DeviceTable from "./DeviceTable";
+import { useDebounce } from "use-debounce";
+import debounce from "lodash.debounce";
 const options = [
     {
         value: 'active',
@@ -81,9 +83,12 @@ function DeviceManager() {
     function handleSelectBlocked(value) {
         setStatus(value);
     }
+    const DebounceSearch = useCallback(debounce((nextValue) => setKeyWord(nextValue), 700), []);
     const handleSearchValueChange = (event) => {
-        setKeyWord(event.target.value);
+        DebounceSearch(event.target.value)
+
     };
+
     let location = useLocation();
     return (
         <UserLayout>
