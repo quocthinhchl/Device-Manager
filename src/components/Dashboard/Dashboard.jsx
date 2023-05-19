@@ -49,7 +49,7 @@ function Dashboard({ setToken }) {
                 )}
 
                 <Routes>
-                    {user && <Route path="/" element={<WelcomePage userData={user} />} />}
+                    {user && <Route path="/" element={<UserManager />} />}
 
                     {/* My Profile */}
                     {user && <Route path="myprofile" element={<ViewProfile userData={user} />} />}

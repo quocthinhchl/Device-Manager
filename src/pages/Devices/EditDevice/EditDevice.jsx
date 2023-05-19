@@ -76,7 +76,6 @@ export default function EditDevice() {
             status: values.status,
             address: values.address,
         });
-        console.log(111, data);
     };
     const handleCancel = () => {
         setIsModalVisible(false);
@@ -92,7 +91,6 @@ export default function EditDevice() {
                 }
             }
             const response = await axiosInstance.put(`/devices/${id}`, data).catch((e) => {
-                console.log(112, data);
                 notification.error({
                     message: 'Lỗi',
                     description: `Lỗi.`,
@@ -105,7 +103,6 @@ export default function EditDevice() {
             navigate('/dashboard/device_list');
         }
         catch (error) {
-            console.log(1111, error);
             notification.error({
                 message: 'Không thể tạo',
                 description: error.error.name,

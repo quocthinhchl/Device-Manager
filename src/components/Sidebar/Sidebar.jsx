@@ -7,32 +7,9 @@ import { ReactComponent as UserIcon } from '../../assets/icons/Users.svg';
 import styled from 'styled-components';
 const items = [
     {
-        key: '/dashboard/users',
+        key: '/dashboard/users_list',
         icon: <UserIcon />,
         label: 'Users',
-        children: [
-            {
-                key: '/dashboard/myprofile',
-                icon: <UserIcon />,
-                label: 'My Profile'
-            },
-            {
-                key: '/dashboard/users_list',
-                icon: <UserIcon />,
-                label: 'User List'
-            },
-
-            // {
-            //     key: '/dashboard/create',
-            //     icon: <UserIcon />,
-            //     label: 'Create User'
-            // },
-            // {
-            //     key: '/dashboard/detail',
-            //     icon: <UserIcon />,
-            //     label: 'User detail'
-            // }
-        ]
     },
     {
         key: '/dashboard/device_list',

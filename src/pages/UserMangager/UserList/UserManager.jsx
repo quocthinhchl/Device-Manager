@@ -14,6 +14,10 @@ const options = [
     {
         value: '1',
         label: 'Inactive',
+    },
+    {
+        value: '',
+        label: 'All'
     }
 ];
 const UserLayout = styled.div`
