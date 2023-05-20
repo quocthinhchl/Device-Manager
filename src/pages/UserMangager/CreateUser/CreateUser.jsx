@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   theme,
   Col,
@@ -15,14 +15,15 @@ import {
   Table,
   message,
   Breadcrumb,
+  notification,
 } from "antd";
 import { DeleteOutlined, EyeInvisibleOutlined, EyeTwoTone, SearchOutlined, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../shared/services/http-client";
 import FormItem from "antd/es/form/FormItem";
-
 import icon from "../../../assets/images/Delete.png";
+import debounce from "lodash.debounce";
 
 
 const buttonStyle = {
@@ -63,9 +64,9 @@ const CreateUser = () => {
   const [search, setSearch] = useState('');
   const [form] = Form.useForm();
 
-
+  const DebounceSearch = useCallback(debounce((nextValue) => setSearch(nextValue), 700), []);
   const handleSearch = (event) => {
-    setSearch(event.target.value);
+    DebounceSearch(event.target.value);
   };
   const handleDelete = (record) => {
     setCheckedList(checkedList.filter((item) => item.value !== record.value));
@@ -94,12 +95,19 @@ const CreateUser = () => {
 
           navigate("/dashboard/users_list")
           // logOut()
-          message.success("Succes");
+          notification.success({
+            message: 'Tạo thành công',
+            description: `Tạo thành công`,
+          });
         }
       })
       .catch((error) => {
         console.log(error);
-        message.error("Some thing wrong");
+
+        notification.warning({
+          message: 'Có gì đó không ổn',
+          description: `Có gì đó không ổn`,
+        });
       });
   };
 
@@ -116,6 +124,15 @@ const CreateUser = () => {
     value: device.attributes.name,
     // list: device,
   }));
+
+  const handleCheckboxValidation = () => {
+    if (checkedList.length === 0) {
+      return Promise.reject('Please select at least one checkbox.');
+    }
+    return Promise.resolve();
+  };
+
+
 
 
   return (
@@ -360,12 +377,9 @@ const CreateUser = () => {
                         options={[
                           {
                             value: 1,
-                            label: "Guest",
-                          },
-                          {
-                            value: 2,
                             label: "User",
                           },
+
                           {
                             value: 3,
                             label: "Amin",
@@ -416,7 +430,9 @@ const CreateUser = () => {
                   </Col>
 
                   <Col span={24}>
-                    <FormItem label="Devices" name="Devices" rules={[{}]}>
+
+                    <Form.Item label="Devices" name="Devices" >
+
                       <Row style={{ border: "1px solid #dcd2d2" }}>
                         <Col
                           span={12}
@@ -427,37 +443,53 @@ const CreateUser = () => {
                           }}
                         >
 
-                          <Input suffix={<SearchOutlined />} value={search}
-                            onChange={handleSearch} enterButton />
 
-                          <List
-                            style={{
-                              height: 140,
-                              overflowY: "auto",
-                            }}
-                            dataSource={plainOptions}
-                            renderItem={(item) => (
-                              <List.Item>
-                                <Checkbox
-                                  value={item.value}
-                                  checked={checkedList.some((o) => o.value == item.value)}
-                                  onChange={(e) => {
-                                    if (e.target.checked) {
-                                      setCheckedList([...checkedList, item]);
-                                    } else {
-                                      setCheckedList(checkedList.filter((o) => o.value !== item.value));
-                                    }
-                                  }}
-                                >
-                                  {item.value}
-                                </Checkbox>
-                              </List.Item>
-
-
-
-
-                            )}
+                          <Input
+                            placeholder="Devices name..."
+                            suffix={<SearchOutlined />}
+                            size="default size"
+                            onChange={handleSearch}
                           />
+
+                          <Form.Item name="Devices" rules={[{
+
+                            validator: handleCheckboxValidation,
+
+
+                          }]}>
+                            <List
+                              style={{
+                                height: 130,
+                                overflowY: "auto",
+                              }}
+                              dataSource={plainOptions}
+                              renderItem={(item) => (
+                                <List.Item>
+
+
+                                  <Checkbox
+                                    value={item.value}
+                                    checked={checkedList.some((o) => o.value == item.value)}
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        setCheckedList([...checkedList, item]);
+                                      } else {
+                                        setCheckedList(checkedList.filter((o) => o.value !== item.value));
+                                      }
+                                    }}
+                                  >
+                                    {item.value}
+                                  </Checkbox>
+                                  {console.log(checkedList.length)}
+
+
+
+                                </List.Item>
+
+                              )}
+                            />
+                          </Form.Item>
+
                         </Col>
 
                         <Col
@@ -512,7 +544,7 @@ const CreateUser = () => {
                           </div>
                         </Col>
                       </Row>
-                    </FormItem>
+                    </Form.Item>
                   </Col>
                 </Row>
               </Form>

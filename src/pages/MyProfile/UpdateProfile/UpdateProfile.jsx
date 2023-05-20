@@ -168,7 +168,7 @@ const UpdateProfile = (props) => {
         >
           <Form
             id="myForm"
-            autoComplete="off"
+
             layout="vertical"
             onFinish={(values) => {
               console.log({ values });
@@ -202,11 +202,7 @@ const UpdateProfile = (props) => {
               name="email"
               label="Email:"
               rules={[
-                {
-                  required: true,
-                  message: "Please enter your email",
-                },
-                { type: "email", message: "Please enter a valid email" },
+
               ]}
             >
               <Input
@@ -241,9 +237,13 @@ const UpdateProfile = (props) => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your phone number!",
+
+                      message: "Please input owner PhoneNumber!",
                     },
-                    { min: 9 },
+                    { min: 10, message: 'Phone number must be at least 10 characters' },
+
+                    { max: 10, message: 'Phone number must be at most 10 characters' },
+                    { pattern: /^\d+$/, message: 'Please enter numbers only', },
                   ]}
                 >
                   <Input

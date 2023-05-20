@@ -144,7 +144,8 @@ export default function EditDevice() {
                     }
                     ]}>
                         <Input placeholder="Enter device code"
-                        // onChange={handleGetCode}
+                            // onChange={handleGetCode}
+                            disabled
                         />
                     </Form.Item>
                     <Form.Item name='name' label="Name" rules={[
