@@ -119,6 +119,15 @@ const CreateUser = () => {
     // list: device,
   }));
 
+  const handleCheckboxValidation = () => {
+    if (checkedList.length === 0) {
+      return Promise.reject('Please select at least one checkbox.');
+    }
+    return Promise.resolve();
+  };
+
+
+
 
   return (
     <>
@@ -362,12 +371,9 @@ const CreateUser = () => {
                         options={[
                           {
                             value: 1,
-                            label: "Guest",
-                          },
-                          {
-                            value: 2,
                             label: "User",
                           },
+
                           {
                             value: 3,
                             label: "Amin",
@@ -418,20 +424,31 @@ const CreateUser = () => {
                   </Col>
 
                   <Col span={24}>
-                    <FormItem label="Devices" name="Devices" rules={[{}]}>
-                      <Row style={{ border: "1px solid #dcd2d2" }}>
-                        <Col
-                          span={12}
-                          style={{
-                            padding: "10px 10px 10px 10px",
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
-                        >
+                    {/* <Form.Item label="Devices" name="Devices" rules={[{
 
-                          <Input suffix={<SearchOutlined />} value={search}
-                            onChange={handleSearch} enterButton />
+                      validator: handleCheckboxValidation,
 
+                    }]}> */}
+
+                    <label>Devices:</label>
+                    <Row style={{ border: "1px solid #dcd2d2" }}>
+                      <Col
+                        span={12}
+                        style={{
+                          padding: "10px 10px 10px 10px",
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+
+                        <Input suffix={<SearchOutlined />} value={search}
+                          onChange={handleSearch} enterButton />
+
+                        <Form.Item name="Devices" rules={[{
+
+                          validator: handleCheckboxValidation,
+
+                        }]}>
                           <List
                             style={{
                               height: 140,
@@ -440,6 +457,14 @@ const CreateUser = () => {
                             dataSource={plainOptions}
                             renderItem={(item) => (
                               <List.Item>
+                                {/* <Form.Item
+                                  name={"check"}
+                                  rules={[
+                                    {
+
+                                    }
+                                  ]}> */}
+
                                 <Checkbox
                                   value={item.value}
                                   checked={checkedList.some((o) => o.value == item.value)}
@@ -453,6 +478,10 @@ const CreateUser = () => {
                                 >
                                   {item.value}
                                 </Checkbox>
+                                {console.log(checkedList.length)}
+
+
+                                {/* </Form.Item> */}
                               </List.Item>
 
 
@@ -460,61 +489,63 @@ const CreateUser = () => {
 
                             )}
                           />
-                        </Col>
+                        </Form.Item>
 
-                        <Col
-                          span={12}
+                      </Col>
+
+                      <Col
+                        span={12}
+                        style={{
+                          borderLeft: "1px solid #dcd2d2",
+                          padding: 10,
+                        }}
+                      >
+                        <p style={{ fontWeight: "bold" }}>
+                          Seclect Devices ({checkedList.length})
+                        </p>
+                        <Table
                           style={{
-                            borderLeft: "1px solid #dcd2d2",
-                            padding: 10,
+                            height: 140,
+                            overflowY: "auto",
                           }}
-                        >
-                          <p style={{ fontWeight: "bold" }}>
-                            Seclect Devices ({checkedList.length})
-                          </p>
-                          <Table
-                            style={{
-                              height: 140,
-                              overflowY: "auto",
-                            }}
-                            pagination={{ hideOnSinglePage: true }}
-                            dataSource={checkedList}
-                            columns={[
-                              {
-                                dataIndex: 'value',
-                                key: 'value',
-                              },
-                              {
+                          pagination={{ hideOnSinglePage: true }}
+                          dataSource={checkedList}
+                          columns={[
+                            {
+                              dataIndex: 'value',
+                              key: 'value',
+                            },
+                            {
 
 
-                                render: (text, record) => (
+                              render: (text, record) => (
 
-                                  <img
-                                    style={{
-                                      float: "right"
-                                    }}
-                                    onClick={() =>
-                                      handleDelete(record)
-                                    }
-                                    src={icon}
-                                    className={""}
-                                    alt=""
-                                    height={20}
-                                    width={20}
-                                  />
-                                ),
-                              },
-                            ]}
+                                <img
+                                  style={{
+                                    float: "right"
+                                  }}
+                                  onClick={() =>
+                                    handleDelete(record)
+                                  }
+                                  src={icon}
+                                  className={""}
+                                  alt=""
+                                  height={20}
+                                  width={20}
+                                />
+                              ),
+                            },
+                          ]}
 
 
 
-                          />
-                          <div>
+                        />
+                        <div>
 
-                          </div>
-                        </Col>
-                      </Row>
-                    </FormItem>
+                        </div>
+                      </Col>
+                    </Row>
+                    {/* </Form.Item> */}
                   </Col>
                 </Row>
               </Form>

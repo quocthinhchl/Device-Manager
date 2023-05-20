@@ -240,7 +240,8 @@ const UpdateUser = ({ userId }) => {
                                                 size="default size"
                                                 placeholder="Enter owner email"
                                                 id="email"
-                                            // defaultValue={user.email}
+                                                // defaultValue={user.email}
+                                                disabled
 
                                             />
                                         </FormItem>
@@ -261,7 +262,8 @@ const UpdateUser = ({ userId }) => {
                                             <Input
                                                 size="default size"
                                                 placeholder="Enter owner username"
-                                            // defaultValue={user.username}
+                                                // defaultValue={user.username}
+                                                disabled
 
                                             />
                                         </FormItem>
@@ -391,10 +393,7 @@ const UpdateUser = ({ userId }) => {
                                                         value: 1,
                                                         label: "User",
                                                     },
-                                                    {
-                                                        value: 2,
-                                                        label: "Public",
-                                                    },
+
                                                     {
                                                         value: 3,
                                                         label: "Admin",

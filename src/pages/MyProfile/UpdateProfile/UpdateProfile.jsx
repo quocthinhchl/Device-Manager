@@ -123,7 +123,7 @@ const UpdateProfile = (props) => {
         }}
       >
         Upload
-      </div>
+      </div>npm star
     </div>
   );
   const defaultDate = moment(props.userData.dob);
