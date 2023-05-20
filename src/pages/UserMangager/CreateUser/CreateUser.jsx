@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   theme,
   Col,
@@ -15,14 +15,15 @@ import {
   Table,
   message,
   Breadcrumb,
+  notification,
 } from "antd";
 import { DeleteOutlined, EyeInvisibleOutlined, EyeTwoTone, SearchOutlined, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../shared/services/http-client";
 import FormItem from "antd/es/form/FormItem";
-
 import icon from "../../../assets/images/Delete.png";
+import debounce from "lodash.debounce";
 
 
 const buttonStyle = {
@@ -63,9 +64,9 @@ const CreateUser = () => {
   const [search, setSearch] = useState('');
   const [form] = Form.useForm();
 
-
+  const DebounceSearch = useCallback(debounce((nextValue) => setSearch(nextValue), 700), []);
   const handleSearch = (event) => {
-    setSearch(event.target.value);
+    DebounceSearch(event.target.value);
   };
   const handleDelete = (record) => {
     setCheckedList(checkedList.filter((item) => item.value !== record.value));
@@ -96,12 +97,19 @@ const CreateUser = () => {
 
           navigate("/dashboard/users_list")
           // logOut()
-          message.success("Succes");
+          notification.success({
+            message: 'Tạo thành công',
+            description: `Tạo thành công`,
+          });
         }
       })
       .catch((error) => {
         console.log(error);
-        message.error("Some thing wrong");
+
+        notification.warning({
+          message: 'Có gì đó không ổn',
+          description: `Có gì đó không ổn`,
+        });
       });
   };
 
@@ -424,128 +432,121 @@ const CreateUser = () => {
                   </Col>
 
                   <Col span={24}>
-                    {/* <Form.Item label="Devices" name="Devices" rules={[{
 
-                      validator: handleCheckboxValidation,
+                    <Form.Item label="Devices" name="Devices" >
 
-                    }]}> */}
+                      <Row style={{ border: "1px solid #dcd2d2" }}>
+                        <Col
+                          span={12}
+                          style={{
+                            padding: "10px 10px 10px 10px",
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
 
-                    <label>Devices:</label>
-                    <Row style={{ border: "1px solid #dcd2d2" }}>
-                      <Col
-                        span={12}
-                        style={{
-                          padding: "10px 10px 10px 10px",
-                          display: "flex",
-                          flexDirection: "column",
-                        }}
-                      >
 
-                        <Input suffix={<SearchOutlined />} value={search}
-                          onChange={handleSearch} enterButton />
+                          <Input
+                            placeholder="Devices name..."
+                            suffix={<SearchOutlined />}
+                            size="default size"
+                            onChange={handleSearch}
+                          />
 
-                        <Form.Item name="Devices" rules={[{
+                          <Form.Item name="Devices" rules={[{
 
-                          validator: handleCheckboxValidation,
+                            validator: handleCheckboxValidation,
 
-                        }]}>
-                          <List
+
+                          }]}>
+                            <List
+                              style={{
+                                height: 130,
+                                overflowY: "auto",
+                              }}
+                              dataSource={plainOptions}
+                              renderItem={(item) => (
+                                <List.Item>
+
+
+                                  <Checkbox
+                                    value={item.value}
+                                    checked={checkedList.some((o) => o.value == item.value)}
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        setCheckedList([...checkedList, item]);
+                                      } else {
+                                        setCheckedList(checkedList.filter((o) => o.value !== item.value));
+                                      }
+                                    }}
+                                  >
+                                    {item.value}
+                                  </Checkbox>
+                                  {console.log(checkedList.length)}
+
+
+
+                                </List.Item>
+
+                              )}
+                            />
+                          </Form.Item>
+
+                        </Col>
+
+                        <Col
+                          span={12}
+                          style={{
+                            borderLeft: "1px solid #dcd2d2",
+                            padding: 10,
+                          }}
+                        >
+                          <p style={{ fontWeight: "bold" }}>
+                            Seclect Devices ({checkedList.length})
+                          </p>
+                          <Table
                             style={{
                               height: 140,
                               overflowY: "auto",
                             }}
-                            dataSource={plainOptions}
-                            renderItem={(item) => (
-                              <List.Item>
-                                {/* <Form.Item
-                                  name={"check"}
-                                  rules={[
-                                    {
+                            pagination={{ hideOnSinglePage: true }}
+                            dataSource={checkedList}
+                            columns={[
+                              {
+                                dataIndex: 'value',
+                                key: 'value',
+                              },
+                              {
 
+
+                                render: (text, record) => (
+
+                                  <img
+                                    style={{
+                                      float: "right"
+                                    }}
+                                    onClick={() =>
+                                      handleDelete(record)
                                     }
-                                  ]}> */}
-
-                                <Checkbox
-                                  value={item.value}
-                                  checked={checkedList.some((o) => o.value == item.value)}
-                                  onChange={(e) => {
-                                    if (e.target.checked) {
-                                      setCheckedList([...checkedList, item]);
-                                    } else {
-                                      setCheckedList(checkedList.filter((o) => o.value !== item.value));
-                                    }
-                                  }}
-                                >
-                                  {item.value}
-                                </Checkbox>
-                                {console.log(checkedList.length)}
-
-
-                                {/* </Form.Item> */}
-                              </List.Item>
+                                    src={icon}
+                                    className={""}
+                                    alt=""
+                                    height={20}
+                                    width={20}
+                                  />
+                                ),
+                              },
+                            ]}
 
 
 
-
-                            )}
                           />
-                        </Form.Item>
+                          <div>
 
-                      </Col>
-
-                      <Col
-                        span={12}
-                        style={{
-                          borderLeft: "1px solid #dcd2d2",
-                          padding: 10,
-                        }}
-                      >
-                        <p style={{ fontWeight: "bold" }}>
-                          Seclect Devices ({checkedList.length})
-                        </p>
-                        <Table
-                          style={{
-                            height: 140,
-                            overflowY: "auto",
-                          }}
-                          pagination={{ hideOnSinglePage: true }}
-                          dataSource={checkedList}
-                          columns={[
-                            {
-                              dataIndex: 'value',
-                              key: 'value',
-                            },
-                            {
-
-
-                              render: (text, record) => (
-
-                                <img
-                                  style={{
-                                    float: "right"
-                                  }}
-                                  onClick={() =>
-                                    handleDelete(record)
-                                  }
-                                  src={icon}
-                                  className={""}
-                                  alt=""
-                                  height={20}
-                                  width={20}
-                                />
-                              ),
-                            },
-                          ]}
-
-
-
-                        />
-                        <div>
-
-                        </div>
-                      </Col>
-                    </Row>
-                    {/* </Form.Item> */}
+                          </div>
+                        </Col>
+                      </Row>
+                    </Form.Item>
                   </Col>
                 </Row>
               </Form>

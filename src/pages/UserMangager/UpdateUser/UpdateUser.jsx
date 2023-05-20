@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import dayjs from 'dayjs';
 import {
     theme,
@@ -18,7 +18,7 @@ import {
     notification,
     Breadcrumb,
 } from "antd";
-import { DeleteOutlined, EyeInvisibleOutlined, EyeTwoTone, UserOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EyeInvisibleOutlined, EyeTwoTone, SearchOutlined, UserOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../../../shared/services/http-client";
@@ -26,6 +26,7 @@ import FormItem from "antd/es/form/FormItem";
 import Search from "antd/es/transfer/search";
 import icon from "../../../assets/images/Delete.png";
 import Item from "antd/es/list/Item";
+import debounce from "lodash.debounce";
 
 const buttonStyle = {
     backgroundColor: "#8767E1",
@@ -51,12 +52,10 @@ const Content = styled.div`
     border-radius: 10px;
   `;
 
-const onSearch = (value) => console.log(value);
-const UpdateUser = ({ userId }) => {
-    const handleSubmit = (e) => {
-        e.preventDefault();
-    };
-    const [collapsed, setCollapsed] = useState(false);
+
+const UpdateUser = () => {
+
+
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -69,13 +68,14 @@ const UpdateUser = ({ userId }) => {
     const [search, setSearch] = useState('');
     const [DVS, setDVS] = useState([]);
     const [form] = Form.useForm();
+
     // const id = userId.pathname.substring(userId.pathname.lastIndexOf('/') + 1);
     const { id } = useParams()
 
     // console.log(11, idU);
-
+    const DebounceSearch = useCallback(debounce((nextValue) => setSearch(nextValue), 700), []);
     const handleSearch = (event) => {
-        setSearch(event.target.value);
+        DebounceSearch(event.target.value);
     };
     const handleDelete = (record) => {
         setCheckedList(checkedList.filter((item) => item.value !== record.value));
@@ -108,7 +108,7 @@ const UpdateUser = ({ userId }) => {
             })
             .catch((error) => {
                 console.log(error);
-                notification.success({
+                notification.warning({
                     message: 'Error',
                     description: `Error`,
                 });
@@ -164,6 +164,14 @@ const UpdateUser = ({ userId }) => {
         value: device.id,
         label: device.attributes.name,
     }));
+
+    const handleCheckboxValidation = () => {
+        if (checkedList.length === 0) {
+            return Promise.reject('Please select at least one checkbox.');
+        }
+        return Promise.resolve();
+    };
+
 
     return (
         <>
@@ -445,7 +453,9 @@ const UpdateUser = ({ userId }) => {
                                     </Col>
 
                                     <Col span={24}>
-                                        <FormItem label="Devices" name="Devices" rules={[{}]}>
+
+                                        <Form.Item label="Devices" name="Devices" rules={[{}]}>
+
                                             <Row style={{ border: "1px solid #dcd2d2" }}>
                                                 <Col
                                                     span={12}
@@ -456,38 +466,43 @@ const UpdateUser = ({ userId }) => {
                                                     }}
                                                 >
                                                     <Input
-                                                        placeholder="input search text"
-
+                                                        placeholder="Devices name..."
+                                                        suffix={<SearchOutlined />}
                                                         size="default size"
                                                         onChange={handleSearch}
                                                     />
+                                                    <Form.Item name="Devices" rules={[{
 
+                                                        validator: handleCheckboxValidation,
 
-                                                    <List
-                                                        style={{
-                                                            height: 150,
-                                                            overflowY: "auto",
-                                                        }}
-                                                        dataSource={plainOptions}
-                                                        renderItem={(item) => (
-                                                            <List.Item>
-                                                                <Checkbox
-                                                                    value={item.label}
-                                                                    checked={checkedList?.some((o) => o.value === item.value)}
-                                                                    onChange={(e) => {
-                                                                        if (e.target.checked) {
-                                                                            setCheckedList([...checkedList, item]);
+                                                    }]}>
 
-                                                                        } else {
-                                                                            setCheckedList(checkedList.filter((o) => o.value !== item.value));
-                                                                        }
-                                                                    }}
-                                                                >
-                                                                    {item.label}
-                                                                </Checkbox>
-                                                            </List.Item>
-                                                        )}
-                                                    />
+                                                        <List
+                                                            style={{
+                                                                height: 130,
+                                                                overflowY: "auto",
+                                                            }}
+                                                            dataSource={plainOptions}
+                                                            renderItem={(item) => (
+                                                                <List.Item>
+                                                                    <Checkbox
+                                                                        value={item.label}
+                                                                        checked={checkedList?.some((o) => o.value === item.value)}
+                                                                        onChange={(e) => {
+                                                                            if (e.target.checked) {
+                                                                                setCheckedList([...checkedList, item]);
+
+                                                                            } else {
+                                                                                setCheckedList(checkedList.filter((o) => o.value !== item.value));
+                                                                            }
+                                                                        }}
+                                                                    >
+                                                                        {item.label}
+                                                                    </Checkbox>
+                                                                </List.Item>
+                                                            )}
+                                                        />
+                                                    </Form.Item>
                                                 </Col>
 
                                                 <Col
@@ -539,7 +554,7 @@ const UpdateUser = ({ userId }) => {
                                                     </div>
                                                 </Col>
                                             </Row>
-                                        </FormItem>
+                                        </Form.Item>
                                     </Col>
                                 </Row>
                             </Form>
