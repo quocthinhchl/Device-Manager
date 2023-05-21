@@ -9,7 +9,8 @@ import Login from './pages/Authorization/Login/Login';
 import { Route, Router, useNavigate } from 'react-router-dom';
 import { Switch } from 'antd';
 import { BrowserRouter } from 'react-router-dom/dist';
-
+import { Provider } from 'react-redux';
+import store from './stores/rootStore';
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 // const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,10 +36,13 @@ root.render(
         </Route>
       </Switch>
     </Router> */}
+
     <BrowserRouter>
-      {/* <Login /> */}
-      <App />
-      {/* <AppRoutes /> */}
+      <Provider store={store}>
+        {/* <Login /> */}
+        <App />
+        {/* <AppRoutes /> */}
+      </Provider>
     </BrowserRouter>
   </StrictMode>
 );

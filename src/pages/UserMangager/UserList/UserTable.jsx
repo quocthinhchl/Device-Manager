@@ -6,29 +6,39 @@ import styled from 'styled-components';
 import axiosInstance from '../../../shared/services/http-client';
 import { useNavigate } from 'react-router';
 import { API } from '../../../shared/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserData, getUserList, setUserList } from '../../../stores/Slice/UserSlice';
 
 const UserTable = (props) => {
     const TableData = styled.div`
     width:100%;
+    /* max-height: 450px; Đặt chiều cao tối đa cho container */
         .ant-table-thead{
             background-color:#DDE4EE;
         }
     `
-
     const [useData, setData] = useState([]);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentChoice, setCurrentChoice] = useState('');
-
+    const dispatch = useDispatch()
 
     useEffect(() => {
         renderData()
+        // dispatch(getUserList(useData))
+        // dispatch(fetchUserData());
+        console.log(tableHeight, 2222);
     }, [props.selectOption, props.keyWord, props.blocked]);
+
+
     function renderData() {
         axiosInstance.get(`/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`).then(res => {
             setData(res);
         }, [])
     }
+    // dispatch(getUserList(useData))
+    // const userList = useSelector((state) => state.user.user_list)
+    // console.log(userList, 111);
 
 
     const handleOk = async () => {
@@ -120,8 +130,8 @@ const UserTable = (props) => {
         },
     ];
     return (
-        <TableData>
-            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 5 }} />
+        <TableData style={{ height: `${tableHeight}px` }}>
+            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 10 }} />
             <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <p>Bạn có chắc chắn muốn xoá {currentChoice?.attributes?.name} không?</p>
             </Modal>
