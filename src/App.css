@@ -14,3 +14,7 @@
 .ant-dropdown .ant-dropdown-menu {
   margin-top: 12px;
 }
+
+.ant-layout {
+  height: fit-content;
+}
