@@ -18,10 +18,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { UploadContainer } from "./style";
 import axiosInstance from "../../../shared/services/http-client";
-import ImgCrop from 'antd-img-crop';
+// import ImgCrop from 'antd-img-crop';
 
 import { API } from "../../../shared/constants";
 import Upload from "antd/es/upload/Upload";
+import { UserProfile } from "../../../stores/Slice/UserSlice";
+import { useSelector } from "react-redux";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -58,12 +60,14 @@ const UpdateProfile = (props) => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+  const userProfile = useSelector(UserProfile)
+
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState([{
-    url: `${API}${props.userData.avatar?.url}`
+    url: `${API}${userProfile.user_profile.avatar?.url}`
   }]);
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
@@ -88,7 +92,7 @@ const UpdateProfile = (props) => {
     setFileList(newFileList);
     const formData = new FormData();
     formData.append('ref', 'plugin::users-permissions.user');
-    formData.append('refId', `${props.userData.id}`);
+    formData.append('refId', `${userProfile.user_profile.id}`);
     formData.append('field', 'avatar');
     const file = newFileList[0].originFileObj;
     if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
@@ -128,7 +132,7 @@ const UpdateProfile = (props) => {
 
     };
     axiosInstance
-      .put(`/users/${props.userData.id}`, data)
+      .put(`/users/${userProfile.user_profile.id}`, data)
       .then((response) => {
         if (response != null) {
 
@@ -151,19 +155,20 @@ const UpdateProfile = (props) => {
   };
   useEffect(() => {
     // set default value for fullname field when user state changes
-    if (props.userData) {
+    if (userProfile.user_profile) {
       form.setFieldsValue({
-        fullname: props.userData.fullname,
+        fullname: userProfile.user_profile.fullname,
 
-        username: props.userData.username,
-        phoneNumber: props.userData.phoneNumber,
+        username: userProfile.user_profile.username,
+        email: userProfile.user_profile.email,
+        phoneNumber: userProfile.user_profile.phoneNumber,
 
-        dob: dayjs(props.userData.dob, 'YYYY-MM-DD'),
-
+        dob: dayjs(userProfile.user_profile.dob, 'YYYY-MM-DD'),
+        role: userProfile.user_profile.role?.name,
       });
     }
     // console.log(88, user);
-  }, [props.userData]);
+  }, [userProfile.user_profile]);
 
 
 
@@ -181,7 +186,7 @@ const UpdateProfile = (props) => {
               href: '/dashboard/myprofile',
             },
             {
-              title: <b>{props.userData.fullname}</b>,
+              title: <b>{userProfile.user_profile.fullname}</b>,
               href: '',
             },
           ]}
@@ -255,11 +260,11 @@ const UpdateProfile = (props) => {
             >
               <Input
                 placeholder="Type your name"
-                defaultValue={props.userData.fullname}
+              // defaultValue={props.userData.fullname}
               />
             </Form.Item>
-            <Form.Item name="fullName" label="Username:">
-              <Input disabled defaultValue={props.userData.username} />
+            <Form.Item name="username" label="Username:">
+              <Input disabled />
             </Form.Item>
 
             <Form.Item
@@ -270,7 +275,7 @@ const UpdateProfile = (props) => {
               <Input
                 placeholder="Type your email"
 
-                defaultValue={props.userData.email}
+                // defaultValue={props.userData.email}
                 disabled
               ></Input>
             </Form.Item>
@@ -317,11 +322,11 @@ const UpdateProfile = (props) => {
               </Space>
             </div>
 
-            <Form.Item label="Role:">
+            <Form.Item name="role" label="Role:">
               <Input
                 style={{ width: "100%" }}
                 placeholder="role"
-                defaultValue={props.userData.role.name}
+                // defaultValue={props.userData.role.name}
                 disabled
               />
             </Form.Item>
