@@ -27,7 +27,6 @@ const UserTable = (props) => {
         renderData()
         // dispatch(getUserList(useData))
         // dispatch(fetchUserData());
-        console.log(tableHeight, 2222);
     }, [props.selectOption, props.keyWord, props.blocked]);
 
 
@@ -130,7 +129,7 @@ const UserTable = (props) => {
         },
     ];
     return (
-        <TableData style={{ height: `${tableHeight}px` }}>
+        <TableData>
             <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 10 }} />
             <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <p>Bạn có chắc chắn muốn xoá {currentChoice?.attributes?.name} không?</p>

@@ -185,7 +185,7 @@ export default function AddDevice() {
                                 <Button style={buttonStyle} htmlType="submit">Save</Button>
                                 {contextHolder}
                                 {/* <Button style={buttonStyle}>Save Fake</Button> */}
-                                <Button >Cancel</Button>
+                                <Button onClick={() => { navigate('/dashboard/device_list') }}>Cancel</Button>
                             </Space>
                         </Row>
                     </Form.Item>
