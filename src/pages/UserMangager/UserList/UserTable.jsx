@@ -7,7 +7,7 @@ import axiosInstance from '../../../shared/services/http-client';
 import { useNavigate } from 'react-router';
 import { API } from '../../../shared/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserData, getUserList, setUserList } from '../../../stores/Slice/UserSlice';
+import { UserProfile, fetchUserData, getUserList, setUserList } from '../../../stores/Slice/UserSlice';
 
 const UserTable = (props) => {
     const TableData = styled.div`
@@ -21,7 +21,7 @@ const UserTable = (props) => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentChoice, setCurrentChoice] = useState('');
-    const dispatch = useDispatch()
+    const userProfile = useSelector(UserProfile)
 
     useEffect(() => {
         renderData()
@@ -118,12 +118,7 @@ const UserTable = (props) => {
                     <span>
                         <a onClick={() => handleDetail(useData.id)}><EyeOutlined /></a>
                     </span>
-                    <span>
-                        <a onClick={() => handleEdit(useData.id)} ><EditOutlined /></a>
-                    </span>
-                    <span>
-                        <a onClick={() => handleDelete(useData.id)} ><DeleteOutlined /></a>
-                    </span>
+                    {(userProfile.isAdmin) ? <span> <a onClick={() => handleEdit(useData.id)} ><EditOutlined /></a>  <a onClick={() => handleDelete(useData.id)} ><DeleteOutlined /></a> </span> : ''}
                 </span>
             ),
         },

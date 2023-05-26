@@ -6,6 +6,8 @@ import { SearchOutlined, ShrinkOutlined } from "@ant-design/icons";
 import UserTable from "./UserTable";
 import { useLocation, useNavigate } from "react-router";
 import debounce from "lodash.debounce";
+import { useSelector } from "react-redux";
+import { UserProfile } from "../../../stores/Slice/UserSlice";
 const options = [
     {
         value: '0',
@@ -69,6 +71,7 @@ function UserManager() {
     const [keyWord, setKeyWord] = useState('');
     const [blocked, setBlocked] = useState('');
     const navigate = useNavigate();
+    const userProfile = useSelector(UserProfile)
 
     // const [debouncedSearchTerm] = useDebounce(keyWord, 500);
 
@@ -96,7 +99,7 @@ function UserManager() {
                             <h3>All User</h3>
                         </Col>
                         <Col>
-                            <Button style={buttonStyle} onClick={() => { navigate('/dashboard/users_list/create') }}> Add User</Button>
+                            {(userProfile.isAdmin) ? <Button style={buttonStyle} onClick={() => { navigate('/dashboard/users_list/create') }}> Add User</Button> : ''}
                         </Col>
                     </Row>
 

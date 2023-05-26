@@ -18,6 +18,8 @@ import ErrorPage from "../../pages/Error/Error";
 import AddDevice from "../../pages/Devices/AddDevice/AddDevice";
 import DeviceDetail from "../../pages/Devices/DeviceDetail/DeviceDetail";
 import EditDevice from "../../pages/Devices/EditDevice/EditDevice";
+import { useDispatch, useSelector } from "react-redux";
+import { UserProfile, fetchUserProfileAction, setRole } from "../../stores/Slice/UserSlice";
 
 function Dashboard({ setToken }) {
     const [user, setUser] = useState();
@@ -25,14 +27,14 @@ function Dashboard({ setToken }) {
     const navigate = useNavigate();
     const [collapsed, setIsSidebarOpen] = useState(false);
     const Location = useLocation();
-
+    const dispatch = useDispatch()
+    const userProfile = useSelector(UserProfile)
     useEffect(() => {
-        axiosInstance.get("users/me?populate=role,avatar").then((res) => {
-            setUser(res);
-        }).catch((error) => {
-            navigate('/dashboard/error')
 
-        })
+        dispatch(fetchUserProfileAction({ populate: 'role,avatar' }))
+        console.log(userProfile.user_profile.role?.id);
+        const checkRole = (userProfile.user_profile.role?.id === 3) ? true : false
+        dispatch(setRole(checkRole))
     }, []);
 
     const toggleSidebar = () => {
@@ -44,19 +46,19 @@ function Dashboard({ setToken }) {
         <div className="App">
             <Sidebar collapsed={collapsed} />
             <Layout>
-                {user && (
-                    <Navbar toggle={toggleSidebar} setToken={setToken} userData={user} />
+                {userProfile && (
+                    <Navbar toggle={toggleSidebar} setToken={setToken} />
                 )}
 
                 <Routes>
-                    {user && <Route path="/" element={<UserManager />} />}
+                    {userProfile && <Route path="/" element={<UserManager />} />}
 
                     {/* My Profile */}
-                    {user && <Route path="myprofile" element={<ViewProfile userData={user} />} />}
-                    {user && (
+                    {userProfile && <Route path="myprofile" element={<ViewProfile userData={user} />} />}
+                    {userProfile && (
                         <Route path="myprofile/update" element={<UpdateProfile userData={user} />} />
                     )}
-                    {user && (
+                    {userProfile && (
                         <Route path="myprofile/change" element={<ChangePass setToken={setToken} />} />
                     )}
 
