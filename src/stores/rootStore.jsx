@@ -1,12 +1,15 @@
 import { combineReducers, createStore } from 'redux'
 import userReducer from './Slice/UserSlice'
 import { configureStore } from '@reduxjs/toolkit'
-const rootStore = combineReducers({
-    // counter: counterReducer,
-    user: userReducer,
-})
+// const rootStore = combineReducers({
+//     // counter: counterReducer,
+//     user: userReducer,
+// })
+
 const store = configureStore({
-    reducer: rootStore
+    reducer: {
+        user: userReducer,
+    },
 })
 // export const store = configureStore({
 //     reducer: {

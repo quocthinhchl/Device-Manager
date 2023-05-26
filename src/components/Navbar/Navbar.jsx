@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import axiosInstance from '../../shared/services/http-client';
 import { useNavigate } from 'react-router';
 import { API } from '../../shared/constants';
+import { UserProfile } from '../../stores/Slice/UserSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const url =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
@@ -13,6 +15,7 @@ const url =
 const Navbar = (props) => {
   const [useUser, setUser] = useState('')
   const navigate = useNavigate();
+  const userProfile = useSelector(UserProfile)
 
   function logOut() {
     localStorage.removeItem("token");
@@ -79,11 +82,11 @@ const Navbar = (props) => {
         <Col>
           <Row justify={'space-between'}>
             <AvatarUser>
-              <Avatar src={API + props.userData.avatar?.url} />
+              <Avatar src={API + userProfile.user_profile.avatar?.url} />
             </AvatarUser>
             <InforUser>
-              <Row>{props.userData.fullname}</Row>
-              <Row>{props.userData.role.name}</Row>
+              <Row>{userProfile.user_profile.fullname}</Row>
+              <Row>{userProfile.user_profile.role?.name}</Row>
             </InforUser>
           </Row>
         </Col>
