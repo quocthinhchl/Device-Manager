@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Modal, Table, Tag, notification } from 'antd';
+import { Avatar, Modal, Space, Table, Tag, notification } from 'antd';
 // import { useDebounce } from 'use-debounce';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import styled from 'styled-components';
@@ -114,12 +114,15 @@ const UserTable = (props) => {
             dataIndex: 'actions',
             key: 'actions',
             render: (text, useData) => (
-                <span>
+                <Space>
+
                     <span>
-                        <a onClick={() => handleDetail(useData.id)}><EyeOutlined /></a>
+                        <span>
+                            <a onClick={() => handleDetail(useData.id)}><EyeOutlined /></a>
+                        </span>
+                        {(userProfile.isAdmin) ? <span> <a onClick={() => handleEdit(useData.id)} ><EditOutlined /></a>  <a onClick={() => handleDelete(useData.id)} ><DeleteOutlined /></a> </span> : ''}
                     </span>
-                    {(userProfile.isAdmin) ? <span> <a onClick={() => handleEdit(useData.id)} ><EditOutlined /></a>  <a onClick={() => handleDelete(useData.id)} ><DeleteOutlined /></a> </span> : ''}
-                </span>
+                </Space>
             ),
         },
     ];

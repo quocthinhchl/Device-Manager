@@ -14,9 +14,7 @@ export const userSlice = createSlice({
         isAdmin: false
     },
     reducers: {
-        setRole: (state, action) => {
-            state.isAdmin = action.payload
-        }
+
     },
     extraReducers: (builder) => {
         builder.addCase(fetchUserProfileAction.pending, (state, action) => {
@@ -25,12 +23,13 @@ export const userSlice = createSlice({
         builder.addCase(fetchUserProfileAction.fulfilled, (state, action) => {
             state.user_profile = action.payload
             state.loading = false
+            const checkRole = state.user_profile?.role?.id === 3; // Kiểm tra giá trị role
+            state.isAdmin = checkRole;
         })
         builder.addCase(fetchUserProfileAction.rejected, (state, action) => {
             state.loading = false
         });
     }
 })
-export const { setRole } = userSlice.actions
 export const UserProfile = (state) => state.user
 export default userSlice.reducer
