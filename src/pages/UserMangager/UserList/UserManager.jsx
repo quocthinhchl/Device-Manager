@@ -131,7 +131,7 @@ function UserManager() {
                                     }}
                                 >
                                     <Select
-                                        defaultValue="Active"
+                                        defaultValue="All"
                                         onChange={handleSelectBlocked}
                                         style={{
                                             width: 200,
