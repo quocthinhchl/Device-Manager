@@ -47,6 +47,13 @@ const ViewProfile = (props) => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+
+  useEffect(() => {
+
+  }, [props.userData]);
+
+
+
   return (
     <>
       <PathName>My Profile</PathName>
@@ -85,6 +92,7 @@ const ViewProfile = (props) => {
                 <Descriptions.Item label="Role">
                   {props.userData.role.name}
                 </Descriptions.Item>
+                {console.log(4, props.userData.id)}
               </Descriptions>
             </Col>
           </Row>
@@ -93,7 +101,7 @@ const ViewProfile = (props) => {
             <Space>
               <Button
                 style={buttonStyle}
-                onClick={() => {
+                onClick={(id) => {
                   navigate("update");
                 }}
               >

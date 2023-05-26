@@ -9,17 +9,19 @@ import {
   Form,
   DatePicker,
   Modal,
-  Upload,
-  message,
   Divider,
+  notification,
+  Breadcrumb,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { UploadContainer } from "./style";
 import axiosInstance from "../../../shared/services/http-client";
-import moment from "moment";
+import ImgCrop from 'antd-img-crop';
+
 import { API } from "../../../shared/constants";
+import Upload from "antd/es/upload/Upload";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -28,13 +30,7 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  return isJpgOrPng;
-};
+
 const buttonStyle = {
   backgroundColor: "#8767E1",
   color: "#fff",
@@ -67,7 +63,7 @@ const UpdateProfile = (props) => {
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState([{
-    url: `${API}${props.userData.avatar.url}`
+    url: `${API}${props.userData.avatar?.url}`
   }]);
   const handleCancel = () => setPreviewOpen(false);
   const handlePreview = async (file) => {
@@ -122,10 +118,74 @@ const UpdateProfile = (props) => {
       </div>
     </div>
   );
-  const defaultDate = moment(props.userData.dob);
+  const [form] = Form.useForm();
+  const onFinish = (values) => {
+    const data = {
+      fullname: values.fullname,
+      dob: values.dob,
+      phonenumber: values.phonenumber,
+
+
+    };
+    axiosInstance
+      .put(`/users/${props.userData.id}`, data)
+      .then((response) => {
+        if (response != null) {
+
+          navigate("/dashboard/myprofile")
+
+          notification.success({
+            message: 'Tạo thành công',
+            description: `Tạo thành công`,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+
+        notification.warning({
+          message: 'Có gì đó không ổn',
+          description: `Có gì đó không ổn`,
+        });
+      });
+  };
+  useEffect(() => {
+    // set default value for fullname field when user state changes
+    if (props.userData) {
+      form.setFieldsValue({
+        fullname: props.userData.fullname,
+
+        username: props.userData.username,
+        phoneNumber: props.userData.phoneNumber,
+
+        dob: dayjs(props.userData.dob, 'YYYY-MM-DD'),
+
+      });
+    }
+    // console.log(88, user);
+  }, [props.userData]);
+
+
+
+
+
+
   return (
     <>
-      <PathName>Update Profile</PathName>
+      <PathName>
+        <Breadcrumb
+          separator=">"
+          items={[
+            {
+              title: 'View Profile',
+              href: '/dashboard/myprofile',
+            },
+            {
+              title: <b>{props.userData.fullname}</b>,
+              href: '',
+            },
+          ]}
+        /></PathName>
       <Content
         style={{
           display: "flex",
@@ -139,8 +199,10 @@ const UpdateProfile = (props) => {
             width: "40%",
             paddingLeft: 20,
             flexGrow: 1,
+
           }}
         >
+          {/* <ImgCrop > */}
           <UploadContainer
             listType="picture-circle"
             fileList={fileList}
@@ -150,6 +212,10 @@ const UpdateProfile = (props) => {
           >
             {fileList.length >= 1 ? null : uploadButton}
           </UploadContainer>
+          {/* </ImgCrop> */}
+
+
+
           <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
             <img
               alt="example"
@@ -168,24 +234,22 @@ const UpdateProfile = (props) => {
         >
           <Form
             id="myForm"
-
             layout="vertical"
-            onFinish={(values) => {
-              console.log({ values });
-            }}
-            onFinishFailed={(error) => {
-              console.log({ error });
-            }}
+            // form={form}
+
+            form={form}
+            onFinish={onFinish}
+
           >
             <Form.Item
-              name="fullName"
+              name="fullname"
               label="Full Name:"
               rules={[
                 {
                   required: true,
                   message: "Please enter your name",
                 },
-                // { whitespace: true },
+                { whitespace: true },
                 { min: 3 },
               ]}
             >
@@ -201,13 +265,11 @@ const UpdateProfile = (props) => {
             <Form.Item
               name="email"
               label="Email:"
-              rules={[
 
-              ]}
             >
               <Input
                 placeholder="Type your email"
-                value={"hung@gmail.com"}
+
                 defaultValue={props.userData.email}
                 disabled
               ></Input>
@@ -225,14 +287,14 @@ const UpdateProfile = (props) => {
                   ]}
                 >
                   <DatePicker
-                    style={{ width: "100%" }}
+                    style={{ width: 348 }}
                     picker="date"
                     placeholder="Chose date of birth"
-                    defaultValue={dayjs(props.userData.dob, 'YYYY-MM-DD')}
+                  // defaultValue={dayjs(props.userData.dob, 'YYYY-MM-DD')}
                   />
                 </Form.Item>
                 <Form.Item
-                  name="phone"
+                  name="phoneNumber"
                   label="Phone Number:"
                   rules={[
                     {
@@ -247,9 +309,9 @@ const UpdateProfile = (props) => {
                   ]}
                 >
                   <Input
-                    style={{ width: "100%" }}
-                    defaultValue={props.userData.phoneNumber}
-                    value={"Admin"}
+                    style={{ width: 348 }}
+                  // defaultValue={props.userData.phoneNumber}
+
                   />
                 </Form.Item>
               </Space>
@@ -295,7 +357,8 @@ const UpdateProfile = (props) => {
             </Button>
           </Space>
         </div>
-      </Content>
+
+      </Content >
     </>
   );
 };
