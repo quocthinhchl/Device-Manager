@@ -7,6 +7,12 @@ export const fetchUserProfileAction = createAsyncThunk('user/fetchUserProfile', 
     return res
 })
 
+export const updateUserProfileAction = createAsyncThunk('user/updateUserProfile', async (payload, thunkApi) => {
+    const res = await UserService.updateUserProfile(payload)
+    // thunkApi(dispatch(fetchUserProfileAction))
+    return res
+})
+
 export const userSlice = createSlice({
     name: 'user',
     initialState: {

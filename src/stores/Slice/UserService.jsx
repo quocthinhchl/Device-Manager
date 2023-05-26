@@ -9,6 +9,15 @@ const UserService = {
         // console.log(res);
         return res
     },
+    updateUserProfile: async (params) => {
+        // console.log(params);
+        const res = await axiosInstance.post('/upload', params, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return res
+    },
     // addTodoList: async (params) => {
     //     // console.log(params);
     //     const res = await axios.post('http://localhost:3000/todos', { title: params })
