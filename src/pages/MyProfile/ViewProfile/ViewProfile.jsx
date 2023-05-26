@@ -16,6 +16,8 @@ import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "../../../shared/services/http-client";
 import { API } from "../../../shared/constants";
+import { UserProfile } from "../../../stores/Slice/UserSlice";
+import { useSelector } from "react-redux";
 const url =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU";
 
@@ -47,10 +49,12 @@ const ViewProfile = (props) => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+  const userProfile = useSelector(UserProfile)
 
-  useEffect(() => {
 
-  }, [props.userData]);
+  // useEffect(() => {
+
+  // }, [userProfile.user_profile]);
 
 
 
@@ -67,7 +71,7 @@ const ViewProfile = (props) => {
                 flexGrow: 1,
               }}
             >
-              <Avatar size={200} src={API + props.userData.avatar?.url} />
+              <Avatar size={200} src={API + userProfile.user_profile.avatar?.url} />
             </Col>
             <Col
               span={16}
@@ -78,21 +82,21 @@ const ViewProfile = (props) => {
             >
               <Descriptions title="" layout="vertical" column={2}>
                 <Descriptions.Item label="Name">
-                  {props.userData.fullname}
+                  {userProfile.user_profile.fullname}
                 </Descriptions.Item>
                 <Descriptions.Item label="Email">
-                  {props.userData.email}
+                  {userProfile.user_profile.email}
                 </Descriptions.Item>
                 <Descriptions.Item label="Phone Number">
-                  {props.userData.phoneNumber}
+                  {userProfile.user_profile.phoneNumber}
                 </Descriptions.Item>
                 <Descriptions.Item label="DOB">
-                  {props.userData.dob}
+                  {userProfile.user_profile.dob}
                 </Descriptions.Item>
                 <Descriptions.Item label="Role">
-                  {props.userData.role.name}
+                  {userProfile.user_profile.role?.name}
                 </Descriptions.Item>
-                {console.log(4, props.userData.id)}
+                {/* {console.log(4, props.userData.id)} */}
               </Descriptions>
             </Col>
           </Row>

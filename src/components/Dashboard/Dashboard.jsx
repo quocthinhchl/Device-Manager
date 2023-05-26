@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import { Layout } from "antd";
 import Navbar from "../Navbar/Navbar";
-import { Route, Routes, useLocation, useNavigate, useParams } from "react-router";
+import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from "react-router";
 import ViewProfile from "../../pages/MyProfile/ViewProfile/ViewProfile";
 import UpdateProfile from "../../pages/MyProfile/UpdateProfile/UpdateProfile";
 import { BrowserRouter } from "react-router-dom";
@@ -51,19 +51,19 @@ function Dashboard({ setToken }) {
                 )}
 
                 <Routes>
-                    {userProfile && <Route path="/" element={<UserManager />} />}
+                    {userProfile && <Route path="/" element={<Navigate to="users_list" replace />} />}
 
                     {/* My Profile */}
-                    {userProfile && <Route path="myprofile" element={<ViewProfile userData={user} />} />}
+                    {userProfile && <Route path="myprofile" element={<ViewProfile />} />}
                     {userProfile && (
-                        <Route path="myprofile/update" element={<UpdateProfile userData={user} />} />
+                        <Route path="myprofile/update" element={<UpdateProfile />} />
                     )}
                     {userProfile && (
                         <Route path="myprofile/change" element={<ChangePass setToken={setToken} />} />
                     )}
 
                     {/* User List */}
-                    <Route path="users_list" element={<UserManager />} />
+                    <Route path="users_list" index element={<UserManager />} />
                     <Route path="users_list/create" element={<CreateUser />} />
                     <Route
                         path="users_list/detail/:id"

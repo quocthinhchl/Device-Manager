@@ -57,7 +57,7 @@ const ChangePass = (props) => {
 
           navigate("/dashboard/myprofile")
           // logOut()
-          message.success("Succes");
+          message.success("Success");
         }
       })
       .catch((error) => {
@@ -74,7 +74,7 @@ const ChangePass = (props) => {
           width: "35%",
         }}
       >
-        <p>Now you can create a new password for your acconut</p>
+        <p>Now you can create a new password for your account</p>
         <Form
           autoComplete="off"
           layout="vertical"
