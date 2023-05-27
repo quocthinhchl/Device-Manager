@@ -127,7 +127,7 @@ function DeviceManager() {
                                             },
                                         ]}
                                     />
-                                    <Input suffix={<SearchOutlined />} onChange={handleSearchValueChange} enterButton />
+                                    <Input suffix={<SearchOutlined />} onChange={handleSearchValueChange} enterButton placeholder="Search" />
                                 </Space.Compact>
                             </Col>
                             <Col>
