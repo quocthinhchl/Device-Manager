@@ -42,7 +42,7 @@ const UserLayout = styled.div`
     }
     .ant-space-compact .ant-select-compact-item .ant-select-arrow{
         padding-right:10px;
-        border-right:1px solid #111;
+        border-right:1px solid #CBCBCB;
     }
     .ant-dropdown{
         margin-top: 4px;

@@ -2,7 +2,8 @@ import axios from 'axios';
 import { ACCESS_TOKEN } from '../constants';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://edison-device-api.savvycom.xyz/api/',
+  // baseURL: 'https://edison-device-api.savvycom.xyz/api/',
+  baseURL: 'http://localhost:1337/api/',
   headers: {
     Accept: 'applications/json',
     'Content-Type': 'application/json',
