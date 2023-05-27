@@ -9,7 +9,13 @@ export const fetchUserProfileAction = createAsyncThunk('user/fetchUserProfile', 
 
 export const updateUserProfileAction = createAsyncThunk('user/updateUserProfile', async (payload, thunkApi) => {
     const res = await UserService.updateUserProfile(payload)
-    // thunkApi(dispatch(fetchUserProfileAction))
+    thunkApi.dispatch(fetchUserProfileAction({ populate: 'role,avatar' }));
+    return res
+})
+
+export const updateAvatarUserProfileAction = createAsyncThunk('user/updateAvatarUserProfile', async (payload, thunkApi) => {
+    const res = await UserService.updateAvatarUserProfile(payload)
+    thunkApi.dispatch(fetchUserProfileAction({ populate: 'role,avatar' }));
     return res
 })
 
@@ -35,6 +41,28 @@ export const userSlice = createSlice({
         builder.addCase(fetchUserProfileAction.rejected, (state, action) => {
             state.loading = false
         });
+        builder.addCase(updateUserProfileAction.pending, (state, action) => {
+            state.loading = true
+        });
+        builder.addCase(updateUserProfileAction.fulfilled, (state, action) => {
+            state.user_profile = action.payload
+            state.loading = false
+        })
+        builder.addCase(updateUserProfileAction.rejected, (state, action) => {
+            state.loading = false
+        });
+
+        builder.addCase(updateAvatarUserProfileAction.pending, (state, action) => {
+            state.loading = true
+        });
+        builder.addCase(updateAvatarUserProfileAction.fulfilled, (state, action) => {
+            state.user_profile.avatar = action.payload
+            state.loading = false
+        })
+        builder.addCase(updateAvatarUserProfileAction.rejected, (state, action) => {
+            state.loading = false
+        });
+
     }
 })
 export const UserProfile = (state) => state.user

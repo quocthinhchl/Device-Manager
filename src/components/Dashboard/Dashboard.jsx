@@ -32,7 +32,7 @@ function Dashboard({ setToken }) {
     useEffect(() => {
 
         dispatch(fetchUserProfileAction({ populate: 'role,avatar' }))
-        console.log(userProfile.user_profile.role?.id);
+        // console.log(userProfile.user_profile.role?.id);
         // const checkRole = (userProfile.user_profile.role?.id === 3) ? true : false
         // dispatch(setRole(checkRole))
     }, []);

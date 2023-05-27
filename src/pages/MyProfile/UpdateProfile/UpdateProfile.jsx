@@ -22,8 +22,8 @@ import axiosInstance from "../../../shared/services/http-client";
 
 import { API } from "../../../shared/constants";
 import Upload from "antd/es/upload/Upload";
-import { UserProfile } from "../../../stores/Slice/UserSlice";
-import { useSelector } from "react-redux";
+import { UserProfile, updateAvatarUserProfileAction, updateUserProfileAction, } from "../../../stores/Slice/UserSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -60,8 +60,8 @@ const UpdateProfile = (props) => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const userProfile = useSelector(UserProfile)
-
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
@@ -69,7 +69,12 @@ const UpdateProfile = (props) => {
   const [fileList, setFileList] = useState([{
     url: `${API}${userProfile.user_profile.avatar?.url}`
   }]);
+  // const formData = new FormData(); 
+  const [image, setImage] = useState()
+
+
   const handleCancel = () => setPreviewOpen(false);
+
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -79,6 +84,7 @@ const UpdateProfile = (props) => {
     setPreviewOpen(true);
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
   };
+
   const handleBeforeUpload = (file) => {
     const uploadFile = {
       uid: file.uid,
@@ -88,6 +94,7 @@ const UpdateProfile = (props) => {
     setFileList((prevList) => [...prevList, uploadFile]);
     return false; // prevent default upload behavior
   };
+
   const handleChange = async ({ fileList: newFileList }) => {
     setFileList(newFileList);
     const formData = new FormData();
@@ -100,15 +107,15 @@ const UpdateProfile = (props) => {
       return;
     }
     formData.append('files', file);
-    try {
-      const response = await axiosInstance.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-    } catch (error) {
-      console.log(error, 11111);
-    }
+    // console.log(11, formData);
+    setImage(formData)
+    // try {
+    //   // console.log(11, formData);
+
+    // dispatch(updateAvataUserProfileAction({ formData }))
+    // } catch (error) {
+    //   console.log(error, 11111);
+    // }
   };
   const uploadButton = (
     <div>
@@ -127,31 +134,37 @@ const UpdateProfile = (props) => {
     const data = {
       fullname: values.fullname,
       dob: values.dob,
-      phonenumber: values.phonenumber,
-
+      phoneNumber: values.phoneNumber,
 
     };
-    axiosInstance
-      .put(`/users/${userProfile.user_profile.id}`, data)
-      .then((response) => {
-        if (response != null) {
+    console.log(88, data);
+    // UpLoad Avatar
+    // console.log(33, formData);
+    dispatch(updateAvatarUserProfileAction({ image }))
 
-          navigate("/dashboard/myprofile")
+    dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
 
-          notification.success({
-            message: 'Tạo thành công',
-            description: `Tạo thành công`,
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
+    // axiosInstance
+    //   .put(`/users/${userProfile.user_profile.id}`, data)
+    //   .then((response) => {
+    //     if (response != null) {
 
-        notification.warning({
-          message: 'Có gì đó không ổn',
-          description: `Có gì đó không ổn`,
-        });
-      });
+    //       navigate("/dashboard/myprofile")
+
+    //       notification.success({
+    //         message: 'Tạo thành công',
+    //         description: `Tạo thành công`,
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+
+    //     notification.warning({
+    //       message: 'Có gì đó không ổn',
+    //       description: `Có gì đó không ổn`,
+    //     });
+    //   });
   };
   useEffect(() => {
     // set default value for fullname field when user state changes

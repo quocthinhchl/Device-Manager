@@ -9,9 +9,39 @@ const UserService = {
         // console.log(res);
         return res
     },
+    // updateUserProfile: async (params) => {
+    //     // console.log(params);
+    //     const res = await axiosInstance.put(`/users/${userProfile.user_profile.id}`, data)
+    //     // .then((response) => {
+    //     //     if (response != null) {
+
+    //     //         navigate("/dashboard/myprofile")
+
+    //     //         notification.success({
+    //     //             message: 'Tạo thành công',
+    //     //             description: `Tạo thành công`,
+    //     //         });
+    //     //     }
+    //     // })
+    //     // .catch((error) => {
+    //     //     console.log(error);
+
+    //     //     notification.warning({
+    //     //         message: 'Có gì đó không ổn',
+    //     //         description: `Có gì đó không ổn`,
+    //     //     });
+    //     // });
+    //     return res
+    // },
+
     updateUserProfile: async (params) => {
-        // console.log(params);
-        const res = await axiosInstance.post('/upload', params, {
+        console.log(params);
+        const res = await axiosInstance.put(`/users/${params.id}`, params.data)
+        return res
+    },
+    updateAvatarUserProfile: async (params) => {
+        // console.log(22, params);
+        const res = await axiosInstance.post('/upload', params.image, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
