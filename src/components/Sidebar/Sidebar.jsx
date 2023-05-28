@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Menu } from 'antd';
 import { ProfileOutlined } from '@ant-design/icons';
 import Sider from 'antd/es/layout/Sider';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as UserIcon } from '../../assets/icons/Users.svg';
 import styled from 'styled-components';
 const items = [
@@ -41,6 +41,17 @@ const SideBar = styled.div`
 `;
 const Sidebar = props => {
     const navigate = useNavigate();
+    const [current, setCurrent] = useState('1');
+    const [selectedKeys, setSelectedKeys] = useState([]);
+    const location = useLocation();
+
+    useEffect(() => {
+        const currentPath = location.pathname;
+        const matchingItem = items.find((item) => currentPath.includes(item.key));
+        if (matchingItem) {
+            setSelectedKeys([matchingItem.key]);
+        }
+    }, [location]);
     return (
         <SideBar trigger={null}>
             <Sider trigger={null} collapsible collapsed={props.collapsed} >
@@ -48,9 +59,11 @@ const Sidebar = props => {
                 <Menu
                     onClick={item => {
                         navigate(item.key);
+                        setSelectedKeys([item.key]);
                     }}
                     mode="inline"
                     items={items}
+                    selectedKeys={selectedKeys}
                     style={{ height: '100%', borderRight: 0 }}
                 ></Menu>
             </Sider>

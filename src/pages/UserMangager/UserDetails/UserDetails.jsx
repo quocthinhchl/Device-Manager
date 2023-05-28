@@ -5,6 +5,7 @@ import axiosInstance from "../../../shared/services/http-client";
 import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
 import { UserProfile } from "../../../stores/Slice/UserSlice";
+import { Link } from "react-router-dom";
 
 const PathName = styled.p`
     margin: 10px 25px 0px 20px;
@@ -97,8 +98,7 @@ export default function UserDetails({ userId }) {
                     separator=">"
                     items={[
                         {
-                            title: 'All user',
-                            href: '/dashboard/users_list'
+                            title: <Link to='/dashboard/users_list'>All User</Link>,
                         },
                         {
                             title: <b>{user.fullname}</b>,

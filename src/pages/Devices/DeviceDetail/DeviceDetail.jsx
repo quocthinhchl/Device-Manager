@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import axiosInstance from "../../../shared/services/http-client";
-import { useNavigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 const Content = styled.div`
     margin: 15px 16px;
@@ -89,12 +90,11 @@ export default function DeviceDetail() {
                     separator=">"
                     items={[
                         {
-                            title: 'All Device',
-                            href: '/dashboard/device_list'
+                            title: <Link to='/dashboard/device_list'>All Device</Link>,
                         },
                         {
-                            title: <b>{deviceDetail.attributes?.name}</b>,
-                            href: '',
+                            title: <Link to={`/dashboard/device_list/detail/${id}`}>{deviceDetail.attributes?.name}</Link>,
+
                         },
                     ]}
                 />

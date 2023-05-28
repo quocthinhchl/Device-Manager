@@ -28,6 +28,9 @@ const Navbar = (props) => {
   }
   const InforUser = styled.div`
     margin-top: -4px;
+    width: 118px;
+    height: 42px;
+    white-space: nowrap;
     .ant-row:last-child {
       font-weight: 400;
       font-size: 12px;
@@ -40,7 +43,10 @@ const Navbar = (props) => {
       font-size: 14px;
       line-height: 22px;
       color: #111111;
+      text-overflow: ellipsis;
+      overflow-x: hidden;
     }
+
   `;
   const AvatarUser = styled.div`
     margin-right: 10px;

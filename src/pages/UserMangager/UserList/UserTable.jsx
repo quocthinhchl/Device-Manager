@@ -16,6 +16,14 @@ const UserTable = (props) => {
         .ant-table-thead{
             background-color:#DDE4EE;
         }
+        .ant-table-tbody .ant-table-cell:last-child a{
+            margin: 0px 5px;
+            font-size: 16px;
+            color:#1D3557
+        }
+        .ant-table-tbody .ant-table-cell:last-child a:hover{
+            opacity:50%
+        }
     `
     const [useData, setData] = useState([]);
     const navigate = useNavigate();

@@ -17,4 +17,6 @@
 
 .ant-layout {
   height: fit-content;
+  /* flex-grow: 1; */
+
 }

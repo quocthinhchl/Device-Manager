@@ -1,9 +1,10 @@
-import { Button, Col, Divider, Form, Input, Modal, Row, Select, Space, notification } from "antd";
+import { Breadcrumb, Button, Col, Divider, Form, Input, Modal, Row, Select, Space, notification } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import axiosInstance from "../../../shared/services/http-client";
 import { Navigate, useNavigate, useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 const Content = styled.div`
     margin: 15px 16px;
@@ -31,6 +32,15 @@ const Content = styled.div`
         padding-top: 10px
     }
 `;
+const PathName = styled.p`
+    margin: 10px 25px 0px 20px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 32px;
+    color: #111111;
+  `;
 export default function EditDevice() {
     const [name, setName] = useState('')
     const [code, setCode] = useState('')
@@ -130,87 +140,103 @@ export default function EditDevice() {
         setAddress(e.target.value)
     };
     return (
-        <Content>
-            <Form
-                layout={'vertical'}
-                onFinish={showModal}
-                form={form}
-            // initialValues={defaultValues.data}
-            >
-                <Space >
-                    <Form.Item name='code' label="Code" rules={[{ required: true, message: 'Please enter device code' }, {
-                        pattern: /^([a-zA-Z]{3})_([0-9]{2})$/,
-                        message: 'Hay nhap theo format XXX_YY voi YY la 2 so)'
-                    }
-                    ]}>
-                        <Input placeholder="Enter device code"
-                            // onChange={handleGetCode}
-                            disabled
-                        />
-                    </Form.Item>
-                    <Form.Item name='name' label="Name" rules={[
+        <>
+            <PathName>
+                <Breadcrumb
+                    separator=">"
+                    items={[
                         {
-                            required: true,
+                            title: <Link to='/dashboard/device_list'>All Device</Link>,
                         },
                         {
-                            type: 'string',
-                            min: 6,
-                        },
-                    ]}>
-                        <Input placeholder="Enter device name"
-                            // onChange={handleGetName}
-                            name="name"
-                        />
-                    </Form.Item>
-                    <Form.Item label="Status" name='status'>
-                        <Select
-                            placeholder="Select a status"
-                            options={[
-                                {
-                                    value: 'active',
-                                    label: 'Active',
-                                },
-                                {
-                                    value: 'inactive',
-                                    label: 'Inactive',
-                                },
-                            ]}
-                        // onChange={handleGetStatus}
-                        />
-                    </Form.Item>
-                </Space>
-                <Form.Item
-                    name="address"
-                    label='Address'
-                    rules={[{ required: true, message: 'Please input Intro' }]}
-                    style={{ width: '100%', height: 120, paddingBottom: 10 }}
-                >
+                            title: <Link to={`/dashboard/device_list/edit/${id}`}>{deviceDetail.attributes?.name}</Link>,
 
-                    <Input.TextArea style={{ width: '100%', height: 120 }}
-                    // onChange={handleGetAddress} 
-                    />
-                </Form.Item>
-                <Form.Item>
-                    <Row>
-                        <Divider />
-                        <Space>
-                            <Button style={buttonStyle} htmlType="submit">Save</Button>
-                            {/* <Button style={buttonStyle}>Save Fake</Button> */}
-                            <Button >Cancel</Button>
-                        </Space>
-                    </Row>
-                </Form.Item>
-            </Form>
-            <Modal
-                title="Xác nhận chỉnh sửa"
-                visible={isModalVisible}
-                onOk={handleSubmit}
-                onCancel={handleCancel}
-                okText="Đồng ý"
-                cancelText="Hủy bỏ"
-            >
-                <p>Bạn có chắc muốn chỉnh sửa không không?</p>
-            </Modal>
-        </Content >
+                        },
+                    ]}
+                />
+            </PathName>
+            <Content>
+                <Form
+                    layout={'vertical'}
+                    onFinish={showModal}
+                    form={form}
+                // initialValues={defaultValues.data}
+                >
+                    <Space >
+                        <Form.Item name='code' label="Code" rules={[{ required: true, message: 'Please enter device code' }, {
+                            pattern: /^([a-zA-Z]{3})_([0-9]{2})$/,
+                            message: 'Hay nhap theo format XXX_YY voi YY la 2 so)'
+                        }
+                        ]}>
+                            <Input placeholder="Enter device code"
+                                // onChange={handleGetCode}
+                                disabled
+                            />
+                        </Form.Item>
+                        <Form.Item name='name' label="Name" rules={[
+                            {
+                                required: true,
+                            },
+                            {
+                                type: 'string',
+                                min: 6,
+                            },
+                        ]}>
+                            <Input placeholder="Enter device name"
+                                // onChange={handleGetName}
+                                name="name"
+                            />
+                        </Form.Item>
+                        <Form.Item label="Status" name='status'>
+                            <Select
+                                placeholder="Select a status"
+                                options={[
+                                    {
+                                        value: 'active',
+                                        label: 'Active',
+                                    },
+                                    {
+                                        value: 'inactive',
+                                        label: 'Inactive',
+                                    },
+                                ]}
+                            // onChange={handleGetStatus}
+                            />
+                        </Form.Item>
+                    </Space>
+                    <Form.Item
+                        name="address"
+                        label='Address'
+                        rules={[{ required: true, message: 'Please input Intro' }]}
+                        style={{ width: '100%', height: 120, paddingBottom: 10 }}
+                    >
+
+                        <Input.TextArea style={{ width: '100%', height: 120 }}
+                        // onChange={handleGetAddress} 
+                        />
+                    </Form.Item>
+                    <Form.Item>
+                        <Row>
+                            <Divider />
+                            <Space>
+                                <Button style={buttonStyle} htmlType="submit">Save</Button>
+                                {/* <Button style={buttonStyle}>Save Fake</Button> */}
+                                <Button >Cancel</Button>
+                            </Space>
+                        </Row>
+                    </Form.Item>
+                </Form>
+                <Modal
+                    title="Xác nhận chỉnh sửa"
+                    visible={isModalVisible}
+                    onOk={handleSubmit}
+                    onCancel={handleCancel}
+                    okText="Đồng ý"
+                    cancelText="Hủy bỏ"
+                >
+                    <p>Bạn có chắc muốn chỉnh sửa không không?</p>
+                </Modal>
+            </Content >
+        </>
     )
 }

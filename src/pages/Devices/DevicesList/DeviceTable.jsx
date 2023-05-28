@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, Modal, Table, Tag, notification } from 'antd';
+import { Avatar, Modal, Space, Table, Tag, notification } from 'antd';
 // import { useDebounce } from 'use-debounce';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
 import styled from 'styled-components';
@@ -7,13 +7,22 @@ import axiosInstance from '../../../shared/services/http-client';
 import { useNavigate } from 'react-router';
 import { API } from '../../../shared/constants';
 
-const DeviceTable = (props) => {
-    const TableData = styled.div`
+const TableData = styled.div`
     width:100%;
         .ant-table-thead{
             background-color:#DDE4EE;
         }
+        .ant-table-tbody .ant-table-cell:last-child a{
+            margin: 0px 6px;
+            font-size: 16px;
+            color:#1D3557
+        }
+        .ant-table-tbody .ant-table-cell:last-child a:hover{
+            opacity:50%
+        }
     `
+
+const DeviceTable = (props) => {
 
     const [useData, setData] = useState([]);
     const navigate = useNavigate();
