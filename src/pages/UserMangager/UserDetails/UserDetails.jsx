@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components";
 import axiosInstance from "../../../shared/services/http-client";
 import { useNavigate, useParams } from "react-router";
+import { useSelector } from "react-redux";
+import { UserProfile } from "../../../stores/Slice/UserSlice";
+import { Link } from "react-router-dom";
 
 const PathName = styled.p`
     margin: 10px 25px 0px 20px;
@@ -59,6 +62,7 @@ export default function UserDetails({ userId }) {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { id } = useParams()
+    const userProfile = useSelector(UserProfile)
 
 
 
@@ -94,8 +98,7 @@ export default function UserDetails({ userId }) {
                     separator=">"
                     items={[
                         {
-                            title: 'All user',
-                            href: '/dashboard/users_list'
+                            title: <Link to='/dashboard/users_list'>All User</Link>,
                         },
                         {
                             title: <b>{user.fullname}</b>,
@@ -166,7 +169,41 @@ export default function UserDetails({ userId }) {
                 </DevicesList>
 
                 <Row style={{ borderTop: "1px solid #dcd2d2", marginTop: "32px" }}>
-                    <Space style={{ paddingTop: 24 }}>
+                    {(userProfile.isAdmin)
+                        ? <Space style={{ paddingTop: 24 }}>
+                            <Button
+                                style={{
+                                    background: "#8767E1",
+                                    color: "#F1F4F9"
+                                }}
+                                onClick={() => {
+                                    navigate(`/dashboard/users_list/edit/${id}`);
+                                }}
+                            >
+                                Edit
+                            </Button>
+                            <Button
+                                style={{
+                                    color: "#8767E1"
+                                }}
+                                onClick={HandleDelete}
+                            >
+                                Delete
+                            </Button>
+                        </Space>
+                        : <Space style={{ paddingTop: 24 }}>
+                            <Button
+                                style={{
+                                    color: "rgb(135, 103, 225)"
+                                }}
+                                onClick={() => {
+                                    navigate(`/dashboard/users_list`);
+                                }}
+                            >
+                                Back
+                            </Button>
+                        </Space>}
+                    {/* <Space style={{ paddingTop: 24 }}>
                         <Button
                             style={{
                                 background: "#8767E1",
@@ -186,7 +223,7 @@ export default function UserDetails({ userId }) {
                         >
                             Delete
                         </Button>
-                    </Space>
+                    </Space> */}
                 </Row>
             </Content>
             <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>

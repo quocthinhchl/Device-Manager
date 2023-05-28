@@ -9,17 +9,21 @@ import {
   Form,
   DatePicker,
   Modal,
-  Upload,
-  message,
   Divider,
+  notification,
+  Breadcrumb,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { UploadContainer } from "./style";
 import axiosInstance from "../../../shared/services/http-client";
-import moment from "moment";
+// import ImgCrop from 'antd-img-crop';
+
 import { API } from "../../../shared/constants";
+import Upload from "antd/es/upload/Upload";
+import { UserProfile, updateAvatarUserProfileAction, updateUserProfileAction, } from "../../../stores/Slice/UserSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -28,13 +32,7 @@ const getBase64 = (file) =>
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  return isJpgOrPng;
-};
+
 const buttonStyle = {
   backgroundColor: "#8767E1",
   color: "#fff",
@@ -62,14 +60,21 @@ const UpdateProfile = (props) => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const userProfile = useSelector(UserProfile)
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState([{
-    url: `${API}${props.userData.avatar.url}`
+    url: `${API}${userProfile.user_profile.avatar?.url}`
   }]);
+  // const formData = new FormData(); 
+  const [image, setImage] = useState()
+
+
   const handleCancel = () => setPreviewOpen(false);
+
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
@@ -79,6 +84,7 @@ const UpdateProfile = (props) => {
     setPreviewOpen(true);
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
   };
+
   const handleBeforeUpload = (file) => {
     const uploadFile = {
       uid: file.uid,
@@ -88,11 +94,12 @@ const UpdateProfile = (props) => {
     setFileList((prevList) => [...prevList, uploadFile]);
     return false; // prevent default upload behavior
   };
+
   const handleChange = async ({ fileList: newFileList }) => {
     setFileList(newFileList);
     const formData = new FormData();
     formData.append('ref', 'plugin::users-permissions.user');
-    formData.append('refId', `${props.userData.id}`);
+    formData.append('refId', `${userProfile.user_profile.id}`);
     formData.append('field', 'avatar');
     const file = newFileList[0].originFileObj;
     if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
@@ -100,15 +107,15 @@ const UpdateProfile = (props) => {
       return;
     }
     formData.append('files', file);
-    try {
-      const response = await axiosInstance.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-    } catch (error) {
-      console.log(error, 11111);
-    }
+    // console.log(11, formData);
+    setImage(formData)
+    // try {
+    //   // console.log(11, formData);
+
+    // dispatch(updateAvataUserProfileAction({ formData }))
+    // } catch (error) {
+    //   console.log(error, 11111);
+    // }
   };
   const uploadButton = (
     <div>
@@ -122,10 +129,81 @@ const UpdateProfile = (props) => {
       </div>
     </div>
   );
-  const defaultDate = moment(props.userData.dob);
+  const [form] = Form.useForm();
+  const onFinish = (values) => {
+    const data = {
+      fullname: values.fullname,
+      dob: values.dob,
+      phoneNumber: values.phoneNumber,
+
+    };
+    console.log(88, data);
+    // UpLoad Avatar
+    // console.log(33, formData);
+    dispatch(updateAvatarUserProfileAction({ image }))
+
+    dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
+
+    // axiosInstance
+    //   .put(`/users/${userProfile.user_profile.id}`, data)
+    //   .then((response) => {
+    //     if (response != null) {
+
+    //       navigate("/dashboard/myprofile")
+
+    //       notification.success({
+    //         message: 'Tạo thành công',
+    //         description: `Tạo thành công`,
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+
+    //     notification.warning({
+    //       message: 'Có gì đó không ổn',
+    //       description: `Có gì đó không ổn`,
+    //     });
+    //   });
+  };
+  useEffect(() => {
+    // set default value for fullname field when user state changes
+    if (userProfile.user_profile) {
+      form.setFieldsValue({
+        fullname: userProfile.user_profile.fullname,
+
+        username: userProfile.user_profile.username,
+        email: userProfile.user_profile.email,
+        phoneNumber: userProfile.user_profile.phoneNumber,
+
+        dob: dayjs(userProfile.user_profile.dob, 'YYYY-MM-DD'),
+        role: userProfile.user_profile.role?.name,
+      });
+    }
+    // console.log(88, user);
+  }, [userProfile.user_profile]);
+
+
+
+
+
+
   return (
     <>
-      <PathName>Update Profile</PathName>
+      <PathName>
+        <Breadcrumb
+          separator=">"
+          items={[
+            {
+              title: 'View Profile',
+              href: '/dashboard/myprofile',
+            },
+            {
+              title: <b>{userProfile.user_profile.fullname}</b>,
+              href: '',
+            },
+          ]}
+        /></PathName>
       <Content
         style={{
           display: "flex",
@@ -139,8 +217,10 @@ const UpdateProfile = (props) => {
             width: "40%",
             paddingLeft: 20,
             flexGrow: 1,
+
           }}
         >
+          {/* <ImgCrop > */}
           <UploadContainer
             listType="picture-circle"
             fileList={fileList}
@@ -150,6 +230,10 @@ const UpdateProfile = (props) => {
           >
             {fileList.length >= 1 ? null : uploadButton}
           </UploadContainer>
+          {/* </ImgCrop> */}
+
+
+
           <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
             <img
               alt="example"
@@ -168,47 +252,43 @@ const UpdateProfile = (props) => {
         >
           <Form
             id="myForm"
-
             layout="vertical"
-            onFinish={(values) => {
-              console.log({ values });
-            }}
-            onFinishFailed={(error) => {
-              console.log({ error });
-            }}
+            // form={form}
+
+            form={form}
+            onFinish={onFinish}
+
           >
             <Form.Item
-              name="fullName"
+              name="fullname"
               label="Full Name:"
               rules={[
                 {
                   required: true,
                   message: "Please enter your name",
                 },
-                // { whitespace: true },
+                { whitespace: true },
                 { min: 3 },
               ]}
             >
               <Input
                 placeholder="Type your name"
-                defaultValue={props.userData.fullname}
+              // defaultValue={props.userData.fullname}
               />
             </Form.Item>
-            <Form.Item name="fullName" label="Username:">
-              <Input disabled defaultValue={props.userData.username} />
+            <Form.Item name="username" label="Username:">
+              <Input disabled />
             </Form.Item>
 
             <Form.Item
               name="email"
               label="Email:"
-              rules={[
 
-              ]}
             >
               <Input
                 placeholder="Type your email"
-                value={"hung@gmail.com"}
-                defaultValue={props.userData.email}
+
+                // defaultValue={props.userData.email}
                 disabled
               ></Input>
             </Form.Item>
@@ -225,14 +305,14 @@ const UpdateProfile = (props) => {
                   ]}
                 >
                   <DatePicker
-                    style={{ width: "100%" }}
+                    style={{ width: 348 }}
                     picker="date"
                     placeholder="Chose date of birth"
-                    defaultValue={dayjs(props.userData.dob, 'YYYY-MM-DD')}
+                  // defaultValue={dayjs(props.userData.dob, 'YYYY-MM-DD')}
                   />
                 </Form.Item>
                 <Form.Item
-                  name="phone"
+                  name="phoneNumber"
                   label="Phone Number:"
                   rules={[
                     {
@@ -247,19 +327,19 @@ const UpdateProfile = (props) => {
                   ]}
                 >
                   <Input
-                    style={{ width: "100%" }}
-                    defaultValue={props.userData.phoneNumber}
-                    value={"Admin"}
+                    style={{ width: 348 }}
+                  // defaultValue={props.userData.phoneNumber}
+
                   />
                 </Form.Item>
               </Space>
             </div>
 
-            <Form.Item label="Role:">
+            <Form.Item name="role" label="Role:">
               <Input
                 style={{ width: "100%" }}
                 placeholder="role"
-                defaultValue={props.userData.role.name}
+                // defaultValue={props.userData.role.name}
                 disabled
               />
             </Form.Item>
@@ -295,7 +375,8 @@ const UpdateProfile = (props) => {
             </Button>
           </Space>
         </div>
-      </Content>
+
+      </Content >
     </>
   );
 };

@@ -28,7 +28,7 @@ function App() {
       navigate('/')
     } else {
       if (location.pathname === '/') {
-        navigate('/dashboard')
+        navigate('/dashboard ')
       } else {
         navigate(`${location.pathname}`)
       }
