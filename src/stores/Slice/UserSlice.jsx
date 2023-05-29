@@ -14,7 +14,7 @@ export const updateUserProfileAction = createAsyncThunk('user/updateUserProfile'
             throw new Error(error.response.data.error.message)
         })
 
-    await thunkApi.dispatch(fetchUserProfileAction({ populate: 'role,avatar' }));
+    thunkApi.dispatch(fetchUserProfileAction({ populate: 'role,avatar' }));
     return res
 })
 
