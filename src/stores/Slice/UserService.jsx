@@ -35,7 +35,7 @@ const UserService = {
     // },
 
     updateUserProfile: async (params) => {
-        console.log(params);
+        // console.log(params);
         const res = await axiosInstance.put(`/users/${params.id}`, params.data)
         return res
     },

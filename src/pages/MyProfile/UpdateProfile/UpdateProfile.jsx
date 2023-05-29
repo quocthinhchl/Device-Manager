@@ -22,7 +22,7 @@ import axiosInstance from "../../../shared/services/http-client";
 
 import { API } from "../../../shared/constants";
 import Upload from "antd/es/upload/Upload";
-import { UserProfile, updateAvatarUserProfileAction, updateUserProfileAction, } from "../../../stores/Slice/UserSlice";
+import { UserProfile, deleteError, updateAvatarUserProfileAction, updateUserProfileAction, } from "../../../stores/Slice/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const getBase64 = (file) =>
@@ -71,7 +71,6 @@ const UpdateProfile = (props) => {
   }]);
   // const formData = new FormData(); 
   const [image, setImage] = useState()
-
 
   const handleCancel = () => setPreviewOpen(false);
 
@@ -130,19 +129,40 @@ const UpdateProfile = (props) => {
     </div>
   );
   const [form] = Form.useForm();
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     const data = {
       fullname: values.fullname,
       dob: values.dob,
       phoneNumber: values.phoneNumber,
 
     };
-    console.log(88, data);
+    // console.log(88, data);
     // UpLoad Avatar
     // console.log(33, formData);
-    dispatch(updateAvatarUserProfileAction({ image }))
+    await Promise.all([
+      dispatch(updateAvatarUserProfileAction({ image })),
+      dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
+    ]);
 
-    dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
+    console.log(22, userProfile.user_profile);
+    // await dispatch(updateAvatarUserProfileAction({ image }))
+
+    // await dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
+
+    if (userProfile.error.length != 0) {
+      notification['error']({
+        message: userProfile.error[0],
+        description: 'Có lỗi xảy ra, vui lòng thử lại',
+      });
+      console.log(55, userProfile.error);
+      dispatch(deleteError())
+    } else {
+      notification['success']({
+        message: 'Cập nhật thông tin thành công',
+        description: 'Cập nhật thông tin thành công',
+      });
+    }
+
 
     // axiosInstance
     //   .put(`/users/${userProfile.user_profile.id}`, data)
