@@ -21,7 +21,7 @@ const items = [
 ];
 const SideBar = styled.div`
   .ant-layout-sider .ant-layout-sider-children > ul {
-    margin-top: 35px;
+    /* margin-top: 35px; */
   }
   .ant-layout-sider .ant-layout-sider-children ul li span{
     color: #8767E1;

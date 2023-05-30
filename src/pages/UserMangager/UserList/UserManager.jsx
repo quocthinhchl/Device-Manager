@@ -10,6 +10,10 @@ import { useSelector } from "react-redux";
 import { UserProfile } from "../../../stores/Slice/UserSlice";
 const options = [
     {
+        value: '',
+        label: 'All'
+    },
+    {
         value: '0',
         label: 'Active',
     },
@@ -17,10 +21,6 @@ const options = [
         value: '1',
         label: 'Inactive',
     },
-    {
-        value: '',
-        label: 'All'
-    }
 ];
 const UserLayout = styled.div`
     display:flex;

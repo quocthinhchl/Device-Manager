@@ -9,16 +9,16 @@ import { useDebounce } from "use-debounce";
 import debounce from "lodash.debounce";
 const options = [
     {
+        value: 'all',
+        label: 'All',
+    },
+    {
         value: 'active',
         label: 'Active',
     },
     {
         value: 'inactive',
         label: 'Inactive',
-    },
-    {
-        value: 'all',
-        label: 'All',
     },
 ];
 const UserLayout = styled.div`
