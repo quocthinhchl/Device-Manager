@@ -27,6 +27,8 @@ import Search from "antd/es/transfer/search";
 import icon from "../../../assets/images/Delete.png";
 import Item from "antd/es/list/Item";
 import debounce from "lodash.debounce";
+import { useSelector } from "react-redux";
+import { UserProfile } from "../../../stores/Slice/UserSlice";
 
 const buttonStyle = {
     backgroundColor: "#8767E1",
@@ -67,6 +69,7 @@ const UpdateUser = () => {
     const [deviceNames, setDeviceNames] = useState([]);
     const [search, setSearch] = useState('');
     const [DVS, setDVS] = useState([]);
+    const userProfile = useSelector(UserProfile)
     const [form] = Form.useForm();
 
     // const id = userId.pathname.substring(userId.pathname.lastIndexOf('/') + 1);
@@ -122,6 +125,7 @@ const UpdateUser = () => {
             setDVS(res.devices);
             // console.log(55, res);
         };
+        if (!userProfile.isAdmin) navigate("/dashboard/users_list")
         fetchUser();
     }, []);
 
