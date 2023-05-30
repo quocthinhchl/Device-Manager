@@ -57,7 +57,12 @@ const Sidebar = props => {
         <SideBar trigger={null}>
             <Sider trigger={null} collapsible collapsed={props.collapsed} >
                 {/* <p onClick={() => { navigate('/dashboard') }}>Menu</p> */}
-                <img src={logo} onClick={() => { navigate('/dashboard') }} />
+                <img
+                    style={{
+                        paddingLeft: 2,
+                        height: 70,
+                    }}
+                    src={logo} onClick={() => { navigate('/dashboard') }} />
                 <Menu
                     onClick={item => {
                         navigate(item.key);
