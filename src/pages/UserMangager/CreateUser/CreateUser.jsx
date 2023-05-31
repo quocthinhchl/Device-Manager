@@ -24,6 +24,8 @@ import axiosInstance from "../../../shared/services/http-client";
 import FormItem from "antd/es/form/FormItem";
 import icon from "../../../assets/images/Delete.png";
 import debounce from "lodash.debounce";
+import { UserProfile } from "../../../stores/Slice/UserSlice";
+import { useSelector } from "react-redux";
 
 
 const buttonStyle = {
@@ -63,6 +65,7 @@ const CreateUser = () => {
   const [deviceNames, setDeviceNames] = useState([]);
   const [search, setSearch] = useState('');
   const [form] = Form.useForm();
+  const userProfile = useSelector(UserProfile)
 
   const DebounceSearch = useCallback(debounce((nextValue) => setSearch(nextValue), 700), []);
   const handleSearch = (event) => {
@@ -112,10 +115,12 @@ const CreateUser = () => {
   };
 
 
+  if (!userProfile.isAdmin) navigate("/dashboard/users_list")
   useEffect(() => {
     axiosInstance.get(`/devices?filters[name][$contains]=${search}`).then((res) => {
       setDeviceNames(res.data);
     });
+
   }, [search]);
 
 

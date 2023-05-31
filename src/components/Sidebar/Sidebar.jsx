@@ -5,6 +5,7 @@ import Sider from 'antd/es/layout/Sider';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as UserIcon } from '../../assets/icons/Users.svg';
 import styled from 'styled-components';
+import logo from '../../assets/images/logo.png';
 const items = [
     {
         key: '/dashboard/users_list',
@@ -20,7 +21,7 @@ const items = [
 ];
 const SideBar = styled.div`
   .ant-layout-sider .ant-layout-sider-children > ul {
-    margin-top: 35px;
+    /* margin-top: 35px; */
   }
   .ant-layout-sider .ant-layout-sider-children ul li span{
     color: #8767E1;
@@ -55,7 +56,8 @@ const Sidebar = props => {
     return (
         <SideBar trigger={null}>
             <Sider trigger={null} collapsible collapsed={props.collapsed} >
-                <p onClick={() => { navigate('/dashboard') }}>Menu</p>
+                {/* <p onClick={() => { navigate('/dashboard') }}>Menu</p> */}
+                <img src={logo} onClick={() => { navigate('/dashboard') }} />
                 <Menu
                     onClick={item => {
                         navigate(item.key);

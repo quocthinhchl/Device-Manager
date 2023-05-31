@@ -72,6 +72,7 @@ const UpdateProfile = (props) => {
   // const formData = new FormData(); 
   const [image, setImage] = useState()
 
+
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file) => {
@@ -129,69 +130,68 @@ const UpdateProfile = (props) => {
     </div>
   );
   const [form] = Form.useForm();
+  // const onFinish = (values) => {
+  //   const data = {
+  //     fullname: values.fullname,
+  //     dob: values.dob,
+  //     phoneNumber: values.phoneNumber,
+
+  //   };
+  //   console.log(88, data);
+  //   // UpLoad Avatar
+  //   // console.log(33, formData);
+  //   dispatch(updateAvatarUserProfileAction({ image }))
+
+  //   dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
+
+  //   // axiosInstance
+  //   //   .put(`/users/${userProfile.user_profile.id}`, data)
+  //   //   .then((response) => {
+  //   //     if (response != null) {
+
+  //   //       navigate("/dashboard/myprofile")
+
+  //   //       notification.success({
+  //   //         message: 'Tạo thành công',
+  //   //         description: `Tạo thành công`,
+  //   //       });
+  //   //     }
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     console.log(error);
+
+  //   //     notification.warning({
+  //   //       message: 'Có gì đó không ổn',
+  //   //       description: `Có gì đó không ổn`,
+  //   //     });
+  //   //   });
+  // };
   const onFinish = async (values) => {
     const data = {
       fullname: values.fullname,
       dob: values.dob,
       phoneNumber: values.phoneNumber,
-
     };
-    // console.log(88, data);
-    // UpLoad Avatar
-    // console.log(33, formData);
-    // await Promise.all([
-    //   dispatch(updateAvatarUserProfileAction({ image })),
-    //   dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
-    // ]);
-    try {
-      await dispatch(updateAvatarUserProfileAction({ image })).unwrap()
-      await dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data })).unwrap()
 
-    } catch (error) {
-      console.log(22, error);
-      notification['error']({
-        message: error,
-        description: 'Có lỗi xảy ra, vui lòng thử lại',
-      });
-    }
+    await Promise.all([
+      dispatch(updateAvatarUserProfileAction({ image })),
 
 
-    if (userProfile.error.length != 0) {
-      notification['error']({
+      dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data })),
+    ]);
+
+    if (userProfile.error.length !== 0) {
+      notification.error({
         message: userProfile.error[0],
         description: 'Có lỗi xảy ra, vui lòng thử lại',
       });
-      console.log(55, userProfile.error);
-      dispatch(deleteError())
+      dispatch(deleteError());
     } else {
-      notification['success']({
+      notification.success({
         message: 'Cập nhật thông tin thành công',
         description: 'Cập nhật thông tin thành công',
       });
     }
-
-
-    // axiosInstance
-    //   .put(`/users/${userProfile.user_profile.id}`, data)
-    //   .then((response) => {
-    //     if (response != null) {
-
-    //       navigate("/dashboard/myprofile")
-
-    //       notification.success({
-    //         message: 'Tạo thành công',
-    //         description: `Tạo thành công`,
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-
-    //     notification.warning({
-    //       message: 'Có gì đó không ổn',
-    //       description: `Có gì đó không ổn`,
-    //     });
-    //   });
   };
   useEffect(() => {
     // set default value for fullname field when user state changes
@@ -207,6 +207,9 @@ const UpdateProfile = (props) => {
         role: userProfile.user_profile.role?.name,
       });
     }
+    setFileList([{
+      url: `${API}${userProfile.user_profile.avatar?.url}`
+    }])
     // console.log(88, user);
   }, [userProfile.user_profile]);
 

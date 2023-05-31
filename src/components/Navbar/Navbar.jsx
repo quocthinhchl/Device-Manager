@@ -69,6 +69,7 @@ const Navbar = (props) => {
     margin-left: 15px;
     margin-bottom: 45px;
     font-size: 16px;
+    margin-top: 7px;
   `;
   const handleClick = () => {
     props.toggle();
