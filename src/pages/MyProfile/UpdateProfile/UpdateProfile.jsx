@@ -72,7 +72,6 @@ const UpdateProfile = (props) => {
   // const formData = new FormData(); 
   const [image, setImage] = useState()
 
-
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file) => {
@@ -131,19 +130,19 @@ const UpdateProfile = (props) => {
       dob: values.dob.format('YYYY-MM-DD'),
       phoneNumber: values.phoneNumber,
     };
-    console.log(77, data);
+    // console.log(77, data);
     try {
-      await dispatch(updateAvatarUserProfileAction({ image })).unwrap()
+      // console.log(77, fileList);
+      if (fileList[0].url != `${API}${userProfile.user_profile.avatar?.url}`) {
+        await dispatch(updateAvatarUserProfileAction({ image })).unwrap()
+      }
       await dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data })).unwrap()
       navigate("/dashboard/myprofile")
       notification.success({
         message: 'Cập nhật thông tin thành công',
-        description: 'Cập nhật thông tin thành công',
       });
     } catch (error) {
-      // console.log(22, error);
       notification.error({
-
         message: error.message,
         description: 'Có lỗi xảy ra, vui lòng thử lại',
       });

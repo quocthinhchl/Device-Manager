@@ -54,7 +54,7 @@ const Text = styled.p`
 `
 
 
-export default function UserDetails({ userId }) {
+export default function UserDetails() {
 
     const [user, setUser] = useState("");
     const [DVS, setDVS] = useState([]);
@@ -203,27 +203,7 @@ export default function UserDetails({ userId }) {
                                 Back
                             </Button>
                         </Space>}
-                    {/* <Space style={{ paddingTop: 24 }}>
-                        <Button
-                            style={{
-                                background: "#8767E1",
-                                color: "#F1F4F9"
-                            }}
-                            onClick={() => {
-                                navigate(`/dashboard/users_list/edit/${id}`);
-                            }}
-                        >
-                            Edit
-                        </Button>
-                        <Button
-                            style={{
-                                color: "#8767E1"
-                            }}
-                            onClick={HandleDelete}
-                        >
-                            Delete
-                        </Button>
-                    </Space> */}
+
                 </Row>
             </Content>
             <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>

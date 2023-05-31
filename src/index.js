@@ -20,22 +20,6 @@ const root = ReactDOM.createRoot(container);
 
 root.render(
   <StrictMode>
-    {/* <Router>
-      <Switch>
-        <Route path="">
-          {' '}
-          {isLoggedIn ? (
-            <Redirect to="/App" />
-          ) : (
-            <Login onLogin={handleLogin} />
-          )}{' '}
-        </Route>
-        <Route path="/App">
-          {' '}
-          {isLoggedIn ? <App /> : <Redirect to="/" />}{' '}
-        </Route>
-      </Switch>
-    </Router> */}
 
     <BrowserRouter>
       <Provider store={store}>

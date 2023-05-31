@@ -5,26 +5,34 @@ import Login from './pages/Authorization/Login/Login';
 import { Route, Router, Routes, useLocation, useNavigate } from 'react-router';
 import Dashboard from './components/Dashboard/Dashboard';
 import { useEffect, useState } from 'react';
+import { UserProfile, addToken } from './stores/Slice/UserSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
-function getToken() {
-  const tokenString = localStorage.getItem('token');
-  return tokenString
-}
+// function getToken() {
+//   const tokenString = localStorage.getItem('token');
+//   return tokenString
+// }
+// function GetToken(userToken) {
+//   setToken(userToken);
+//   localStorage.setItem('token', userToken);
+// }
 
 function App() {
-  // const { token, setToken } = useToken();
-  const [token, setToken] = useState(getToken())
+  // const [token, setToken] = useState(getToken())
   const [location, setLocation] = useState(useLocation())
-  function GetToken(userToken) {
-    setToken(userToken);
-    localStorage.setItem('token', userToken);
-  }
+  const token = useSelector(UserProfile)
+  const dispatch = useDispatch()
   const navigate = useNavigate();
+
   // console.log(123, location);
   useEffect(() => {
-    if (!token) {
+    const getToken = async () => {
+      await dispatch(addToken(localStorage.getItem('token')))
+    }
+    getToken()
+    if (localStorage.getItem('token') === null) {
       navigate('/')
     } else {
       if (location.pathname === '/') {
@@ -37,8 +45,8 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" index element={<Login setToken={GetToken} />} />
-        <Route path="/dashboard/*" element={<Dashboard setToken={setToken} setLocation={setLocation} />} />
+        <Route path="/" index element={<Login />} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
       </Routes>
     </div>
   );

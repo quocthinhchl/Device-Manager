@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import axiosInstance from '../../shared/services/http-client';
 import { useNavigate } from 'react-router';
 import { API } from '../../shared/constants';
-import { UserProfile } from '../../stores/Slice/UserSlice';
+import { UserProfile, removeToken } from '../../stores/Slice/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const url =
@@ -16,11 +16,13 @@ const Navbar = (props) => {
   const [useUser, setUser] = useState('')
   const navigate = useNavigate();
   const userProfile = useSelector(UserProfile)
+  const dispatch = useDispatch()
 
   function logOut() {
     localStorage.removeItem("token");
+    dispatch(removeToken())
 
-    props.setToken(null)
+    // props.setToken(null)
   }
 
   function myProfile() {
