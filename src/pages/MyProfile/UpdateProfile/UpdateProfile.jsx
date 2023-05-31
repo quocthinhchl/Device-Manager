@@ -22,7 +22,7 @@ import axiosInstance from "../../../shared/services/http-client";
 
 import { API } from "../../../shared/constants";
 import Upload from "antd/es/upload/Upload";
-import { UserProfile, deleteError, updateAvatarUserProfileAction, updateUserProfileAction, } from "../../../stores/Slice/UserSlice";
+import { UserProfile, updateAvatarUserProfileAction, updateUserProfileAction, } from "../../../stores/Slice/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const getBase64 = (file) =>
@@ -72,6 +72,7 @@ const UpdateProfile = (props) => {
   // const formData = new FormData(); 
   const [image, setImage] = useState()
 
+
   const handleCancel = () => setPreviewOpen(false);
 
   const handlePreview = async (file) => {
@@ -108,13 +109,7 @@ const UpdateProfile = (props) => {
     formData.append('files', file);
     // console.log(11, formData);
     setImage(formData)
-    // try {
-    //   // console.log(11, formData);
 
-    // dispatch(updateAvataUserProfileAction({ formData }))
-    // } catch (error) {
-    //   console.log(error, 11111);
-    // }
   };
   const uploadButton = (
     <div>
@@ -129,63 +124,32 @@ const UpdateProfile = (props) => {
     </div>
   );
   const [form] = Form.useForm();
+
   const onFinish = async (values) => {
     const data = {
       fullname: values.fullname,
-      dob: values.dob,
+      dob: values.dob.format('YYYY-MM-DD'),
       phoneNumber: values.phoneNumber,
-
     };
-    // console.log(88, data);
-    // UpLoad Avatar
-    // console.log(33, formData);
-    await Promise.all([
-      dispatch(updateAvatarUserProfileAction({ image })),
-      dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
-    ]);
-
-    console.log(22, userProfile.user_profile);
-    // await dispatch(updateAvatarUserProfileAction({ image }))
-
-    // await dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
-
-    if (userProfile.error.length != 0) {
-      notification['error']({
-        message: userProfile.error[0],
-        description: 'Có lỗi xảy ra, vui lòng thử lại',
-      });
-      console.log(55, userProfile.error);
-      dispatch(deleteError())
-    } else {
-      notification['success']({
+    console.log(77, data);
+    try {
+      await dispatch(updateAvatarUserProfileAction({ image })).unwrap()
+      await dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data })).unwrap()
+      navigate("/dashboard/myprofile")
+      notification.success({
         message: 'Cập nhật thông tin thành công',
         description: 'Cập nhật thông tin thành công',
       });
+    } catch (error) {
+      // console.log(22, error);
+      notification.error({
+
+        message: error.message,
+        description: 'Có lỗi xảy ra, vui lòng thử lại',
+      });
     }
-
-
-    // axiosInstance
-    //   .put(`/users/${userProfile.user_profile.id}`, data)
-    //   .then((response) => {
-    //     if (response != null) {
-
-    //       navigate("/dashboard/myprofile")
-
-    //       notification.success({
-    //         message: 'Tạo thành công',
-    //         description: `Tạo thành công`,
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-
-    //     notification.warning({
-    //       message: 'Có gì đó không ổn',
-    //       description: `Có gì đó không ổn`,
-    //     });
-    //   });
   };
+
   useEffect(() => {
     // set default value for fullname field when user state changes
     if (userProfile.user_profile) {
@@ -200,6 +164,9 @@ const UpdateProfile = (props) => {
         role: userProfile.user_profile.role?.name,
       });
     }
+    setFileList([{
+      url: `${API}${userProfile.user_profile.avatar?.url}`
+    }])
     // console.log(88, user);
   }, [userProfile.user_profile]);
 

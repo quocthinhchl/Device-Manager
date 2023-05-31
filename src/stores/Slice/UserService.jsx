@@ -37,6 +37,9 @@ const UserService = {
     updateUserProfile: async (params) => {
         // console.log(params);
         const res = await axiosInstance.put(`/users/${params.id}`, params.data)
+            .catch((error) => {
+                throw new Error(error.response.data.error.message)
+            })
         return res
     },
     updateAvatarUserProfile: async (params) => {
@@ -45,7 +48,10 @@ const UserService = {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        });
+        })
+            .catch((error) => {
+                throw new Error(error.response.data.error.message)
+            })
         return res
     },
     // addTodoList: async (params) => {
