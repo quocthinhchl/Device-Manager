@@ -39,13 +39,27 @@ const UserTable = (props) => {
 
 
     function renderData() {
-        axiosInstance.get(`/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`).then(res => {
-            setData(res);
-        }, [])
+        // axiosInstance.get(`/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`).then(res => {
+        //     setData(res);
+        // }, [])
+        const fetchData = async () => {
+            try {
+                const res = await axiosInstance.get(
+                    `/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`
+                );
+                if (res.data) {
+                    setData(res);
+
+                }
+            } catch (error) {
+                notification.warning({
+                    message: 'Có gì đó không ổn',
+                    description: `Có gì đó không ổn`,
+                });
+            }
+        };
+        fetchData();
     }
-    // dispatch(getUserList(useData))
-    // const userList = useSelector((state) => state.user.user_list)
-    // console.log(userList, 111);
 
 
     const handleOk = async () => {
