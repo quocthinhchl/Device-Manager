@@ -9,10 +9,10 @@ export const fetchUserProfileAction = createAsyncThunk('user/fetchUserProfile', 
 
 export const updateUserProfileAction = createAsyncThunk('user/updateUserProfile', async (payload, thunkApi) => {
     const res = await UserService.updateUserProfile(payload)
-        .catch((error) => {
-            // console.log(33, error);
-            throw new Error(error.response.data.error.message)
-        })
+    // .catch((error) => {
+    //     // console.log(33, error);
+    //     throw new Error(error.response.data.error.message)
+    // })
 
     thunkApi.dispatch(fetchUserProfileAction({ populate: 'role,avatar' }));
     return res
@@ -20,10 +20,10 @@ export const updateUserProfileAction = createAsyncThunk('user/updateUserProfile'
 
 export const updateAvatarUserProfileAction = createAsyncThunk('user/updateAvatarUserProfile', async (payload, thunkApi) => {
     const res = await UserService.updateAvatarUserProfile(payload)
-        .catch((error) => {
-            // console.log(33, error);
-            throw new Error(error.response.data.error.message)
-        })
+    // .catch((error) => {
+    //     // console.log(33, error);
+    //     throw new Error(error.response.data.error.message)
+    // })
     // thunkApi.dispatch(fetchUserProfileAction({ populate: 'role,avatar' }));
     return res
 })
@@ -63,7 +63,7 @@ export const userSlice = createSlice({
             state.loading = false
         })
         builder.addCase(updateUserProfileAction.rejected, (state, action) => {
-            state.error.push(action.error.message)
+            // state.error.push(action.error.message)
             state.loading = false
 
         });
@@ -78,7 +78,7 @@ export const userSlice = createSlice({
         })
         builder.addCase(updateAvatarUserProfileAction.rejected, (state, action) => {
             // console.log(11, action);
-            state.error.push(action.error.message)
+            // state.error.push(action.error.message)
             state.loading = false
         });
 

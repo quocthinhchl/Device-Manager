@@ -139,15 +139,22 @@ const UpdateProfile = (props) => {
     // console.log(88, data);
     // UpLoad Avatar
     // console.log(33, formData);
-    await Promise.all([
-      dispatch(updateAvatarUserProfileAction({ image })),
-      dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
-    ]);
+    // await Promise.all([
+    //   dispatch(updateAvatarUserProfileAction({ image })),
+    //   dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
+    // ]);
+    try {
+      await dispatch(updateAvatarUserProfileAction({ image })).unwrap()
+      await dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data })).unwrap()
 
-    console.log(22, userProfile.user_profile);
-    // await dispatch(updateAvatarUserProfileAction({ image }))
+    } catch (error) {
+      console.log(22, error);
+      notification['error']({
+        message: error,
+        description: 'Có lỗi xảy ra, vui lòng thử lại',
+      });
+    }
 
-    // await dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data }))
 
     if (userProfile.error.length != 0) {
       notification['error']({
