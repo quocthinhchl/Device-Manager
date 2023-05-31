@@ -108,7 +108,7 @@ function DeviceManager() {
                             <Col>
                                 <Space.Compact block>
                                     <Select
-                                        defaultValue="Code"
+                                        defaultValue="code"
                                         style={{
                                             width: 120,
                                         }}

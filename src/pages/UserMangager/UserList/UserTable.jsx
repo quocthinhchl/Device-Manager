@@ -44,7 +44,7 @@ const UserTable = (props) => {
 
                 console.error(' Error is:', error);
                 notification.warning({
-                    message: 'Có gì đó không ổn',
+                    message: error.response.data.error.message,
                     description: `Có gì đó không ổn`,
                 });
             });

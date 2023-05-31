@@ -117,18 +117,19 @@ function UserManager() {
                             <Col>
                                 <Space.Compact block>
                                     <Select
-                                        defaultValue="Name"
+                                        defaultValue="fullname"
                                         style={{
                                             width: 120,
                                         }}
                                         onChange={handleSelect}
                                         options={[
                                             {
-                                                value: 'email',
-                                                label: 'Email',
-                                            }, {
                                                 value: 'fullname',
                                                 label: 'Name',
+                                            },
+                                            {
+                                                value: 'email',
+                                                label: 'Email',
                                             },
                                         ]}
                                     />
