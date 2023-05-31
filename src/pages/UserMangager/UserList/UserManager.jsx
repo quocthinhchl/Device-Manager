@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router";
 import debounce from "lodash.debounce";
 import { useSelector } from "react-redux";
 import { UserProfile } from "../../../stores/Slice/UserSlice";
+import { useRef } from "react";
 const options = [
     {
         value: '',
@@ -51,6 +52,13 @@ const UserLayout = styled.div`
         border:1px solid #CBCBCB;
         border-radius: 5px;
     }
+    .ant-select-dropdown:hover .ant-select-item-option {
+  font-weight: bold;
+}
+
+.ant-select-dropdown-hidden .ant-select-item-option {
+  font-weight: normal;
+}
 `
 const buttonStyle = {
     backgroundColor: '#8767E1',
@@ -78,6 +86,7 @@ function UserManager() {
     // const filteredData = data.filter(item =>
     //     item[searchType].toLowerCase().includes(debouncedSearchTerm.toLowerCase())
     // );
+
     function handleSelect(value) {
         setSelectedValue(value);
     }
@@ -134,7 +143,7 @@ function UserManager() {
                                     }}
                                 >
                                     <Select
-                                        defaultValue="All"
+                                        defaultValue=""
                                         onChange={handleSelectBlocked}
                                         style={{
                                             width: 200,

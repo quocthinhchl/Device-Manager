@@ -14,14 +14,7 @@ import { useNavigate } from "react-router-dom";
 import "./Welcome.css"
 
 
-
-const WelcomePage = (props) => {
-    const buttonStyle = {
-        backgroundColor: "#8767E1",
-        color: "#fff",
-    };
-
-    const Content = styled.div`
+const Content = styled.div`
     margin: 15px 16px;
     padding: 24px;
     background: #ffffff;
@@ -31,6 +24,13 @@ const WelcomePage = (props) => {
     text-align: center;
     align-items: center;
   `;
+const WelcomePage = (props) => {
+    const buttonStyle = {
+        backgroundColor: "#8767E1",
+        color: "#fff",
+    };
+
+
     const {
         token: { colorBgContainer },
     } = theme.useToken();

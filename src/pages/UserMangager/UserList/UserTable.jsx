@@ -8,9 +8,7 @@ import { useNavigate } from 'react-router';
 import { API } from '../../../shared/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserProfile, fetchUserData, getUserList, setUserList } from '../../../stores/Slice/UserSlice';
-
-const UserTable = (props) => {
-    const TableData = styled.div`
+const TableData = styled.div`
     width:100%;
     /* max-height: 450px; Đặt chiều cao tối đa cho container */
         .ant-table-thead{
@@ -25,6 +23,7 @@ const UserTable = (props) => {
             opacity:50%
         }
     `
+const UserTable = (props) => {
     const [useData, setData] = useState([]);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,10 +32,7 @@ const UserTable = (props) => {
 
     useEffect(() => {
         renderData()
-        // dispatch(getUserList(useData))
-        // dispatch(fetchUserData());
     }, [props.selectOption, props.keyWord, props.blocked]);
-
 
     function renderData() {
         axiosInstance
