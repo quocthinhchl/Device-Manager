@@ -146,12 +146,32 @@ const UpdateUser = () => {
         // console.log(88, user);
     }, [user]);
 
-    useEffect(() => {
-        axiosInstance.get(`/devices?filters[name][$contains]=${search}`).then((res) => {
-            setDeviceNames(res.data);
-        });
+    // useEffect(() => {
+    //     axiosInstance.get(`/devices?filters[name][$contains]=${search}`).then((res) => {
+    //         setDeviceNames(res.data);
+    //     });
 
+    // }, [search]);
+    useEffect(() => {
+
+        const fetchDevices = async () => {
+            try {
+                const res = await axiosInstance.get(
+                    `/devices?filters[code][$contains]=${search}`
+                );
+                if (res.data) {
+                    setDeviceNames(res.data);
+                }
+            } catch (error) {
+                notification.warning({
+                    message: 'Có gì đó không ổn',
+                    description: `Có gì đó không ổn`,
+                });
+            }
+        };
+        fetchDevices();
     }, [search]);
+
 
     useEffect(() => {
         if (DVS.length > 0 && user) {
