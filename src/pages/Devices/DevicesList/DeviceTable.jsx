@@ -39,9 +39,13 @@ const DeviceTable = (props) => {
         props.status !== 'all' ? APIUser += `&filters[status][$eq]=${props.status}` : APIUser += ``;
 
 
-        axiosInstance.get(`${APIUser} `).then(res => {
-            setData(res.data);
-        }, [useData, isModalOpen])
+        axiosInstance.get(`${APIUser} `)
+            .then(res => {
+                setData(res.data);
+            }, [useData, isModalOpen])
+            .catch((e) => {
+                console.log(e);
+            })
     }
 
     const handleOk = async () => {
