@@ -66,33 +66,39 @@ export default function UserDetails() {
 
 
 
-    // useEffect(() => {
-    //     axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
-    //         setUser(res);
-    //         setDVS(res.devices)
-    //     });
-    // }, []);
-
     useEffect(() => {
-
-        const fetchDevices = async () => {
-            try {
-                const res = await axiosInstance.get(
-                    `users/${id}?populate=devices,role`
-                );
-                if (res.data) {
-                    setUser(res);
-                    setDVS(res.devices)
-                }
-            } catch (error) {
+        axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
+            setUser(res);
+            setDVS(res.devices);
+        })
+            .catch((error) => {
                 notification.warning({
-                    message: 'Có gì đó không ổn',
+                    message: error.response.data.error.message,
                     description: `Có gì đó không ổn`,
                 });
-            }
-        };
-        fetchDevices();
+            })
     }, []);
+
+    // useEffect(() => {
+
+    //     const fetchDevices = async () => {
+    //         try {
+    //             const res = await axiosInstance.get(
+    //                 `users/${id}?populate=devices,role`
+    //             );
+    //             if (res.data) {
+    //                 setUser(res);
+    //                 setDVS(res.devices)
+    //             }
+    //         } catch (error) {
+    //             notification.warning({
+    //                 message: 'Có gì đó không ổn',
+    //                 description: `Có gì đó không ổn`,
+    //             });
+    //         }
+    //     };
+    //     fetchDevices();
+    // }, []);
 
 
     const showModal = () => {
