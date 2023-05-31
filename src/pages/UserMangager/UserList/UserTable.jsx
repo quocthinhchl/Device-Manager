@@ -35,10 +35,23 @@ const UserTable = (props) => {
     }, [props.selectOption, props.keyWord, props.blocked]);
 
     function renderData() {
-        axiosInstance.get(`/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`).then(res => {
-            setData(res);
-        }, [])
+        axiosInstance
+            .get(`/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`)
+            .then(res => {
+                setData(res);
+            }, [])
+            .catch((error) => {
+
+                console.error(' Error is:', error);
+                notification.warning({
+                    message: 'Có gì đó không ổn',
+                    description: `Có gì đó không ổn`,
+                });
+            });
+
     }
+
+
 
     const handleOk = async () => {
         setIsModalOpen(false);

@@ -39,13 +39,17 @@ const DeviceTable = (props) => {
         props.status !== 'all' ? APIUser += `&filters[status][$eq]=${props.status}` : APIUser += ``;
 
 
-        axiosInstance.get(`${APIUser} `)
-            .then(res => {
-                setData(res.data);
-            }, [useData, isModalOpen])
-            .catch((e) => {
-                console.log(e);
-            })
+        axiosInstance.get(`${APIUser} `).then(res => {
+            setData(res.data);
+        }, [useData, isModalOpen])
+            .catch((error) => {
+
+                console.error(' Error is:', error);
+                notification.warning({
+                    message: 'Có gì đó không ổn',
+                    description: `Có gì đó không ổn`,
+                });
+            });
     }
 
     const handleOk = async () => {
