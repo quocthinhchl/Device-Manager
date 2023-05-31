@@ -39,27 +39,22 @@ const UserTable = (props) => {
 
 
     function renderData() {
-        // axiosInstance.get(`/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`).then(res => {
-        //     setData(res);
-        // }, [])
-        const fetchData = async () => {
-            try {
-                const res = await axiosInstance.get(
-                    `/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`
-                );
-                if (res.data) {
-                    setData(res);
+        axiosInstance
+            .get(`/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`)
+            .then(res => {
+                setData(res);
+            }, [])
+            .catch((error) => {
 
-                }
-            } catch (error) {
+                console.error(' Error is:', error);
                 notification.warning({
                     message: 'Có gì đó không ổn',
                     description: `Có gì đó không ổn`,
                 });
-            }
-        };
-        fetchData();
+            });
+
     }
+
 
 
     const handleOk = async () => {

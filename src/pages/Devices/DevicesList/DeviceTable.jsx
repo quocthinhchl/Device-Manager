@@ -42,6 +42,14 @@ const DeviceTable = (props) => {
         axiosInstance.get(`${APIUser} `).then(res => {
             setData(res.data);
         }, [useData, isModalOpen])
+            .catch((error) => {
+
+                console.error(' Error is:', error);
+                notification.warning({
+                    message: 'Có gì đó không ổn',
+                    description: `Có gì đó không ổn`,
+                });
+            });
     }
 
     const handleOk = async () => {
