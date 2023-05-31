@@ -21,7 +21,7 @@ const items = [
 ];
 const SideBar = styled.div`
   .ant-layout-sider .ant-layout-sider-children > ul {
-    /* margin-top: 35px; */
+    margin-top: 35px;
   }
   .ant-layout-sider .ant-layout-sider-children ul li span{
     color: #8767E1;
@@ -57,7 +57,12 @@ const Sidebar = props => {
         <SideBar trigger={null}>
             <Sider trigger={null} collapsible collapsed={props.collapsed} >
                 {/* <p onClick={() => { navigate('/dashboard') }}>Menu</p> */}
-                <img src={logo} onClick={() => { navigate('/dashboard') }} />
+                <img
+                    style={{
+                        paddingLeft: 10,
+                        height: 80,
+                    }}
+                    src={logo} onClick={() => { navigate('/dashboard') }} />
                 <Menu
                     onClick={item => {
                         navigate(item.key);
