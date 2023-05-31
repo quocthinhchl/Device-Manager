@@ -43,6 +43,9 @@ const SideBar = styled.div`
     padding-left:10px;
     height:80px;
   }
+  img:hover{
+    cursor: pointer;
+  }
 `;
 const Sidebar = props => {
     const navigate = useNavigate();
@@ -55,7 +58,7 @@ const Sidebar = props => {
         const matchingItem = items.find((item) => currentPath.includes(item.key));
         if (matchingItem) {
             setSelectedKeys([matchingItem.key]);
-        }
+        } else setSelectedKeys(null)
     }, [location]);
     return (
         <SideBar trigger={null}>
