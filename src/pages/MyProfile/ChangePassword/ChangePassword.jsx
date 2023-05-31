@@ -8,6 +8,7 @@ import {
   Form,
   Divider,
   message,
+  notification,
 } from "antd";
 // import { Content } from "antd/es/layout/layout";
 import { useNavigate, Link } from "react-router-dom";
@@ -31,18 +32,14 @@ const Content = styled.div`
 
     border-radius: 10px;
   `;
+const buttonStyle = {
+  backgroundColor: "#8767E1",
+  color: "#fff",
+};
 
 const ChangePass = (props) => {
-  const buttonStyle = {
-    backgroundColor: "#8767E1",
-    color: "#fff",
-  };
 
-  function logOut() {
-    localStorage.removeItem("token");
 
-    props.setToken(null)
-  }
 
   const navigate = useNavigate();
   const onFinish = (values) => {
@@ -58,12 +55,18 @@ const ChangePass = (props) => {
 
           navigate("/dashboard/myprofile")
           // logOut()
-          message.success("Success");
+          notification.success({
+            message: 'Thay đổi mật khẩu thành công',
+            description: 'Cập nhật thông tin thành công',
+          });
         }
       })
       .catch((error) => {
-        console.log(error);
-        message.error("Current Password Incorrect");
+        // console.log(error);
+        notification.error({
+          message: error.message,
+          description: 'Có lỗi xảy ra, vui lòng thử lại',
+        });
       });
   };
 

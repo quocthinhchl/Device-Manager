@@ -21,33 +21,27 @@ import EditDevice from "../../pages/Devices/EditDevice/EditDevice";
 import { useDispatch, useSelector } from "react-redux";
 import { UserProfile, fetchUserProfileAction, setRole } from "../../stores/Slice/UserSlice";
 
-function Dashboard({ setToken }) {
-    const [user, setUser] = useState();
-    const [isAdmin, setisAdmin] = useState(false);
+function Dashboard() {
     const navigate = useNavigate();
     const [collapsed, setIsSidebarOpen] = useState(false);
-    const Location = useLocation();
     const dispatch = useDispatch()
     const userProfile = useSelector(UserProfile)
     useEffect(() => {
 
         dispatch(fetchUserProfileAction({ populate: 'role,avatar' }))
-        // console.log(userProfile.user_profile.role?.id);
-        // const checkRole = (userProfile.user_profile.role?.id === 3) ? true : false
-        // dispatch(setRole(checkRole))
+
     }, []);
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!collapsed);
     };
 
-    // console.log(Location);
     return (
         <div className="App">
             <Sidebar collapsed={collapsed} />
             <Layout>
                 {userProfile && (
-                    <Navbar toggle={toggleSidebar} setToken={setToken} />
+                    <Navbar toggle={toggleSidebar} />
                 )}
 
                 <Routes>
@@ -59,7 +53,7 @@ function Dashboard({ setToken }) {
                         <Route path="myprofile/update" element={<UpdateProfile />} />
                     )}
                     {userProfile && (
-                        <Route path="myprofile/change" element={<ChangePass setToken={setToken} />} />
+                        <Route path="myprofile/change" element={<ChangePass />} />
                     )}
 
                     {/* User List */}
@@ -67,11 +61,11 @@ function Dashboard({ setToken }) {
                     <Route path="users_list/create" element={<CreateUser />} />
                     <Route
                         path="users_list/detail/:id"
-                        element={<UserDetails userId={Location} />}
+                        element={<UserDetails />}
                     />
                     <Route
                         path="users_list/edit/:id"
-                        element={<UpdateUser userId={Location} />}
+                        element={<UpdateUser />}
                     />
 
 
@@ -83,7 +77,7 @@ function Dashboard({ setToken }) {
 
 
                     {/* Error Page */}
-                    <Route path="/error" element={<ErrorPage setToken={setToken} />} />
+                    <Route path="/error" element={<ErrorPage />} />
 
                 </Routes>
             </Layout>

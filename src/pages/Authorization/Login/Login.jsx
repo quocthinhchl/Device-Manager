@@ -4,6 +4,8 @@ import { Button, Checkbox, Form, Input, Col, Row, notification } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../shared/services/http-client';
 import { ACCESS_TOKEN } from '../../../shared/constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { UserProfile, addToken } from '../../../stores/Slice/UserSlice';
 
 const LoginBg = styled.div`
     height:100vh;
@@ -43,15 +45,19 @@ const onFinishFailed = errorInfo => {
 
 async function loginUser(data) {
   return axiosInstance.post("auth/local", data).then(res => res.jwt).catch((error) => {
-    alert(error.response.data.error.message);
-
+    // alert(error.response.data.error.message);
+    notification.error({
+      message: error.response.data.error.message,
+    });
   })
 }
 
-const Login = ({ setToken }) => {
+const Login = () => {
   const navigate = useNavigate();
   const [identifier, setUserName] = useState();
   const [password, setPassword] = useState();
+  const dispatch = useDispatch();
+
   const handleSubmit = async e => {
     e.preventDefault();
     const token = await loginUser({
@@ -60,10 +66,11 @@ const Login = ({ setToken }) => {
     });
     // console.log(token);
     if (token) {
-      setToken(token);
+      localStorage.setItem('token', token);
+      dispatch(addToken(localStorage.getItem('token')))
+
       notification.success({
         message: 'Đăng nhập thành công',
-        description: `Đăng nhập thành công`,
       });
     }
 

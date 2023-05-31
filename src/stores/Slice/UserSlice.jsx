@@ -23,9 +23,15 @@ export const userSlice = createSlice({
     initialState: {
         user_profile: [],
         isAdmin: false,
+        token: null,
     },
     reducers: {
-
+        addToken(state, action) {
+            state.token = action.payload;
+        },
+        removeToken(state, action) {
+            state.token = null;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchUserProfileAction.pending, (state, action) => {
@@ -66,6 +72,6 @@ export const userSlice = createSlice({
 
     }
 })
-// export const { deleteError } = userSlice.actions
+export const { addToken, removeToken } = userSlice.actions
 export const UserProfile = (state) => state.user
 export default userSlice.reducer
