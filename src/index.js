@@ -13,35 +13,13 @@ import { Provider } from 'react-redux';
 import store from './stores/rootStore';
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
-// const [isLoggedIn, setIsLoggedIn] = useState(false);
-// const handleLogin = () => {
-//   setIsLoggedIn(true);
-// };
 
 root.render(
   <StrictMode>
-    {/* <Router>
-      <Switch>
-        <Route path="">
-          {' '}
-          {isLoggedIn ? (
-            <Redirect to="/App" />
-          ) : (
-            <Login onLogin={handleLogin} />
-          )}{' '}
-        </Route>
-        <Route path="/App">
-          {' '}
-          {isLoggedIn ? <App /> : <Redirect to="/" />}{' '}
-        </Route>
-      </Switch>
-    </Router> */}
 
     <BrowserRouter>
       <Provider store={store}>
-        {/* <Login /> */}
         <App />
-        {/* <AppRoutes /> */}
       </Provider>
     </BrowserRouter>
   </StrictMode>

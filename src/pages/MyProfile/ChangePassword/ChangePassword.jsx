@@ -9,18 +9,13 @@ import {
   Divider,
   message,
 } from "antd";
-import { Content } from "antd/es/layout/layout";
+// import { Content } from "antd/es/layout/layout";
 import { useNavigate, Link } from "react-router-dom";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import styled from "styled-components";
 import axiosInstance from "../../../shared/services/http-client";
 
-const ChangePass = (props) => {
-  const buttonStyle = {
-    backgroundColor: "#8767E1",
-    color: "#fff",
-  };
-  const PathName = styled.p`
+const PathName = styled.p`
     margin: 10px 25px 0px 20px;
     font-family: "Poppins";
     font-style: normal;
@@ -29,13 +24,19 @@ const ChangePass = (props) => {
     line-height: 32px;
     color: #111111;
   `;
-  const Content = styled.div`
+const Content = styled.div`
     margin: 15px 16px;
     padding: 24px;
     background: #ffffff;
 
     border-radius: 10px;
   `;
+
+const ChangePass = (props) => {
+  const buttonStyle = {
+    backgroundColor: "#8767E1",
+    color: "#fff",
+  };
 
   function logOut() {
     localStorage.removeItem("token");
