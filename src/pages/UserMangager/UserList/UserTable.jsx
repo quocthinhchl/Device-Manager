@@ -8,9 +8,7 @@ import { useNavigate } from 'react-router';
 import { API } from '../../../shared/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserProfile, fetchUserData, getUserList, setUserList } from '../../../stores/Slice/UserSlice';
-
-const UserTable = (props) => {
-    const TableData = styled.div`
+const TableData = styled.div`
     width:100%;
     /* max-height: 450px; Đặt chiều cao tối đa cho container */
         .ant-table-thead{
@@ -25,6 +23,7 @@ const UserTable = (props) => {
             opacity:50%
         }
     `
+const UserTable = (props) => {
     const [useData, setData] = useState([]);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,19 +32,25 @@ const UserTable = (props) => {
 
     useEffect(() => {
         renderData()
-        // dispatch(getUserList(useData))
-        // dispatch(fetchUserData());
     }, [props.selectOption, props.keyWord, props.blocked]);
 
-
     function renderData() {
-        axiosInstance.get(`/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`).then(res => {
-            setData(res);
-        }, [])
+        axiosInstance
+            .get(`/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`)
+            .then(res => {
+                setData(res);
+            }, [])
+            .catch((error) => {
+
+                console.error(' Error is:', error);
+                notification.warning({
+                    message: 'Có gì đó không ổn',
+                    description: `Có gì đó không ổn`,
+                });
+            });
+
     }
-    // dispatch(getUserList(useData))
-    // const userList = useSelector((state) => state.user.user_list)
-    // console.log(userList, 111);
+
 
 
     const handleOk = async () => {

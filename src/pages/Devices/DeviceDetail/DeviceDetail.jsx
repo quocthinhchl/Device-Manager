@@ -53,9 +53,18 @@ export default function DeviceDetail() {
     };
 
     useEffect(() => {
-        axiosInstance.get(`/devices/${id}?populate=user.avatar`).then((res) => {
-            setDeviceDetail(res.data)
-        })
+        axiosInstance.get(`/devices/${id}?populate=user.avatar`)
+            .then((res) => {
+                setDeviceDetail(res.data)
+            })
+            .catch((error) => {
+
+                console.error(' Error is:', error);
+                notification.warning({
+                    message: 'Có gì đó không ổn',
+                    description: `Có gì đó không ổn`,
+                });
+            });
     }, [id])
     const showModal = () => {
         setIsModalVisible(true);

@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Descriptions, List, Modal, Row, Skeleton, Space } from "antd";
+import { Breadcrumb, Button, Descriptions, List, Modal, Row, Skeleton, Space, notification } from "antd";
 import React, { useEffect, useState } from "react"
 import styled from "styled-components";
 import axiosInstance from "../../../shared/services/http-client";
@@ -66,12 +66,34 @@ export default function UserDetails() {
 
 
 
+    // useEffect(() => {
+    //     axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
+    //         setUser(res);
+    //         setDVS(res.devices)
+    //     });
+    // }, []);
+
     useEffect(() => {
-        axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
-            setUser(res);
-            setDVS(res.devices)
-        });
+
+        const fetchDevices = async () => {
+            try {
+                const res = await axiosInstance.get(
+                    `users/${id}?populate=devices,role`
+                );
+                if (res.data) {
+                    setUser(res);
+                    setDVS(res.devices)
+                }
+            } catch (error) {
+                notification.warning({
+                    message: 'Có gì đó không ổn',
+                    description: `Có gì đó không ổn`,
+                });
+            }
+        };
+        fetchDevices();
     }, []);
+
 
     const showModal = () => {
         setIsModalOpen(true);

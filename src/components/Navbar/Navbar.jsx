@@ -12,23 +12,8 @@ const url =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
 
 
-const Navbar = (props) => {
-  const [useUser, setUser] = useState('')
-  const navigate = useNavigate();
-  const userProfile = useSelector(UserProfile)
-  const dispatch = useDispatch()
 
-  function logOut() {
-    localStorage.removeItem("token");
-    dispatch(removeToken())
-
-    // props.setToken(null)
-  }
-
-  function myProfile() {
-    navigate('/dashboard/myprofile')
-  }
-  const InforUser = styled.div`
+const InforUser = styled.div`
     margin-top: -4px;
     width: 118px;
     height: 42px;
@@ -50,10 +35,10 @@ const Navbar = (props) => {
     }
 
   `;
-  const AvatarUser = styled.div`
+const AvatarUser = styled.div`
     margin-right: 10px;
   `;
-  const NavBar = styled.div`
+const NavBar = styled.div`
     display: flex;
     justify-content: space-between;
     background: #fff;
@@ -64,7 +49,7 @@ const Navbar = (props) => {
       margin-top: 14px;
     }
   `;
-  const IconCollapse = styled.div`
+const IconCollapse = styled.div`
     color: #212121;
     width: 20px;
     height: 14.5px;
@@ -73,6 +58,22 @@ const Navbar = (props) => {
     font-size: 16px;
     margin-top: 7px;
   `;
+const Navbar = (props) => {
+  const [useUser, setUser] = useState('')
+  const navigate = useNavigate();
+  const userProfile = useSelector(UserProfile)
+  const dispatch = useDispatch()
+
+  function logOut() {
+    localStorage.removeItem("token");
+    dispatch(removeToken())
+
+    // props.setToken(null)
+  }
+
+  function myProfile() {
+    navigate('/dashboard/myprofile')
+  }
   const handleClick = () => {
     props.toggle();
   };

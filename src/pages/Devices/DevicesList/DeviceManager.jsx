@@ -138,7 +138,7 @@ function DeviceManager() {
                                     }}
                                 >
                                     <Select
-                                        defaultValue="All"
+                                        defaultValue="all"
                                         onChange={handleSelectBlocked}
                                         style={{
                                             width: 200,
