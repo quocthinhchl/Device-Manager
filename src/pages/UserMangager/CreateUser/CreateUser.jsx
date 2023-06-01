@@ -107,9 +107,9 @@ const CreateUser = () => {
       .catch((error) => {
         console.log(error);
 
-        notification.warning({
-          message: 'Có gì đó không ổn',
-          description: `Có gì đó không ổn`,
+        notification.error({
+          message: error.message,
+          description: 'Có lỗi xảy ra, vui lòng thử lại',
         });
       });
   };
@@ -134,26 +134,6 @@ const CreateUser = () => {
     fetchDevices();
   }, [search]);
 
-
-  // useEffect(() => {
-
-  //   const fetchDevices = async () => {
-  //     try {
-  //       const res = await axiosInstance.get(
-  //         `/devices?filters[code][$contains]=${search}`
-  //       );
-  //       if (res.data) {
-  //         setDeviceNames(res.data);
-  //       }
-  //     } catch (error) {
-  //       notification.warning({
-  //         message: 'Có gì đó không ổn',
-  //         description: `Có gì đó không ổn`,
-  //       });
-  //     }
-  //   };
-  //   fetchDevices();
-  // }, [search]);
 
   const plainOptions = deviceNames.map((device) => ({
     label: device,

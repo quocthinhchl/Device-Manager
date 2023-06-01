@@ -120,11 +120,25 @@ const UpdateUser = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const res = await axiosInstance.get(`users/${id}?populate=devices,role`);
-            setUser(res);
-            setDVS(res.devices);
-            // console.log(55, res);
+
+            try {
+                const res = await axiosInstance.get(`users/${id}?populate=devices,role`);
+                setUser(res);
+                setDVS(res.devices);
+            } catch (error) {
+
+
+                console.error(' Error is:', error);
+                notification.error({
+                    message: error.message,
+                    description: 'Có lỗi xảy ra, vui lòng thử lại',
+                });
+
+
+            }
+
         };
+
         if (!userProfile.isAdmin) navigate("/dashboard/users_list")
         fetchUser();
     }, []);
