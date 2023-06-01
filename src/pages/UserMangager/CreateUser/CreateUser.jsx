@@ -116,36 +116,44 @@ const CreateUser = () => {
 
 
   if (!userProfile.isAdmin) navigate("/dashboard/users_list")
-  // useEffect(() => {
-  //   const fetchDevices = async () => {
-  //   axiosInstance.get(`/devices?filters[name][$contains]=${search}`).then((res) => {
-  //     setDeviceNames(res.data);
-
-  //   });
-  // };
-  // fetchDevices();
-  // }, [search]);
-
-
   useEffect(() => {
-
     const fetchDevices = async () => {
-      try {
-        const res = await axiosInstance.get(
-          `/devices?filters[code][$contains]=${search}`
-        );
-        if (res.data) {
-          setDeviceNames(res.data);
-        }
-      } catch (error) {
-        notification.warning({
-          message: 'Có gì đó không ổn',
-          description: `Có gì đó không ổn`,
+      axiosInstance.get(`/devices?filters[name][$contains]=${search}`).then((res) => {
+        setDeviceNames(res.data);
+
+      })
+        .catch((error) => {
+
+          console.error(' Error is:', error);
+          notification.error({
+            message: error.message,
+            description: 'Có lỗi xảy ra, vui lòng thử lại',
+          });
         });
-      }
     };
     fetchDevices();
   }, [search]);
+
+
+  // useEffect(() => {
+
+  //   const fetchDevices = async () => {
+  //     try {
+  //       const res = await axiosInstance.get(
+  //         `/devices?filters[code][$contains]=${search}`
+  //       );
+  //       if (res.data) {
+  //         setDeviceNames(res.data);
+  //       }
+  //     } catch (error) {
+  //       notification.warning({
+  //         message: 'Có gì đó không ổn',
+  //         description: `Có gì đó không ổn`,
+  //       });
+  //     }
+  //   };
+  //   fetchDevices();
+  // }, [search]);
 
   const plainOptions = deviceNames.map((device) => ({
     label: device,

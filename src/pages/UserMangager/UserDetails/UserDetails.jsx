@@ -72,9 +72,9 @@ export default function UserDetails() {
             setDVS(res.devices);
         })
             .catch((error) => {
-                notification.warning({
-                    message: error.response.data.error.message,
-                    description: `Có gì đó không ổn`,
+                notification.error({
+                    message: error.message,
+                    description: 'Có lỗi xảy ra, vui lòng thử lại',
                 });
             })
     }, []);

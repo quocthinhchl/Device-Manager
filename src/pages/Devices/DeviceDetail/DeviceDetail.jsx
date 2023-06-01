@@ -60,9 +60,9 @@ export default function DeviceDetail() {
             .catch((error) => {
 
                 console.error(' Error is:', error);
-                notification.warning({
-                    message: 'Có gì đó không ổn',
-                    description: `Có gì đó không ổn`,
+                notification.error({
+                    message: error.message,
+                    description: 'Có lỗi xảy ra, vui lòng thử lại',
                 });
             });
     }, [id])
