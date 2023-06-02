@@ -93,7 +93,7 @@ const DeviceTable = (props) => {
             dataIndex: 'code',
             key: 'code',
             render: (_, code) => (
-                <p> {code.attributes.code}</p >
+                <td> {code.attributes.code}</td >
             )
         },
         {
@@ -101,7 +101,7 @@ const DeviceTable = (props) => {
             dataIndex: 'name',
             key: 'name',
             render: (_, code) => (
-                <p> {code.attributes.name}</p >
+                <td> {code.attributes.name}</td >
             )
         },
         {
@@ -112,7 +112,9 @@ const DeviceTable = (props) => {
                 <span>
                     {(!user.attributes.user.data) ? <p></p> :
                         <td class="ant-table-cell" scope="col">
-                            <Avatar src={API + user.attributes.user.data?.attributes.avatar.data?.attributes.url} /> {user.attributes.user.data?.attributes.fullname}
+                            {/* {user.attributes.user.data?.attributes.avatar.data ? <Avatar src={API + user.attributes.user.data?.attributes.avatar.data?.attributes.url} style={{ marginLeft: 3 }} /> : ''} */}
+                            <Avatar src={API + user.attributes.user.data?.attributes.avatar.data?.attributes.url} style={{ marginRight: 3 }} />
+                            {user.attributes.user.data?.attributes.fullname}
                         </td>}
                 </span>
             )
