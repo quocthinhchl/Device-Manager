@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 import { API } from '../../../shared/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserProfile, fetchUserData, getUserList, setUserList } from '../../../stores/Slice/UserSlice';
+import UserAvatar from '../../../assets/images/user-avatar.png'
 const TableData = styled.div`
     width:100%;
     /* max-height: 450px; Đặt chiều cao tối đa cho container */
@@ -29,7 +30,7 @@ const UserTable = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentChoice, setCurrentChoice] = useState('');
     const userProfile = useSelector(UserProfile)
-
+    let imgUrl;
     useEffect(() => {
         renderData()
     }, [props.selectOption, props.keyWord, props.blocked]);
@@ -89,8 +90,8 @@ const UserTable = (props) => {
     const columns = [
         {
             title: '#',
-            dataIndex: 'id',
-            key: 'id',
+            dataIndex: 'index',
+            render: (text, record, index) => index + 1,
         },
         {
             title: 'Name',
@@ -98,14 +99,17 @@ const UserTable = (props) => {
             key: 'username',
             render: (text, useDataDevices) => (
                 <td class="ant-table-cell" scope="col">
-                    <Avatar src={API + useDataDevices.avatar?.url} /> {useDataDevices.fullname}
+                    {useDataDevices.avatar ? <Avatar src={API + useDataDevices.avatar?.url} /> : <Avatar src={UserAvatar} />} {useDataDevices.fullname}
                 </td>
-            )
+            ),
+            sorter: (a, b) => a.username.localeCompare(b.username),
         },
         {
             title: 'Email',
             dataIndex: 'email',
             key: 'email',
+            sorter: (a, b) => a.email.localeCompare(b.email),
+
         },
         {
             title: 'Phone number',
@@ -141,7 +145,7 @@ const UserTable = (props) => {
     ];
     return (
         <TableData>
-            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 10 }} />
+            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 10 }} rowKey={(record, index) => index} />
             <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <p>Bạn có chắc chắn muốn xoá {currentChoice?.attributes?.name} không?</p>
             </Modal>

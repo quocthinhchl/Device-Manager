@@ -124,21 +124,6 @@ export default function EditDevice() {
         backgroundColor: '#8767E1',
         color: '#fff',
     };
-    const handleGetCode = (e) => {
-        setCode(e.target.value)
-    };
-
-    const handleGetName = (e) => {
-        setName(e.target.value)
-    };
-
-    const handleGetStatus = (e) => {
-        setStatus('active')
-    };
-
-    const handleGetAddress = (e) => {
-        setAddress(e.target.value)
-    };
     return (
         <>
             <PathName>
@@ -160,7 +145,6 @@ export default function EditDevice() {
                     layout={'vertical'}
                     onFinish={showModal}
                     form={form}
-                // initialValues={defaultValues.data}
                 >
                     <Space >
                         <Form.Item name='code' label="Code" rules={[{ required: true, message: 'Please enter device code' }, {
@@ -169,7 +153,6 @@ export default function EditDevice() {
                         }
                         ]}>
                             <Input placeholder="Enter device code"
-                                // onChange={handleGetCode}
                                 disabled
                             />
                         </Form.Item>
@@ -183,7 +166,6 @@ export default function EditDevice() {
                             },
                         ]}>
                             <Input placeholder="Enter device name"
-                                // onChange={handleGetName}
                                 name="name"
                             />
                         </Form.Item>
@@ -200,7 +182,6 @@ export default function EditDevice() {
                                         label: 'Inactive',
                                     },
                                 ]}
-                            // onChange={handleGetStatus}
                             />
                         </Form.Item>
                     </Space>
@@ -212,7 +193,6 @@ export default function EditDevice() {
                     >
 
                         <Input.TextArea style={{ width: '100%', height: 120 }}
-                        // onChange={handleGetAddress} 
                         />
                     </Form.Item>
                     <Form.Item>
@@ -220,7 +200,6 @@ export default function EditDevice() {
                             <Divider />
                             <Space>
                                 <Button style={buttonStyle} htmlType="submit">Save</Button>
-                                {/* <Button style={buttonStyle}>Save Fake</Button> */}
                                 <Button onClick={() => { navigate('/dashboard/device_list') }}>Cancel</Button>
                             </Space>
                         </Row>
