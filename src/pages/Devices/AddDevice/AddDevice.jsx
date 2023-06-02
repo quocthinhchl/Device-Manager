@@ -93,7 +93,7 @@ export default function AddDevice() {
     };
 
     const handleGetStatus = (e) => {
-        setStatus('active')
+        setStatus(e.target.value)
     };
 
     const handleGetAddress = (e) => {
@@ -130,11 +130,13 @@ export default function AddDevice() {
                     onFinishFailed={onFinishFailed}
                 >
                     <Space >
-                        <Form.Item name='code' label="Code" rules={[{ required: true, message: 'Please enter device code' }, {
-                            pattern: /^([a-zA-Z]{3})_([0-9]{2})$/,
-                            message: 'Hay nhap theo format XXX_YY voi YY la 2 so)'
-                        }
-                        ]}>
+                        <Form.Item name='code' label="Code"
+                            rules={[{ required: true, message: 'Please enter device code' }, {
+                                pattern: /^([a-zA-Z]{3})_([0-9]{2})$/,
+                                message: 'Hay nhap theo format XXX_YY voi YY la 2 so)'
+                            }
+                            ]}
+                        >
                             <Input placeholder="Enter device code"
                                 onChange={handleGetCode}
                             />
