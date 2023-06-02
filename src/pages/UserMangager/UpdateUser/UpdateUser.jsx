@@ -120,11 +120,25 @@ const UpdateUser = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const res = await axiosInstance.get(`users/${id}?populate=devices,role`);
-            setUser(res);
-            setDVS(res.devices);
-            // console.log(55, res);
+
+            try {
+                const res = await axiosInstance.get(`users/${id}?populate=devices,role`);
+                setUser(res);
+                setDVS(res.devices);
+            } catch (error) {
+
+
+                console.error(' Error is:', error);
+                notification.error({
+                    message: error.message,
+                    description: 'Có lỗi xảy ra, vui lòng thử lại',
+                });
+
+
+            }
+
         };
+
         if (!userProfile.isAdmin) navigate("/dashboard/users_list")
         fetchUser();
     }, []);
@@ -146,31 +160,41 @@ const UpdateUser = () => {
         // console.log(88, user);
     }, [user]);
 
-    // useEffect(() => {
-    //     axiosInstance.get(`/devices?filters[name][$contains]=${search}`).then((res) => {
-    //         setDeviceNames(res.data);
-    //     });
-
-    // }, [search]);
     useEffect(() => {
+        axiosInstance.get(`/devices?filters[name][$contains]=${search}`)
+            .then((res) => {
+                setDeviceNames(res.data);
+            })
+            .catch((error) => {
 
-        const fetchDevices = async () => {
-            try {
-                const res = await axiosInstance.get(
-                    `/devices?filters[code][$contains]=${search}`
-                );
-                if (res.data) {
-                    setDeviceNames(res.data);
-                }
-            } catch (error) {
-                notification.warning({
-                    message: 'Có gì đó không ổn',
-                    description: `Có gì đó không ổn`,
+                console.error(' Error is:', error);
+                notification.error({
+                    message: error.message,
+                    description: 'Có lỗi xảy ra, vui lòng thử lại',
                 });
-            }
-        };
-        fetchDevices();
+            });
+
+
     }, [search]);
+    // useEffect(() => {
+
+    //     const fetchDevices = async () => {
+    //         try {
+    //             const res = await axiosInstance.get(
+    //                 `/devices?filters[code][$contains]=${search}`
+    //             );
+    //             if (res.data) {
+    //                 setDeviceNames(res.data);
+    //             }
+    //         } catch (error) {
+    //             notification.warning({
+    //                 message: 'Có gì đó không ổn',
+    //                 description: `Có gì đó không ổn`,
+    //             });
+    //         }
+    //     };
+    //     fetchDevices();
+    // }, [search]);
 
 
     useEffect(() => {

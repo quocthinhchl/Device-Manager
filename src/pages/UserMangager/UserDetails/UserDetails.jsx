@@ -66,39 +66,23 @@ export default function UserDetails() {
 
 
 
+
     useEffect(() => {
         axiosInstance.get(`users/${id}?populate=devices,role`).then((res) => {
             setUser(res);
-            setDVS(res.devices);
+            setDVS(res.devices)
         })
             .catch((error) => {
-                notification.warning({
-                    message: error.response.data.error.message,
-                    description: `Có gì đó không ổn`,
+
+                console.error(' Error is:', error);
+                notification.error({
+                    message: error.message,
+                    description: 'Có lỗi xảy ra, vui lòng thử lại',
                 });
-            })
+            });
     }, []);
 
-    // useEffect(() => {
 
-    //     const fetchDevices = async () => {
-    //         try {
-    //             const res = await axiosInstance.get(
-    //                 `users/${id}?populate=devices,role`
-    //             );
-    //             if (res.data) {
-    //                 setUser(res);
-    //                 setDVS(res.devices)
-    //             }
-    //         } catch (error) {
-    //             notification.warning({
-    //                 message: 'Có gì đó không ổn',
-    //                 description: `Có gì đó không ổn`,
-    //             });
-    //         }
-    //     };
-    //     fetchDevices();
-    // }, []);
 
 
     const showModal = () => {

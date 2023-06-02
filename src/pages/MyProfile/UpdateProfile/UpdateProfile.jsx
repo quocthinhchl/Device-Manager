@@ -291,7 +291,7 @@ const UpdateProfile = (props) => {
                   ]}
                 >
                   <DatePicker
-                    style={{ width: 348 }}
+                    style={{ width: "100%" }}
                     picker="date"
                     placeholder="Chose date of birth"
                   // defaultValue={dayjs(props.userData.dob, 'YYYY-MM-DD')}
@@ -313,7 +313,7 @@ const UpdateProfile = (props) => {
                   ]}
                 >
                   <Input
-                    style={{ width: 348 }}
+                    style={{ width: "100%" }}
                   // defaultValue={props.userData.phoneNumber}
 
                   />

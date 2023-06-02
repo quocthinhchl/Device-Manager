@@ -43,9 +43,9 @@ const UserTable = (props) => {
             .catch((error) => {
 
                 console.error(' Error is:', error);
-                notification.warning({
-                    message: error.response.data.error.message,
-                    description: `Có gì đó không ổn`,
+                notification.error({
+                    message: error.message,
+                    description: 'Có lỗi xảy ra, vui lòng thử lại',
                 });
             });
 
