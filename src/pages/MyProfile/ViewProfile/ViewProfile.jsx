@@ -18,8 +18,11 @@ import axiosInstance from "../../../shared/services/http-client";
 import { API } from "../../../shared/constants";
 import { UserProfile } from "../../../stores/Slice/UserSlice";
 import { useSelector } from "react-redux";
+import UserAvatar from '../../../assets/images/user-avatar.png'
 const url =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU";
+
+
 const PathName = styled.p`
   margin: 10px 25px 0px 20px;
   font-family: "Poppins";
@@ -64,7 +67,7 @@ const ViewProfile = () => {
                 flexGrow: 1,
               }}
             >
-              <Avatar size={200} src={API + userProfile.user_profile.avatar?.url} />
+              {userProfile.user_profile.avatar ? <Avatar size={200} src={API + userProfile.user_profile.avatar?.url} /> : <Avatar src={UserAvatar} />}
             </Col>
             <Col
               span={16}

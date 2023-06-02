@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router';
 import { API } from '../../shared/constants';
 import { UserProfile, removeToken } from '../../stores/Slice/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import UserAvatar from '../../assets/images/user-avatar.png'
 
 const url =
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
@@ -92,7 +93,7 @@ const Navbar = (props) => {
         <Col>
           <Row justify={'space-between'}>
             <AvatarUser>
-              <Avatar src={API + userProfile.user_profile.avatar?.url} />
+              {userProfile.user_profile.avatar ? <Avatar src={API + userProfile.user_profile.avatar?.url} /> : <Avatar src={UserAvatar} />}
             </AvatarUser>
             <InforUser>
               <Row>{userProfile.user_profile.fullname}</Row>

@@ -108,6 +108,8 @@ const Login = () => {
                 type: 'email',
                 message: 'Please input your Email!',
               },
+              { whitespace: false },
+
             ]}
           >
             <Input placeholder="Enter email" id='email' onChange={e => setUserName(e.target.value)} />

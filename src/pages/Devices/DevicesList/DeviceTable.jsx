@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import axiosInstance from '../../../shared/services/http-client';
 import { useNavigate } from 'react-router';
 import { API } from '../../../shared/constants';
+import UserAvatar from '../../../assets/images/user-avatar.png'
 
 const TableData = styled.div`
     width:100%;
@@ -85,8 +86,8 @@ const DeviceTable = (props) => {
     const columns = [
         {
             title: '#',
-            dataIndex: 'id',
-            key: 'id',
+            dataIndex: 'index',
+            render: (text, record, index) => index + 1,
         },
         {
             title: 'Code',
@@ -94,7 +95,9 @@ const DeviceTable = (props) => {
             key: 'code',
             render: (_, code) => (
                 <td> {code.attributes.code}</td >
-            )
+            ),
+            sorter: (a, b) => a.attributes.code.localeCompare(b.attributes.code),
+
         },
         {
             title: 'Name',
@@ -102,7 +105,9 @@ const DeviceTable = (props) => {
             key: 'name',
             render: (_, code) => (
                 <td> {code.attributes.name}</td >
-            )
+            ),
+            sorter: (a, b) => a.attributes.name.localeCompare(b.attributes.name),
+
         },
         {
             title: 'User',
@@ -112,12 +117,10 @@ const DeviceTable = (props) => {
                 <span>
                     {(!user.attributes.user.data) ? <p></p> :
                         <td class="ant-table-cell" scope="col">
-                            {/* {user.attributes.user.data?.attributes.avatar.data ? <Avatar src={API + user.attributes.user.data?.attributes.avatar.data?.attributes.url} style={{ marginLeft: 3 }} /> : ''} */}
-                            <Avatar src={API + user.attributes.user.data?.attributes.avatar.data?.attributes.url} style={{ marginRight: 3 }} />
-                            {user.attributes.user.data?.attributes.fullname}
+                            {user.attributes.user.data?.attributes.avatar.data ? <Avatar src={API + user.attributes.user.data?.attributes.avatar.data?.attributes.url} /> : <Avatar src={UserAvatar} />} {user.attributes.user.data?.attributes.fullname}
                         </td>}
                 </span>
-            )
+            ),
         },
         {
             title: 'Status',
@@ -151,7 +154,7 @@ const DeviceTable = (props) => {
 
     return (
         <TableData>
-            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 5 }} />
+            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 10 }} rowKey={(record, index) => index} />
             <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <p>Bạn có chắc chắn muốn xoá {currentChoice?.attributes?.name} không?</p>
             </Modal>
