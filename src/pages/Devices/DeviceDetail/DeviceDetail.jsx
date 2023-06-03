@@ -103,7 +103,6 @@ export default function DeviceDetail() {
                         },
                         {
                             title: <Link to={`/dashboard/device_list/detail/${id}`}>{deviceDetail.attributes?.name}</Link>,
-
                         },
                     ]}
                 />

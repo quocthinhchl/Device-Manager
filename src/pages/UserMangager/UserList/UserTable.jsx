@@ -58,18 +58,18 @@ const UserTable = (props) => {
         setIsModalOpen(false);
         await axiosInstance.delete(`/users/${currentChoice}`).catch(e => {
             notification.error({
-                message: 'Lỗi',
-                description: `Lỗi.`,
+                message: e.message,
             });
         })
         notification.success({
             message: 'Xóa thành công',
-            description: `Xóa thành công`,
         });
+        setCurrentChoice('')
         renderData()
     };
     const handleCancel = () => {
         setIsModalOpen(false);
+        setCurrentChoice('')
     };
 
 

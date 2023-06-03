@@ -66,10 +66,12 @@ const DeviceTable = (props) => {
             description: `Xóa thành công`,
         });
         setIsModalOpen(false);
+        setCurrentChoice('')
         renderData()
     };
     const handleCancel = () => {
         setIsModalOpen(false);
+        setCurrentChoice('')
     };
     function handleDetail(id) {
         navigate(`/dashboard/device_list/detail/${id}`)
