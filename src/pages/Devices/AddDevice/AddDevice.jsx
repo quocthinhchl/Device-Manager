@@ -71,7 +71,6 @@ export default function AddDevice() {
                 description: `Tạo thành công ${response.data.attributes.name}.`,
             });
             navigate('/dashboard/device_list');
-
         } catch (error) {
             console.log(1111, error);
             notification.error({

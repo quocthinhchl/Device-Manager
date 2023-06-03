@@ -136,8 +136,8 @@ const CreateUser = () => {
 
 
   const plainOptions = deviceNames.map((device) => ({
-    label: device,
-    value: device.attributes.name,
+    value: device.id,
+    label: device.attributes.name,
     // list: device,
   }));
 
@@ -494,7 +494,7 @@ const CreateUser = () => {
                                       }
                                     }}
                                   >
-                                    {item.value}
+                                    {item.label}
                                   </Checkbox>
                                   {console.log(checkedList.length)}
 
@@ -524,11 +524,11 @@ const CreateUser = () => {
                               overflowY: "auto",
                             }}
                             pagination={{ hideOnSinglePage: true }}
-                            dataSource={checkedList}
+                            dataSource={checkedList.sort((a, b) => a.value - b.value)}
                             columns={[
                               {
-                                dataIndex: 'value',
-                                key: 'value',
+                                dataIndex: 'label',
+                                key: 'label',
                               },
                               {
 

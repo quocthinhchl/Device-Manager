@@ -16,7 +16,6 @@ const items = [
     key: '/dashboard/device_list',
     icon: <UserIcon />,
     label: 'Device',
-
   },
 ];
 const SideBar = styled.div`

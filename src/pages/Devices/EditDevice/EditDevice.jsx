@@ -102,7 +102,7 @@ export default function EditDevice() {
             }
             const response = await axiosInstance.put(`/devices/${id}`, data).catch((e) => {
                 notification.error({
-                    message: 'Lỗi',
+                    message: e.message,
                     description: `Lỗi.`,
                 });
             })
