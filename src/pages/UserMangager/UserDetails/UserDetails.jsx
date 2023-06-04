@@ -90,6 +90,22 @@ export default function UserDetails() {
     };
     const handleOk = async () => {
         await axiosInstance.delete(`users/${id}`)
+            .then(() => {
+                notification.success({
+
+                    description: 'Xóa thành công',
+                })
+            })
+            .catch((error) => {
+
+                console.error(' Error is:', error);
+                notification.error({
+                    message: error.message,
+                    description: 'Có lỗi xảy ra, vui lòng thử lại',
+                });
+            });
+
+
         setIsModalOpen(false);
         navigate("/dashboard/users_list")
     };
@@ -163,15 +179,22 @@ export default function UserDetails() {
                     }}>Devices:</p>
                     <Devices >
 
-                        <List
+                        <List style={{
+                            height: 200,
+                            overflowY: "auto",
+                        }}
                             itemLayout="horizontal"
                             dataSource={DVS}
                             renderItem={(item) => (
                                 <List.Item style={{
                                     border: 'none',
-                                    padding: '16px 0 0 16px'
+                                    padding: '16px 0 0 16px',
+
+
                                 }}>
-                                    <List.Item.Meta
+                                    <List.Item.Meta style={{
+
+                                    }}
                                         title={<Text key={item.id}>{item.name}</Text>}
                                     />
                                 </List.Item>

@@ -110,7 +110,7 @@ export default function EditDevice() {
                 message: 'Cập nhật thành công',
                 description: `Cập nhật thành công ${response.data.attributes.name}.`,
             });
-            navigate('/dashboard/device_list');
+            navigate(`/dashboard/device_list/detail/${id}`);
         }
         catch (error) {
             notification.error({

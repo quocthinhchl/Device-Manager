@@ -78,7 +78,8 @@ const CreateUser = () => {
 
   const valueList = checkedList.map((item) => item.value);
   const userList = user.map((item) => item.username);
-  console.log(userList);
+  const emailList = user.map((item) => item.email);
+  console.log(emailList);
 
   const onFinish = (values) => {
     const data = {
@@ -121,7 +122,7 @@ const CreateUser = () => {
   if (!userProfile.isAdmin) navigate("/dashboard/users_list")
   useEffect(() => {
     const fetchDevices = async () => {
-      axiosInstance.get(`/devices?filters[name][$contains]=${search}`).then((res) => {
+      axiosInstance.get(`/devices?filters[name][$contains]=${search}&filters[status][$eq]=active`).then((res) => {
         setDeviceNames(res.data);
 
       })
@@ -143,6 +144,8 @@ const CreateUser = () => {
       try {
         const res = await axiosInstance.get(`users?populate=devices,avatar`);
         setUser(res);
+        console.log(res);
+
       } catch (error) {
 
 
@@ -181,7 +184,12 @@ const CreateUser = () => {
     }
     return Promise.resolve();
   };
-
+  const checkEmailAvailability = (_, value) => {
+    if (emailList.includes(value)) {
+      return Promise.reject('This email already exists!');
+    }
+    return Promise.resolve();
+  };
 
 
 
@@ -254,6 +262,7 @@ const CreateUser = () => {
                           type: "email",
                           message: "Please input owner Email!",
                         },
+                        { validator: checkEmailAvailability }
                       ]}
                     >
                       <Input

@@ -36,7 +36,10 @@ const DeviceTable = (props) => {
     function renderData() {
         let APIUser = '/devices?populate=user.avatar';
 
-        props.selectOption !== 'id' ? APIUser += `&filters[${props.selectOption}][$contains]=${props.keyWord}` : APIUser += `&filters[user][id][$eq]=${props.keyWord}`;
+        // props.selectOption !== 'id' ? APIUser += `&filters[${props.selectOption}][$contains]=${props.keyWord}` : APIUser += `&filters[user][id][$eq]=${props.keyWord}`;
+        props.selectOption !== 'id' ? APIUser += `&filters[${props.selectOption}][$contains]=${props.keyWord}` :
+            props.keyWord ? APIUser += `&filters[user][id][$eq]=${props.keyWord}` : APIUser += ``;
+
         props.status !== 'all' ? APIUser += `&filters[status][$eq]=${props.status}` : APIUser += ``;
 
 

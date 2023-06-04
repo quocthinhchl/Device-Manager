@@ -161,7 +161,7 @@ const UpdateUser = () => {
     }, [user]);
 
     useEffect(() => {
-        axiosInstance.get(`/devices?filters[name][$contains]=${search}`)
+        axiosInstance.get(`/devices?filters[name][$contains]=${search}&filters[status][$eq]=active`)
             .then((res) => {
                 setDeviceNames(res.data);
             })
