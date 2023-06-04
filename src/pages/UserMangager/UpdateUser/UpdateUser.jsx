@@ -161,7 +161,7 @@ const UpdateUser = () => {
     }, [user]);
 
     useEffect(() => {
-        axiosInstance.get(`/devices?filters[name][$contains]=${search}`)
+        axiosInstance.get(`/devices?filters[name][$contains]=${search}&filters[status][$eq]=active`)
             .then((res) => {
                 setDeviceNames(res.data);
             })
@@ -170,31 +170,13 @@ const UpdateUser = () => {
                 console.error(' Error is:', error);
                 notification.error({
                     message: error.message,
-                    description: 'Có lỗi xảy ra, vui lòng thử lại',
+                    description: 'Có lỗi xảy ra, vui  lòng thử lại',
                 });
             });
 
 
     }, [search]);
-    // useEffect(() => {
 
-    //     const fetchDevices = async () => {
-    //         try {
-    //             const res = await axiosInstance.get(
-    //                 `/devices?filters[code][$contains]=${search}`
-    //             );
-    //             if (res.data) {
-    //                 setDeviceNames(res.data);
-    //             }
-    //         } catch (error) {
-    //             notification.warning({
-    //                 message: 'Có gì đó không ổn',
-    //                 description: `Có gì đó không ổn`,
-    //             });
-    //         }
-    //     };
-    //     fetchDevices();
-    // }, [search]);
 
 
     useEffect(() => {

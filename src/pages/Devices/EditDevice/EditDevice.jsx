@@ -110,7 +110,7 @@ export default function EditDevice() {
                 message: 'Cập nhật thành công',
                 description: `Cập nhật thành công ${response.data.attributes.name}.`,
             });
-            navigate('/dashboard/device_list');
+            navigate(`/dashboard/device_list/detail/${id}`);
         }
         catch (error) {
             notification.error({
@@ -149,7 +149,7 @@ export default function EditDevice() {
                     <Space >
                         <Form.Item name='code' label="Code" rules={[{ required: true, message: 'Please enter device code' }, {
                             pattern: /^([a-zA-Z]{3})_([0-9]{2})$/,
-                            message: 'Hay nhap theo format XXX_YY voi YY la 2 so)'
+                            message: 'format must be XXX_YY with YY being 2 numbers)'
                         }
                         ]}>
                             <Input placeholder="Enter device code"

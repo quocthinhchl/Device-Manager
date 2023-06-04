@@ -62,9 +62,9 @@ const ChangePass = (props) => {
         }
       })
       .catch((error) => {
-        // console.log(error);
+        console.log(error);
         notification.error({
-          message: error.message,
+          message: error.response.data.error.message,
           description: 'Có lỗi xảy ra, vui lòng thử lại',
         });
       });

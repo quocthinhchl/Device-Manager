@@ -67,7 +67,7 @@ const ViewProfile = () => {
                 flexGrow: 1,
               }}
             >
-              {userProfile.user_profile.avatar ? <Avatar size={200} src={API + userProfile.user_profile.avatar?.url} /> : <Avatar src={UserAvatar} />}
+              {userProfile.user_profile.avatar ? <Avatar size={200} src={API + userProfile.user_profile.avatar?.url} /> : <Avatar size={200} src={UserAvatar} />}
             </Col>
             <Col
               span={16}

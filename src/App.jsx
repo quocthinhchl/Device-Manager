@@ -26,20 +26,22 @@ function App() {
   const dispatch = useDispatch()
   const navigate = useNavigate();
 
-  // console.log(123, location);
+  // console.log(123, location.pathname);
+  // useEffect(()=>{
+  //   setLocation(useLocation());
+  // } ,[])
   useEffect(() => {
     const getToken = async () => {
       await dispatch(addToken(localStorage.getItem('token')))
+
     }
     getToken()
     if (localStorage.getItem('token') === null) {
       navigate('/')
     } else {
-      if (location.pathname === '/') {
-        navigate('/dashboard ')
-      } else {
-        navigate(`${location.pathname}`)
-      }
+
+      navigate('/dashboard ')
+
     }
   }, [localStorage.getItem('token')])
   return (
