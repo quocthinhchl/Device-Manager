@@ -30,6 +30,8 @@ const UserTable = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentChoice, setCurrentChoice] = useState('');
     const userProfile = useSelector(UserProfile)
+    const [rowIndex, setRowIndex] = useState(0);
+
     let imgUrl;
     useEffect(() => {
         renderData()
@@ -39,7 +41,8 @@ const UserTable = (props) => {
         axiosInstance
             .get(`/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`)
             .then(res => {
-                setData(res);
+                const formattedData = res.map((item, index) => ({ ...item, rowIndex: rowIndex + index + 1 }));
+                setData(formattedData);
             }, [])
             .catch((error) => {
 
@@ -90,8 +93,8 @@ const UserTable = (props) => {
     const columns = [
         {
             title: '#',
-            dataIndex: 'index',
-            render: (text, record, index) => index + 1,
+            dataIndex: 'rowIndex',
+            render: (text) => text,
         },
         {
             title: 'Name',
@@ -145,7 +148,7 @@ const UserTable = (props) => {
     ];
     return (
         <TableData>
-            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 10 }} rowKey={(record, index) => index} />
+            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 10 }} rowKey='id' />
             <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <p>Bạn có chắc chắn muốn xoá {currentChoice?.attributes?.name} không?</p>
             </Modal>

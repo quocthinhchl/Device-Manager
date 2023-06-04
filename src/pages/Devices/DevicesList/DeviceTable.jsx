@@ -24,37 +24,39 @@ const TableData = styled.div`
     `
 
 const DeviceTable = (props) => {
-
     const [useData, setData] = useState([]);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentChoice, setCurrentChoice] = useState('');
+    const [rowIndex, setRowIndex] = useState(0);
 
     useEffect(() => {
-        renderData()
+        renderData();
     }, [props.selectOption, props.keyWord, props.status]);
+
     function renderData() {
         let APIUser = '/devices?populate=user.avatar';
 
-        // props.selectOption !== 'id' ? APIUser += `&filters[${props.selectOption}][$contains]=${props.keyWord}` : APIUser += `&filters[user][id][$eq]=${props.keyWord}`;
-        props.selectOption !== 'id' ? APIUser += `&filters[${props.selectOption}][$contains]=${props.keyWord}` :
-            props.keyWord ? APIUser += `&filters[user][id][$eq]=${props.keyWord}` : APIUser += ``;
+        props.selectOption !== 'id'
+            ? (APIUser += `&filters[${props.selectOption}][$contains]=${props.keyWord}`)
+            : (APIUser += `&filters[user][id][$eq]=${props.keyWord}`);
+        props.status !== 'all' ? (APIUser += `&filters[status][$eq]=${props.status}`) : (APIUser += '');
 
-        props.status !== 'all' ? APIUser += `&filters[status][$eq]=${props.status}` : APIUser += ``;
-
-
-        axiosInstance.get(`${APIUser} `).then(res => {
-            setData(res.data);
-        }, [useData, isModalOpen])
+        axiosInstance
+            .get(APIUser)
+            .then((res) => {
+                const formattedData = res.data.map((item, index) => ({ ...item, rowIndex: rowIndex + index + 1 }));
+                setData(formattedData);
+            })
             .catch((error) => {
-
-                console.error(' Error is:', error);
+                console.error('Error is:', error);
                 notification.error({
                     message: error.message,
                     description: 'Có lỗi xảy ra, vui lòng thử lại',
                 });
             });
     }
+
 
     const handleOk = async () => {
 
@@ -91,8 +93,8 @@ const DeviceTable = (props) => {
     const columns = [
         {
             title: '#',
-            dataIndex: 'index',
-            render: (text, record, index) => index + 1,
+            dataIndex: 'rowIndex',
+            render: (text) => text,
         },
         {
             title: 'Code',
@@ -159,7 +161,7 @@ const DeviceTable = (props) => {
 
     return (
         <TableData>
-            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 10 }} rowKey={(record, index) => index} />
+            <Table align='center' columns={columns} dataSource={useData} style={{ width: '100%' }} pagination={{ pageSize: 10 }} rowKey="id" />
             <Modal title="Detele" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
                 <p>Bạn có chắc chắn muốn xoá {currentChoice?.attributes?.name} không?</p>
             </Modal>
