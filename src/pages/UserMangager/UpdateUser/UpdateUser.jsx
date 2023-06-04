@@ -170,7 +170,7 @@ const UpdateUser = () => {
                 console.error(' Error is:', error);
                 notification.error({
                     message: error.message,
-                    description: 'Có lỗi xảy ra, vui lòng thử lại',
+                    description: 'Có lỗi xảy ra, vui  lòng thử lại',
                 });
             });
 
