@@ -66,6 +66,7 @@ const CreateUser = () => {
   const [search, setSearch] = useState('');
   const [form] = Form.useForm();
   const userProfile = useSelector(UserProfile)
+  const [user, setUser] = useState([]);
 
   const DebounceSearch = useCallback(debounce((nextValue) => setSearch(nextValue), 700), []);
   const handleSearch = (event) => {
@@ -75,7 +76,9 @@ const CreateUser = () => {
     setCheckedList(checkedList.filter((item) => item.value !== record.value));
   };
 
-  const valueList = checkedList.map((item) => item.label);
+  const valueList = checkedList.map((item) => item.value);
+  const userList = user.map((item) => item.username);
+  console.log(userList);
 
   const onFinish = (values) => {
     const data = {
@@ -105,7 +108,7 @@ const CreateUser = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log("tattsa:", error);
 
         notification.error({
           message: error.message,
@@ -134,6 +137,30 @@ const CreateUser = () => {
     fetchDevices();
   }, [search]);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+
+      try {
+        const res = await axiosInstance.get(`users?populate=devices,avatar`);
+        setUser(res);
+      } catch (error) {
+
+
+        console.error(' Error is:', error);
+        notification.error({
+          message: error.message,
+          description: 'Có lỗi xảy ra, vui lòng thử lại',
+        });
+
+
+      }
+
+    };
+
+
+    fetchUser();
+  }, []);
+
 
   const plainOptions = deviceNames.map((device) => ({
     value: device.id,
@@ -141,12 +168,21 @@ const CreateUser = () => {
     // list: device,
   }));
 
+
   const handleCheckboxValidation = () => {
     if (checkedList.length === 0) {
       return Promise.reject('Please select at least one checkbox.');
     }
     return Promise.resolve();
   };
+  const checkNameAvailability = (_, value) => {
+    if (userList.includes(value)) {
+      return Promise.reject('This username already exists!');
+    }
+    return Promise.resolve();
+  };
+
+
 
 
 
@@ -238,6 +274,8 @@ const CreateUser = () => {
 
                           message: "Please input owner UserName!",
                         },
+                        { validator: checkNameAvailability },
+
                       ]}
                     >
                       <Input
@@ -496,7 +534,7 @@ const CreateUser = () => {
                                   >
                                     {item.label}
                                   </Checkbox>
-                                  {console.log(checkedList.length)}
+                                  {/* {console.log(checkedList.length)} */}
 
 
 

@@ -176,25 +176,7 @@ const UpdateUser = () => {
 
 
     }, [search]);
-    // useEffect(() => {
 
-    //     const fetchDevices = async () => {
-    //         try {
-    //             const res = await axiosInstance.get(
-    //                 `/devices?filters[code][$contains]=${search}`
-    //             );
-    //             if (res.data) {
-    //                 setDeviceNames(res.data);
-    //             }
-    //         } catch (error) {
-    //             notification.warning({
-    //                 message: 'Có gì đó không ổn',
-    //                 description: `Có gì đó không ổn`,
-    //             });
-    //         }
-    //     };
-    //     fetchDevices();
-    // }, [search]);
 
 
     useEffect(() => {

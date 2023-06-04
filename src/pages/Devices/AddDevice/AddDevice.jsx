@@ -43,7 +43,7 @@ const PathName = styled.p`
 export default function AddDevice() {
     const [name, setName] = useState('')
     const [code, setCode] = useState('')
-    const [status, setStatus] = useState('active')
+    const [status, setStatus] = useState('')
     const [address, setAddress] = useState('')
     const [api, contextHolder] = notification.useNotification();
     const navigate = useNavigate();
@@ -92,7 +92,7 @@ export default function AddDevice() {
     };
 
     const handleGetStatus = (e) => {
-        setStatus(e.target.value)
+        setStatus(e)
     };
 
     const handleGetAddress = (e) => {
@@ -132,7 +132,7 @@ export default function AddDevice() {
                         <Form.Item name='code' label="Code"
                             rules={[{ required: true, message: 'Please enter device code' }, {
                                 pattern: /^([a-zA-Z]{3})_([0-9]{2})$/,
-                                message: 'Hay nhap theo format XXX_YY voi YY la 2 so)'
+                                message: 'Format must be XXX_YY with YY being 2 numbers)'
                             }
                             ]}
                         >
