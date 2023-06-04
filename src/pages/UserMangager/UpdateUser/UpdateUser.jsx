@@ -550,7 +550,7 @@ const UpdateUser = () => {
                                                             height: 150,
                                                             overflowY: "auto",
                                                         }}
-                                                        pagination={{ hideOnSinglePage: true }}
+                                                        pagination={false}
                                                         dataSource={checkedList.sort((a, b) => a.value - b.value)}
                                                         columns={[
                                                             {

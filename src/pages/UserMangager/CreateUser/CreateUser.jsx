@@ -570,7 +570,7 @@ const CreateUser = () => {
                               height: 140,
                               overflowY: "auto",
                             }}
-                            pagination={{ hideOnSinglePage: true }}
+                            pagination={false}
                             dataSource={checkedList.sort((a, b) => a.value - b.value)}
                             columns={[
                               {
