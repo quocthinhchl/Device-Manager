@@ -123,6 +123,13 @@ const Login = () => {
                 required: true,
                 message: 'Please input your password!',
               },
+              {
+                pattern: new RegExp(
+                  /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
+                ),
+                message:
+                  " Password should be 6-20 characters and include at least 1 letter, 1 number and 1 special character!",
+              },
             ]}
           >
             <Input.Password placeholder="Enter password" id='password' onChange={e => setPassword(e.target.value)} />
