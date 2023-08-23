@@ -1,13 +1,10 @@
-import React, { StrictMode, useState } from 'react';
+import React, { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import 'antd/dist/reset.css';
 import './assets/styles/index.css';
-import Login from './pages/Authorization/Login/Login';
-import { Route, Router, useNavigate } from 'react-router-dom';
-import { Switch } from 'antd';
 import { BrowserRouter } from 'react-router-dom/dist';
 import { Provider } from 'react-redux';
 import store from './stores/rootStore';
@@ -15,14 +12,14 @@ const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 
 root.render(
-  <StrictMode>
+  // <StrictMode>
 
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>
-  </StrictMode>
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </BrowserRouter>
+  // </StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change

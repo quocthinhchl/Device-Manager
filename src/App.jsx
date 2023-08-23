@@ -7,8 +7,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import { useEffect, useState } from 'react';
 import { UserProfile, addToken } from './stores/Slice/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
-
+import { SignUp } from './pages/Authorization/SignUp/SignUp';
 
 // function getToken() {
 //   const tokenString = localStorage.getItem('token');
@@ -21,9 +20,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 function App() {
   // const [token, setToken] = useState(getToken())
-  const [location, setLocation] = useState(useLocation())
-  const token = useSelector(UserProfile)
-  const dispatch = useDispatch()
+  const [location, setLocation] = useState(useLocation());
+  const token = useSelector(UserProfile);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // console.log(123, location.pathname);
@@ -32,22 +31,20 @@ function App() {
   // } ,[])
   useEffect(() => {
     const getToken = async () => {
-      await dispatch(addToken(localStorage.getItem('token')))
-
-    }
-    getToken()
+      await dispatch(addToken(localStorage.getItem('token')));
+    };
+    getToken();
     if (localStorage.getItem('token') === null) {
-      navigate('/')
+      navigate('/');
     } else {
-
-      navigate('/dashboard ')
-
+      navigate('/dashboard ');
     }
-  }, [localStorage.getItem('token')])
+  }, [localStorage.getItem('token')]);
   return (
     <div className="App">
       <Routes>
         <Route path="/" index element={<Login />} />
+        <Route path="/sign_up" index element={<SignUp />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
       </Routes>
     </div>

@@ -5,6 +5,7 @@ import {
   Divider,
   Form,
   Input,
+  Modal,
   Row,
   Select,
   Space,
@@ -14,7 +15,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import axiosInstance from '../../../shared/services/http-client';
-import { Navigate, useNavigate } from 'react-router';
+import { Navigate, useNavigate, useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 const { Option } = Select;
 
 const Content = styled.div`
@@ -59,25 +61,38 @@ const buttonStyle = {
   color: '#fff',
 };
 
-export default function AddDevice() {
-  const [status, setStatus] = useState('active');
-  const [categories, setCategories] = useState('');
-  const [api, contextHolder] = notification.useNotification();
+export default function AddCategory() {
+  // const [isModalVisible, setIsModalVisible] = useState(false);
+  // const [categoryDetail, setCategoryDetail] = useState('');
+  const [devices, setDevices] = useState('');
+  // const [defaultValues, setDefaultValues] = useState({});
+  const [form] = Form.useForm();
+
+  const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosInstance.get('/categories').then(res => {
-      setCategories(res.data);
-    });
+    axiosInstance
+      .get(`/devices?filters[status][$eq]=active`)
+      .then(res => {
+        setDevices(res.data);
+      })
+      .catch(error => {
+        // console.error(' Error is:', error);
+        notification.error({
+          message: error.message,
+          description: 'Có lỗi xảy ra, vui  lòng thử lại',
+        });
+      });
   }, []);
 
-  const categoryOptions = () => {
-    if (!categories) {
+  const deviceOptions = () => {
+    if (!devices) {
       return null;
     }
-    return categories.map(category => (
-      <Option key={category.id} value={category.id}>
-        {category.attributes.name}
+    return devices.map(device => (
+      <Option key={device.id} value={device.id}>
+        {device.attributes.name}
       </Option>
     ));
   };
@@ -93,42 +108,29 @@ export default function AddDevice() {
   };
 
   const handleSubmit = async values => {
-    // event.preventDefault();
     const data = {
       data: {
-        name: values.name,
         code: values.code,
-        status: status,
-        category: values.category,
-        address: values.address,
+        name: values.name,
+        devices: values.devices,
       },
     };
 
-    // console.log(55, data);
-    await axiosInstance
-      .post('/devices', data)
-      .then(res => {
+    axiosInstance
+      .post(`/categories`, data)
+      .then(response => {
         notification.success({
           message: 'Tạo thành công',
-          description: `Tạo thành công ${res.data.attributes.name}.`,
+          description: `Tạo thành công ${response.data.attributes.name}.`,
         });
-        navigate('/dashboard/admin/device_list');
+        navigate(`/dashboard/admin/category_list`);
       })
-      .catch(e => {
-        // console.log(11, e);
+      .catch(error => {
         notification.error({
-          message: 'Lỗi',
-          description: `Lỗi ${e.response.data.error.details.errors[0].path} ${e.response.data.error.details.errors[0].message}.`,
+          message: error.error.name,
+          description: 'Có lỗi xảy ra vui lòng thử lại',
         });
       });
-  };
-
-  const handleGetStatus = e => {
-    setStatus(e);
-  };
-
-  const onFinishFailed = errorInfo => {
-    console.log('Failed:', errorInfo);
   };
 
   return (
@@ -138,22 +140,18 @@ export default function AddDevice() {
           separator=">"
           items={[
             {
-              title: 'All Device',
-              href: '/dashboard/device_list',
+              title: 'All Category',
+              href: '/dashboard/admin/category_list',
             },
             {
-              title: <b>Add a new device</b>,
+              title: <b>Add a new category</b>,
               href: '',
             },
           ]}
         />
       </PathName>
       <Content>
-        <Form
-          layout={'vertical'}
-          onFinish={handleSubmit}
-          onFinishFailed={onFinishFailed}
-        >
+        <Form layout={'vertical'} onFinish={handleSubmit} form={form}>
           <Space>
             <Form.Item
               name="code"
@@ -162,7 +160,7 @@ export default function AddDevice() {
                 { required: true, message: 'Please enter device code' },
                 {
                   pattern: /^([a-zA-Z]{3})_([0-9]{2})$/,
-                  message: 'Format must be XXX_YY with YY being 2 numbers',
+                  message: 'format must be XXX_YY with YY being 2 numbers)',
                 },
               ]}
             >
@@ -181,49 +179,26 @@ export default function AddDevice() {
                 },
               ]}
             >
-              <Input placeholder="Enter device name" />
-            </Form.Item>
-            <Form.Item label="Status" name="status">
-              <Select
-                placeholder="Select a status"
-                options={[
-                  {
-                    value: 'active',
-                    label: 'Active',
-                  },
-                  {
-                    value: 'inactive',
-                    label: 'Inactive',
-                  },
-                ]}
-                defaultValue={'active'}
-                onChange={handleGetStatus}
-              />
+              <Input placeholder="Enter device name" name="name" />
             </Form.Item>
           </Space>
+
           <Form.Item
-            label="Category"
-            name="category"
-            rules={[{ required: true, message: 'Vui lòng chọn danh mục!' }]}
+            label="Device"
+            name="devices"
+            // rules={[{ required: true, message: 'Vui lòng chọn danh mục!' }]}
           >
             <Select
               placeholder="Chọn danh mục"
-              // mode="multiple" // Cho phép chọn nhiều danh mục
-              showSearch
+              mode="multiple" // Cho phép chọn nhiều danh mục
+              showSearch // Hiển thị thanh tìm kiếm
               filterOption={filterOption}
-              // style={{ width: '100%', maxWidth: '400px' }}
+              style={{ width: '100%', maxWidth: '400px' }}
             >
-              {categoryOptions()}
+              {deviceOptions()}
             </Select>
           </Form.Item>
-          <Form.Item
-            label="Address"
-            name="address"
-            rules={[{ required: true, message: 'Please input Intro' }]}
-            style={{ width: '100%', height: 120, paddingBottom: 10 }}
-          >
-            <Input.TextArea style={{ width: '100%', height: 120 }} />
-          </Form.Item>
+
           <Form.Item>
             <Row>
               <Divider />
@@ -231,11 +206,9 @@ export default function AddDevice() {
                 <Button style={buttonStyle} htmlType="submit">
                   Save
                 </Button>
-                {contextHolder}
-                {/* <Button style={buttonStyle}>Save Fake</Button> */}
                 <Button
                   onClick={() => {
-                    navigate('/dashboard/admin/device_list');
+                    navigate('/dashboard/admin/category_list');
                   }}
                 >
                   Cancel

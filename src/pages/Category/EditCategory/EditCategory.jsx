@@ -61,44 +61,51 @@ const buttonStyle = {
   color: '#fff',
 };
 
-export default function EditDevice() {
-  const [categories, setCategories] = useState('');
+export default function EditCategory() {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [deviceDetail, setDeviceDetail] = useState('');
-  const [form] = Form.useForm();
+  const [categoryDetail, setCategoryDetail] = useState('');
+  const [devices, setDevices] = useState('');
   const [defaultValues, setDefaultValues] = useState({});
+  const [form] = Form.useForm();
 
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosInstance.get(`/devices/${id}?populate=category`).then(res => {
-      setDeviceDetail(res.data);
+    axiosInstance.get(`/categories/${id}?populate=devices`).then(res => {
+      setCategoryDetail(res.data);
     });
-    axiosInstance.get('/categories').then(res => {
-      setCategories(res.data);
-    });
+    axiosInstance
+      .get(`/devices?filters[status][$eq]=active`)
+      .then(res => {
+        setDevices(res.data);
+      })
+      .catch(error => {
+        // console.error(' Error is:', error);
+        notification.error({
+          message: error.message,
+          description: 'Có lỗi xảy ra, vui  lòng thử lại',
+        });
+      });
   }, [id]);
 
   useEffect(() => {
-    if (deviceDetail) {
+    if (categoryDetail) {
       form.setFieldsValue({
-        code: deviceDetail.attributes.code,
-        name: deviceDetail.attributes.name,
-        status: deviceDetail.attributes.status,
-        category: deviceDetail.attributes.category.data?.id,
-        address: deviceDetail.attributes.address,
+        code: categoryDetail.attributes.code,
+        name: categoryDetail.attributes.name,
+        devices: categoryDetail.attributes.devices.data?.map(item => item.id),
       });
     }
-  }, [deviceDetail, form]);
+  }, [categoryDetail, form]);
 
-  const categoryOptions = () => {
-    if (!categories) {
+  const deviceOptions = () => {
+    if (!devices) {
       return null;
     }
-    return categories.map(category => (
-      <Option key={category.id} value={category.id}>
-        {category.attributes.name}
+    return devices.map(device => (
+      <Option key={device.id} value={device.id}>
+        {device.attributes.name}
       </Option>
     ));
   };
@@ -118,10 +125,10 @@ export default function EditDevice() {
     setDefaultValues({
       code: values.code,
       name: values.name,
-      status: values.status,
-      category: values.category,
-      address: values.address,
+      devices: values.devices,
     });
+
+    // console.log(44, defaultValues);
   };
 
   const handleCancel = () => {
@@ -129,31 +136,27 @@ export default function EditDevice() {
   };
 
   const handleSubmit = async () => {
-    var data = {
+    const data = {
       data: {
         code: defaultValues.code,
         name: defaultValues.name,
-        status: defaultValues.status,
-        category: defaultValues.category,
-        address: defaultValues.address,
+        devices: defaultValues.devices,
       },
     };
 
-    //   console.log(data);
-    await axiosInstance
-      .put(`/devices/${id}`, data)
-      .then(res => {
+    axiosInstance
+      .put(`/categories/${id}`, data)
+      .then(response => {
         notification.success({
-          message: 'Chỉnh sửa thành công',
-          description: `Chỉnh sửa thành công ${res.data.attributes.name}.`,
+          message: 'Cập nhật thành công',
+          description: `Cập nhật thành công ${response.data.attributes.name}.`,
         });
-        navigate(`/dashboard/device_list/detail/${id}`);
+        navigate(`/dashboard/admin/category_list/detail/${id}`);
       })
-      .catch(e => {
-        // console.log(11, e);
+      .catch(error => {
         notification.error({
-          message: 'Lỗi',
-          description: `Lỗi ${e.response.data.error.details.errors[0].path} ${e.response.data.error.details.errors[0].message}.`,
+          message: error.error.name,
+          description: 'Có lỗi xảy ra vui lòng thử lại',
         });
       });
   };
@@ -170,7 +173,7 @@ export default function EditDevice() {
             {
               title: (
                 <Link to={`/dashboard/device_list/edit/${id}`}>
-                  {deviceDetail.attributes?.name}
+                  {categoryDetail.attributes?.name}
                 </Link>
               ),
             },
@@ -208,45 +211,24 @@ export default function EditDevice() {
             >
               <Input placeholder="Enter device name" name="name" />
             </Form.Item>
-            <Form.Item label="Status" name="status">
-              <Select
-                placeholder="Select a status"
-                options={[
-                  {
-                    value: 'active',
-                    label: 'Active',
-                  },
-                  {
-                    value: 'inactive',
-                    label: 'Inactive',
-                  },
-                ]}
-              />
-            </Form.Item>
           </Space>
+
           <Form.Item
-            label="Category"
-            name="category"
-            rules={[{ required: true, message: 'Vui lòng chọn danh mục!' }]}
+            label="Device"
+            name="devices"
+            // rules={[{ required: true, message: 'Vui lòng chọn danh mục!' }]}
           >
             <Select
               placeholder="Chọn danh mục"
-              // mode="multiple" // Cho phép chọn nhiều danh mục
-              showSearch
+              mode="multiple" // Cho phép chọn nhiều danh mục
+              showSearch // Hiển thị thanh tìm kiếm
               filterOption={filterOption}
-              // style={{ width: '100%', maxWidth: '400px' }}
+              style={{ width: '100%', maxWidth: '400px' }}
             >
-              {categoryOptions()}
+              {deviceOptions()}
             </Select>
           </Form.Item>
-          <Form.Item
-            name="address"
-            label="Address"
-            rules={[{ required: true, message: 'Please input Intro' }]}
-            style={{ width: '100%', height: 120, paddingBottom: 10 }}
-          >
-            <Input.TextArea style={{ width: '100%', height: 120 }} />
-          </Form.Item>
+
           <Form.Item>
             <Row>
               <Divider />
@@ -256,7 +238,7 @@ export default function EditDevice() {
                 </Button>
                 <Button
                   onClick={() => {
-                    navigate('/dashboard/admin/device_list');
+                    navigate('/dashboard/admin/category_list');
                   }}
                 >
                   Cancel
@@ -267,7 +249,7 @@ export default function EditDevice() {
         </Form>
         <Modal
           title="Xác nhận chỉnh sửa"
-          visible={isModalVisible}
+          open={isModalVisible}
           onOk={handleSubmit}
           onCancel={handleCancel}
           okText="Đồng ý"

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-undef */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import {
   theme,
@@ -12,85 +12,93 @@ import {
   Divider,
   notification,
   Breadcrumb,
-} from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import { UploadContainer } from "./style";
-import axiosInstance from "../../../shared/services/http-client";
+} from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { UploadContainer } from './style';
+import axiosInstance from '../../../shared/services/http-client';
 // import ImgCrop from 'antd-img-crop';
 
-import { API } from "../../../shared/constants";
-import Upload from "antd/es/upload/Upload";
-import { UserProfile, updateAvatarUserProfileAction, updateUserProfileAction, } from "../../../stores/Slice/UserSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { API } from '../../../shared/constants';
+import Upload from 'antd/es/upload/Upload';
+import {
+  UserProfile,
+  updateAvatarUserProfileAction,
+  updateUserProfileAction,
+} from '../../../stores/Slice/UserSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-const getBase64 = (file) =>
+const getBase64 = file =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
+    reader.onerror = error => reject(error);
   });
 
 const buttonStyle = {
-  backgroundColor: "#8767E1",
-  color: "#fff",
+  backgroundColor: '#8767E1',
+  color: '#fff',
   width: 150,
 };
 const PathName = styled.p`
-    margin: 10px 25px 0px 20px;
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 32px;
-    color: #111111;
-  `;
+  margin: 10px 25px 0px 20px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 32px;
+  color: #111111;
+`;
 const Content = styled.div`
-    margin: 15px 16px;
-    padding: 24px;
-    background: #ffffff;
+  margin: 15px 16px;
+  padding: 24px;
+  background: #ffffff;
 
-    border-radius: 10px;
-  `;
+  border-radius: 10px;
+`;
 
-const UpdateProfile = (props) => {
+const UpdateProfile = props => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
-  const dispatch = useDispatch()
-  const userProfile = useSelector(UserProfile)
+  const dispatch = useDispatch();
+  const userProfile = useSelector(UserProfile);
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
-  const [fileList, setFileList] = useState([{
-    url: `${API}${userProfile.user_profile.avatar?.url}`
-  }]);
-  // const formData = new FormData(); 
-  const [image, setImage] = useState()
+  const [fileList, setFileList] = useState([
+    {
+      url: `${API}${userProfile.user_profile.avatar?.url}`,
+    },
+  ]);
+  // const formData = new FormData();
+  const [image, setImage] = useState();
 
   const handleCancel = () => setPreviewOpen(false);
 
-  const handlePreview = async (file) => {
+  const handlePreview = async file => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
     setPreviewImage(file.url || file.preview);
 
     setPreviewOpen(true);
-    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+    setPreviewTitle(
+      file.name || file.url.substring(file.url.lastIndexOf('/') + 1)
+    );
   };
 
-  const handleBeforeUpload = (file) => {
+  const handleBeforeUpload = file => {
     const uploadFile = {
       uid: file.uid,
       name: file.name,
       status: 'uploading',
     };
-    setFileList((prevList) => [...prevList, uploadFile]);
+    setFileList(prevList => [...prevList, uploadFile]);
     return false; // prevent default upload behavior
   };
 
@@ -107,8 +115,7 @@ const UpdateProfile = (props) => {
     }
     formData.append('files', file);
     // console.log(11, formData);
-    setImage(formData)
-
+    setImage(formData);
   };
   const uploadButton = (
     <div>
@@ -124,7 +131,7 @@ const UpdateProfile = (props) => {
   );
   const [form] = Form.useForm();
 
-  const onFinish = async (values) => {
+  const onFinish = async values => {
     const data = {
       fullname: values.fullname,
       dob: values.dob.format('YYYY-MM-DD'),
@@ -133,11 +140,13 @@ const UpdateProfile = (props) => {
     // console.log(77, data);
     try {
       // console.log(77, fileList);
-      if (fileList[0].url != `${API}${userProfile.user_profile.avatar?.url}`) {
-        await dispatch(updateAvatarUserProfileAction({ image })).unwrap()
+      if (fileList[0].url !== `${API}${userProfile.user_profile.avatar?.url}`) {
+        await dispatch(updateAvatarUserProfileAction({ image })).unwrap();
       }
-      await dispatch(updateUserProfileAction({ id: userProfile.user_profile.id, data })).unwrap()
-      navigate("/dashboard/myprofile")
+      await dispatch(
+        updateUserProfileAction({ id: userProfile.user_profile.id, data })
+      ).unwrap();
+      navigate('/dashboard/myprofile');
       notification.success({
         message: 'Cập nhật thông tin thành công',
       });
@@ -163,16 +172,13 @@ const UpdateProfile = (props) => {
         role: userProfile.user_profile.role?.name,
       });
     }
-    setFileList([{
-      url: `${API}${userProfile.user_profile.avatar?.url}`
-    }])
+    setFileList([
+      {
+        url: `${API}${userProfile.user_profile.avatar?.url}`,
+      },
+    ]);
     // console.log(88, user);
   }, [userProfile.user_profile]);
-
-
-
-
-
 
   return (
     <>
@@ -189,21 +195,21 @@ const UpdateProfile = (props) => {
               href: '',
             },
           ]}
-        /></PathName>
+        />
+      </PathName>
       <Content
         style={{
-          display: "flex",
-          flexDirection: "row",
-          border: "1px  ",
-          flexWrap: "wrap",
+          display: 'flex',
+          flexDirection: 'row',
+          border: '1px  ',
+          flexWrap: 'wrap',
         }}
       >
         <div
           style={{
-            width: "40%",
+            width: '40%',
             paddingLeft: 20,
             flexGrow: 1,
-
           }}
         >
           {/* <ImgCrop > */}
@@ -218,9 +224,12 @@ const UpdateProfile = (props) => {
           </UploadContainer>
           {/* </ImgCrop> */}
 
-
-
-          <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+          <Modal
+            open={previewOpen}
+            title={previewTitle}
+            footer={null}
+            onCancel={handleCancel}
+          >
             <img
               alt="example"
               style={{
@@ -232,7 +241,7 @@ const UpdateProfile = (props) => {
         </div>
         <div
           style={{
-            width: "60%",
+            width: '60%',
             flexGrow: 1,
           }}
         >
@@ -243,7 +252,6 @@ const UpdateProfile = (props) => {
 
             form={form}
             onFinish={onFinish}
-
           >
             <Form.Item
               name="fullname"
@@ -251,7 +259,7 @@ const UpdateProfile = (props) => {
               rules={[
                 {
                   required: true,
-                  message: "Please enter your name",
+                  message: 'Please enter your name',
                 },
                 { whitespace: true },
                 { min: 3 },
@@ -259,42 +267,37 @@ const UpdateProfile = (props) => {
             >
               <Input
                 placeholder="Type your name"
-              // defaultValue={props.userData.fullname}
+                // defaultValue={props.userData.fullname}
               />
             </Form.Item>
             <Form.Item name="username" label="Username:">
               <Input disabled />
             </Form.Item>
 
-            <Form.Item
-              name="email"
-              label="Email:"
-
-            >
+            <Form.Item name="email" label="Email:">
               <Input
                 placeholder="Type your email"
-
                 // defaultValue={props.userData.email}
                 disabled
               ></Input>
             </Form.Item>
-            <div style={{ display: "flex", width: "100%" }}>
-              <Space size={"large"}>
+            <div style={{ display: 'flex', width: '100%' }}>
+              <Space size={'large'}>
                 <Form.Item
                   name="dob"
                   label="Date of Birth:"
                   rules={[
                     {
                       required: true,
-                      message: "Please provide your date of birth",
+                      message: 'Please provide your date of birth',
                     },
                   ]}
                 >
                   <DatePicker
-                    style={{ width: "100%" }}
+                    style={{ width: '100%' }}
                     picker="date"
                     placeholder="Chose date of birth"
-                  // defaultValue={dayjs(props.userData.dob, 'YYYY-MM-DD')}
+                    // defaultValue={dayjs(props.userData.dob, 'YYYY-MM-DD')}
                   />
                 </Form.Item>
                 <Form.Item
@@ -304,18 +307,23 @@ const UpdateProfile = (props) => {
                     {
                       required: true,
 
-                      message: "Please input owner PhoneNumber!",
+                      message: 'Please input owner PhoneNumber!',
                     },
-                    { min: 10, message: 'Phone number must be at least 10 characters' },
+                    {
+                      min: 10,
+                      message: 'Phone number must be at least 10 characters',
+                    },
 
-                    { max: 10, message: 'Phone number must be at most 10 characters' },
-                    { pattern: /^\d+$/, message: 'Please enter numbers only', },
+                    {
+                      max: 10,
+                      message: 'Phone number must be at most 10 characters',
+                    },
+                    { pattern: /^\d+$/, message: 'Please enter numbers only' },
                   ]}
                 >
                   <Input
-                    style={{ width: "100%" }}
-                  // defaultValue={props.userData.phoneNumber}
-
+                    style={{ width: '100%' }}
+                    // defaultValue={props.userData.phoneNumber}
                   />
                 </Form.Item>
               </Space>
@@ -323,7 +331,7 @@ const UpdateProfile = (props) => {
 
             <Form.Item name="role" label="Role:">
               <Input
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 placeholder="role"
                 // defaultValue={props.userData.role.name}
                 disabled
@@ -334,7 +342,7 @@ const UpdateProfile = (props) => {
 
         <div
           style={{
-            width: "100%",
+            width: '100%',
           }}
         >
           <Divider />
@@ -351,7 +359,7 @@ const UpdateProfile = (props) => {
             </Button>
             <Button
               onClick={() => {
-                navigate("/dashboard/myprofile");
+                navigate('/dashboard/myprofile');
               }}
               style={{
                 width: 120,
@@ -361,8 +369,7 @@ const UpdateProfile = (props) => {
             </Button>
           </Space>
         </div>
-
-      </Content >
+      </Content>
     </>
   );
 };
