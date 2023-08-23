@@ -124,7 +124,7 @@ function UserManager() {
                 <Button
                   style={buttonStyle}
                   onClick={() => {
-                    navigate('/dashboard/admin/users_list/create');
+                    navigate('/admin/users_list/create');
                   }}
                 >
                   {' '}

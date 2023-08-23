@@ -82,11 +82,11 @@ const UserTable = props => {
   };
 
   function handleDetail(id) {
-    navigate(`/dashboard/admin/users_list/detail/${id}`);
+    navigate(`/admin/users_list/detail/${id}`);
   }
 
   function handleEdit(id) {
-    navigate(`/dashboard/admin/users_list/edit/${id}`);
+    navigate(`/admin/users_list/edit/${id}`);
   }
 
   function handleDelete(id) {

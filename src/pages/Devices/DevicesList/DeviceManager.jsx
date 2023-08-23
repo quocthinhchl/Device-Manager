@@ -157,7 +157,7 @@ function DeviceManager() {
               <Button
                 style={buttonStyle}
                 onClick={() => {
-                  navigate('/dashboard/admin/device_list/create');
+                  navigate('/admin/device_list/create');
                 }}
               >
                 {' '}

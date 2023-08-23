@@ -5,7 +5,11 @@ import Login from './pages/Authorization/Login/Login';
 import { Route, Router, Routes, useLocation, useNavigate } from 'react-router';
 import Dashboard from './components/Dashboard/Dashboard';
 import { useEffect, useState } from 'react';
-import { UserProfile, addToken } from './stores/Slice/UserSlice';
+import {
+  UserProfile,
+  addToken,
+  fetchUserProfileAction,
+} from './stores/Slice/UserSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { SignUp } from './pages/Authorization/SignUp/SignUp';
 
@@ -34,18 +38,23 @@ function App() {
       await dispatch(addToken(localStorage.getItem('token')));
     };
     getToken();
-    if (localStorage.getItem('token') === null) {
-      navigate('/');
-    } else {
-      navigate('/dashboard ');
-    }
+    const checkToken = async () => {
+      if (localStorage.getItem('token') === null) {
+        navigate('/sign_in');
+      } else {
+        await dispatch(fetchUserProfileAction({ populate: 'role,avatar' }));
+        navigate('/');
+      }
+    };
+    checkToken();
   }, [localStorage.getItem('token')]);
+
   return (
     <div className="App">
       <Routes>
-        <Route path="/" index element={<Login />} />
-        <Route path="/sign_up" index element={<SignUp />} />
-        <Route path="/dashboard/*" element={<Dashboard />} />
+        <Route path="/sign_in" index element={<Login />} />
+        <Route path="/sign_up" element={<SignUp />} />
+        <Route path="/*" element={<Dashboard />} />
       </Routes>
     </div>
   );

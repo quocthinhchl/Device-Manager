@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Layout,
   theme,
@@ -9,51 +9,47 @@ import {
   Divider,
   message,
   notification,
-} from "antd";
+} from 'antd';
 // import { Content } from "antd/es/layout/layout";
-import { useNavigate, Link } from "react-router-dom";
-import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
-import styled from "styled-components";
-import axiosInstance from "../../../shared/services/http-client";
+import { useNavigate, Link } from 'react-router-dom';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import styled from 'styled-components';
+import axiosInstance from '../../../shared/services/http-client';
 
 const PathName = styled.p`
-    margin: 10px 25px 0px 20px;
-    font-family: "Poppins";
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 32px;
-    color: #111111;
-  `;
+  margin: 10px 25px 0px 20px;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 32px;
+  color: #111111;
+`;
 const Content = styled.div`
-    margin: 15px 16px;
-    padding: 24px;
-    background: #ffffff;
+  margin: 15px 16px;
+  padding: 24px;
+  background: #ffffff;
 
-    border-radius: 10px;
-  `;
+  border-radius: 10px;
+`;
 const buttonStyle = {
-  backgroundColor: "#8767E1",
-  color: "#fff",
+  backgroundColor: '#8767E1',
+  color: '#fff',
 };
 
-const ChangePass = (props) => {
-
-
-
+const ChangePass = props => {
   const navigate = useNavigate();
-  const onFinish = (values) => {
+  const onFinish = values => {
     const data = {
       currentPassword: values.current_password,
       password: values.new_password,
       passwordConfirmation: values.confirm_password,
     };
     axiosInstance
-      .post("/auth/change-password", data)
-      .then((response) => {
+      .post('/auth/change-password', data)
+      .then(response => {
         if (response != null) {
-
-          navigate("/dashboard/myprofile")
+          navigate('/myprofile');
           // logOut()
           notification.success({
             message: 'Thay đổi mật khẩu thành công',
@@ -61,7 +57,7 @@ const ChangePass = (props) => {
           });
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         notification.error({
           message: error.response.data.error.message,
@@ -75,33 +71,29 @@ const ChangePass = (props) => {
       <PathName>Change password</PathName>
       <Content
         style={{
-          width: "35%",
+          width: '35%',
         }}
       >
         <p>Now you can create a new password for your account</p>
-        <Form
-          autoComplete="off"
-          layout="vertical"
-          onFinish={onFinish}
-        >
+        <Form autoComplete="off" layout="vertical" onFinish={onFinish}>
           <Form.Item
             label="Current Password "
             name="current_password"
             rules={[
-              { required: true, message: "Input Your Password" },
+              { required: true, message: 'Input Your Password' },
 
               {
                 pattern: new RegExp(
                   /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
                 ),
                 message:
-                  " Password should be 6-20 characters and include at least 1 letter, 1 number and 1 special character!",
+                  ' Password should be 6-20 characters and include at least 1 letter, 1 number and 1 special character!',
               },
             ]}
           >
             <Input.Password
               placeholder="Type your password"
-              iconRender={(visible) =>
+              iconRender={visible =>
                 visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
               }
             />
@@ -113,7 +105,7 @@ const ChangePass = (props) => {
             rules={[
               {
                 required: true,
-                message: " Input Your New Password",
+                message: ' Input Your New Password',
               },
 
               {
@@ -121,13 +113,13 @@ const ChangePass = (props) => {
                   /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
                 ),
                 message:
-                  " Password should be 6-20 characters and include at least 1 letter, 1 number and 1 special character!",
+                  ' Password should be 6-20 characters and include at least 1 letter, 1 number and 1 special character!',
               },
             ]}
           >
             <Input.Password
               placeholder="Type your password"
-              iconRender={(visible) =>
+              iconRender={visible =>
                 visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
               }
             />
@@ -136,19 +128,19 @@ const ChangePass = (props) => {
           <Form.Item
             name="confirm_password"
             label="Confirm Password"
-            dependencies={["password"]}
+            dependencies={['password']}
             rules={[
               {
                 required: true,
-                message: " Input Your Confirm Password",
+                message: ' Input Your Confirm Password',
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue("new_password") === value) {
+                  if (!value || getFieldValue('new_password') === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(
-                    "The two passwords that you entered does not match."
+                    'The two passwords that you entered does not match.'
                   );
                 },
               }),
@@ -157,13 +149,13 @@ const ChangePass = (props) => {
                   /^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,20}$/
                 ),
                 message:
-                  " Password should be 6-20 characters and include at least 1 letter, 1 number and 1 special character!",
+                  ' Password should be 6-20 characters and include at least 1 letter, 1 number and 1 special character!',
               },
             ]}
           >
             <Input.Password
               placeholder="Confirm your password"
-              iconRender={(visible) =>
+              iconRender={visible =>
                 visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
               }
             />
@@ -177,7 +169,7 @@ const ChangePass = (props) => {
               </Button>
               <Button
                 onClick={() => {
-                  navigate("/dashboard/myprofile");
+                  navigate('/myprofile');
                 }}
               >
                 Back

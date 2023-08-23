@@ -100,7 +100,7 @@ const CreateUser = () => {
       .post('/users', data)
       .then(response => {
         if (response != null) {
-          navigate('/dashboard/admin/users_list');
+          navigate('/admin/users_list');
           // logOut()
           notification.success({
             message: 'Tạo thành công',
@@ -118,7 +118,7 @@ const CreateUser = () => {
       });
   };
 
-  if (!userProfile.isAdmin) navigate('/dashboard/admin/users_list');
+  if (!userProfile.isAdmin) navigate('/admin/users_list');
 
   useEffect(() => {
     const fetchDevices = async () => {
@@ -185,7 +185,7 @@ const CreateUser = () => {
           items={[
             {
               title: 'All user',
-              href: '/dashboard/admin/users_list',
+              href: '/admin/users_list',
             },
             {
               title: <b>Add New User</b>,
@@ -594,7 +594,7 @@ const CreateUser = () => {
               </Button>
               <Button
                 onClick={() => {
-                  navigate('/dashboard/admin/users_list');
+                  navigate('/admin/users_list');
                 }}
               >
                 Back

@@ -146,7 +146,7 @@ const UpdateProfile = props => {
       await dispatch(
         updateUserProfileAction({ id: userProfile.user_profile.id, data })
       ).unwrap();
-      navigate('/dashboard/myprofile');
+      navigate('/myprofile');
       notification.success({
         message: 'Cập nhật thông tin thành công',
       });
@@ -188,7 +188,7 @@ const UpdateProfile = props => {
           items={[
             {
               title: 'View Profile',
-              href: '/dashboard/myprofile',
+              href: '/myprofile',
             },
             {
               title: <b>{userProfile.user_profile.fullname}</b>,
@@ -359,7 +359,7 @@ const UpdateProfile = props => {
             </Button>
             <Button
               onClick={() => {
-                navigate('/dashboard/myprofile');
+                navigate('/myprofile');
               }}
               style={{
                 width: 120,

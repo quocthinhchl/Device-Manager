@@ -123,7 +123,7 @@ export default function AddCategory() {
           message: 'Tạo thành công',
           description: `Tạo thành công ${response.data.attributes.name}.`,
         });
-        navigate(`/dashboard/admin/category_list`);
+        navigate(`/admin/category_list`);
       })
       .catch(error => {
         notification.error({
@@ -141,7 +141,7 @@ export default function AddCategory() {
           items={[
             {
               title: 'All Category',
-              href: '/dashboard/admin/category_list',
+              href: '/admin/category_list',
             },
             {
               title: <b>Add a new category</b>,
@@ -208,7 +208,7 @@ export default function AddCategory() {
                 </Button>
                 <Button
                   onClick={() => {
-                    navigate('/dashboard/admin/category_list');
+                    navigate('/admin/category_list');
                   }}
                 >
                   Cancel

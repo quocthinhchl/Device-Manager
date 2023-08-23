@@ -74,11 +74,11 @@ const CategoryTable = props => {
     setCurrentChoice('');
   };
   function handleDetail(id) {
-    navigate(`/dashboard/admin/category_list/detail/${id}`);
+    navigate(`/admin/category_list/detail/${id}`);
   }
 
   function handleEdit(id) {
-    navigate(`/dashboard/admin/category_list/edit/${id}`);
+    navigate(`/admin/category_list/edit/${id}`);
   }
 
   function handleDelete(category) {

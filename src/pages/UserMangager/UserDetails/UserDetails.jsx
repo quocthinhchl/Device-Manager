@@ -107,7 +107,7 @@ export default function UserDetails() {
       });
 
     setIsModalOpen(false);
-    navigate('/dashboard/admin/users_list');
+    navigate('/admin/users_list');
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -125,7 +125,7 @@ export default function UserDetails() {
           separator=">"
           items={[
             {
-              title: <Link to="/dashboard/admin/users_list">All User</Link>,
+              title: <Link to="/admin/users_list">All User</Link>,
             },
             {
               title: <b>{user.fullname}</b>,
@@ -219,7 +219,7 @@ export default function UserDetails() {
                   color: '#F1F4F9',
                 }}
                 onClick={() => {
-                  navigate(`/dashboard/admin/users_list/edit/${id}`);
+                  navigate(`/admin/users_list/edit/${id}`);
                 }}
               >
                 Edit
@@ -230,7 +230,7 @@ export default function UserDetails() {
                   color: 'rgb(135, 103, 225)',
                 }}
                 onClick={() => {
-                  navigate(`/dashboard/admin/users_list`);
+                  navigate(`/admin/users_list`);
                 }}
               >
                 Back
@@ -246,7 +246,7 @@ export default function UserDetails() {
                   color: 'rgb(135, 103, 225)',
                 }}
                 onClick={() => {
-                  navigate(`/dashboard/admin/users_list`);
+                  navigate(`/admin/users_list`);
                 }}
               >
                 Back

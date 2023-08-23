@@ -107,7 +107,7 @@ const UpdateUser = () => {
       .put(`/users/${id}`, data)
       .then(response => {
         if (response != null) {
-          navigate('/dashboard/admin/users_list');
+          navigate('/admin/users_list');
           notification.success({
             message: 'Update thành công',
             description: `Update thành công`,
@@ -140,7 +140,7 @@ const UpdateUser = () => {
       }
     };
 
-    if (!userProfile.isAdmin) navigate('/dashboard/users_list');
+    if (!userProfile.isAdmin) navigate('/users_list');
     fetchUser();
   }, []);
 
@@ -201,7 +201,7 @@ const UpdateUser = () => {
           items={[
             {
               title: 'All user',
-              href: '/dashboard/admin/users_list',
+              href: '/admin/users_list',
             },
             {
               title: <b>{user.fullname}</b>,
@@ -428,12 +428,11 @@ const UpdateUser = () => {
                         options={[
                           {
                             value: 1,
-                            label: 'User',
-                          },
-
-                          {
-                            value: 3,
                             label: 'Admin',
+                          },
+                          {
+                            value: 2,
+                            label: 'User',
                           },
                         ]}
                       />
@@ -596,7 +595,7 @@ const UpdateUser = () => {
               </Button>
               <Button
                 onClick={() => {
-                  navigate('/dashboard/admin/users_list');
+                  navigate('/admin/users_list');
                 }}
               >
                 Cancel

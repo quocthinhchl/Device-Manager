@@ -112,7 +112,7 @@ export default function AddDevice() {
           message: 'Tạo thành công',
           description: `Tạo thành công ${res.data.attributes.name}.`,
         });
-        navigate('/dashboard/admin/device_list');
+        navigate('/admin/device_list');
       })
       .catch(e => {
         // console.log(11, e);
@@ -139,7 +139,7 @@ export default function AddDevice() {
           items={[
             {
               title: 'All Device',
-              href: '/dashboard/device_list',
+              href: '/device_list',
             },
             {
               title: <b>Add a new device</b>,
@@ -235,7 +235,7 @@ export default function AddDevice() {
                 {/* <Button style={buttonStyle}>Save Fake</Button> */}
                 <Button
                   onClick={() => {
-                    navigate('/dashboard/admin/device_list');
+                    navigate('/admin/device_list');
                   }}
                 >
                   Cancel

@@ -82,7 +82,7 @@ function CategoryManager() {
               <Button
                 style={buttonStyle}
                 onClick={() => {
-                  navigate('/dashboard/admin/category_list/create');
+                  navigate('/admin/category_list/create');
                 }}
               >
                 {' '}

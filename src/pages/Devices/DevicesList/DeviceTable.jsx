@@ -99,11 +99,11 @@ const DeviceTable = props => {
   };
 
   function handleDetail(id) {
-    navigate(`/dashboard/admin/device_list/detail/${id}`);
+    navigate(`/admin/device_list/detail/${id}`);
   }
 
   function handleEdit(id) {
-    navigate(`/dashboard/admin/device_list/edit/${id}`);
+    navigate(`/admin/device_list/edit/${id}`);
   }
 
   function handleDelete(device) {

@@ -40,12 +40,12 @@ const SideBar = styled.div`
 
 const items = [
   {
-    key: '/dashboard/users_list',
+    key: '/users_list',
     icon: <UserOutlined />,
     label: 'Users',
   },
   {
-    key: '/dashboard/device_list',
+    key: '/device_list',
     icon: <UserIcon />,
     label: 'Device',
   },
@@ -53,22 +53,22 @@ const items = [
 
 const itemsAdmin = [
   {
-    key: '/dashboard/admin/users_list',
+    key: '/admin/users_list',
     icon: <UserOutlined />,
     label: 'Users',
   },
   {
-    key: '/dashboard/admin/device_list',
+    key: '/admin/device_list',
     icon: <UserIcon />,
     label: 'Device',
   },
   {
-    key: '/dashboard/admin/category_list',
+    key: '/admin/category_list',
     icon: <UserIcon />,
     label: 'Category',
   },
   {
-    key: '/dashboard/device_list',
+    key: '/device_list',
     icon: <OrderedListOutlined />,
     label: 'Borrow',
   },
@@ -83,15 +83,18 @@ const Sidebar = props => {
 
   useEffect(() => {
     const currentPath = location.pathname;
-    const matchingItem = items.find(item => currentPath.includes(item.key));
+    const matchingItem = itemsAdmin.find(item =>
+      currentPath.includes(item.key)
+    );
     if (matchingItem) {
       setSelectedKeys([matchingItem.key]);
     } else setSelectedKeys(null);
   }, [location]);
+
   return (
     <SideBar trigger={null}>
       <Sider trigger={null} collapsible collapsed={props.collapsed}>
-        {/* <p onClick={() => { navigate('/dashboard') }}>Menu</p> */}
+        {/* <p onClick={() => { navigate('/') }}>Menu</p> */}
         <div
           style={{
             display: 'flex',
@@ -103,7 +106,7 @@ const Sidebar = props => {
           <img
             src={logo}
             onClick={() => {
-              navigate('/dashboard');
+              navigate('/');
             }}
           />{' '}
         </div>
