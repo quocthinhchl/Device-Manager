@@ -31,15 +31,16 @@ import {
   fetchUserProfileAction,
 } from '../../stores/Slice/UserSlice';
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
+import UserDashboard from '../UserDashboard/UserDashboard';
 
 function Dashboard() {
   const navigate = useNavigate();
   const [collapsed, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
   const userProfile = useSelector(UserProfile);
-  useEffect(() => {
-    dispatch(fetchUserProfileAction({ populate: 'role,avatar' }));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchUserProfileAction({ populate: 'role,avatar' }));
+  // }, []);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!collapsed);
@@ -59,7 +60,7 @@ function Dashboard() {
                 userProfile.isAdmin ? (
                   <Navigate to="admin" replace />
                 ) : (
-                  <Navigate to="myprofile" replace />
+                  <Navigate to="user" replace />
                 )
               }
             />
@@ -75,18 +76,19 @@ function Dashboard() {
           )}
 
           {/* User List */}
-          <Route path="users_list" index element={<UserManager />} />
+          {/* <Route path="users_list" index element={<UserManager />} />
           <Route path="users_list/create" element={<CreateUser />} />
           <Route path="users_list/detail/:id" element={<UserDetails />} />
-          <Route path="users_list/edit/:id" element={<UpdateUser />} />
+          <Route path="users_list/edit/:id" element={<UpdateUser />} /> */}
 
           {/* Device List */}
-          <Route path="device_list" element={<DeviceManager />} />
+          {/* <Route path="device_list" element={<DeviceManager />} />
           <Route path="device_list/create" element={<AddDevice />} />
           <Route path="device_list/detail/:id" element={<DeviceDetail />} />
-          <Route path="device_list/edit/:id" element={<EditDevice />} />
+          <Route path="device_list/edit/:id" element={<EditDevice />} /> */}
 
           <Route path="admin/*" index element={<AdminDashboard />} />
+          <Route path="user/*" index element={<UserDashboard />} />
 
           {/* Error Page */}
           <Route path="/error" element={<ErrorPage />} />

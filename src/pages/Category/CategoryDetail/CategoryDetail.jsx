@@ -118,7 +118,7 @@ export default function CategoryDetail() {
   };
 
   const handleEdit = () => {
-    navigate(`/dashboard/admin/category_list/edit/${id}`);
+    navigate(`/admin/category_list/edit/${id}`);
   };
 
   const handleDelete = async () => {
@@ -129,7 +129,7 @@ export default function CategoryDetail() {
           message: 'Xóa thành công',
           description: `Xóa thành công ${categoryDetail.attributes?.name}`,
         });
-        navigate('/dashboard/admin/category_list');
+        navigate('/admin/category_list');
       })
       .catch(error => {
         notification.error({
@@ -146,13 +146,11 @@ export default function CategoryDetail() {
           separator=">"
           items={[
             {
-              title: (
-                <Link to="/dashboard/admin/category_list">All Category</Link>
-              ),
+              title: <Link to="/admin/category_list">All Category</Link>,
             },
             {
               title: (
-                <Link to={`/dashboard/admin/category_list/detail/${id}`}>
+                <Link to={`/admin/category_list/detail/${id}`}>
                   {categoryDetail.attributes?.name}
                 </Link>
               ),

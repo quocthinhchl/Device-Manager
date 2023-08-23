@@ -147,7 +147,7 @@ export default function EditDevice() {
           message: 'Chỉnh sửa thành công',
           description: `Chỉnh sửa thành công ${res.data.attributes.name}.`,
         });
-        navigate(`/dashboard/device_list/detail/${id}`);
+        navigate(`/admin/device_list/detail/${id}`);
       })
       .catch(e => {
         // console.log(11, e);
@@ -165,11 +165,11 @@ export default function EditDevice() {
           separator=">"
           items={[
             {
-              title: <Link to="/dashboard/device_list">All Device</Link>,
+              title: <Link to="/admin/device_list">All Device</Link>,
             },
             {
               title: (
-                <Link to={`/dashboard/device_list/edit/${id}`}>
+                <Link to={`/admin/device_list/edit/${id}`}>
                   {deviceDetail.attributes?.name}
                 </Link>
               ),
@@ -256,7 +256,7 @@ export default function EditDevice() {
                 </Button>
                 <Button
                   onClick={() => {
-                    navigate('/dashboard/admin/device_list');
+                    navigate('/admin/device_list');
                   }}
                 >
                   Cancel

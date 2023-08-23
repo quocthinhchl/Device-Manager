@@ -87,7 +87,7 @@ export default function DeviceDetail() {
   };
 
   const handleEdit = () => {
-    navigate(`/dashboard/admin/device_list/edit/${id}`);
+    navigate(`/admin/device_list/edit/${id}`);
   };
 
   const handleDelete = async () => {
@@ -98,7 +98,7 @@ export default function DeviceDetail() {
           message: 'Xóa thành công',
           description: `Xóa thành công ${deviceDetail.attributes?.name}`,
         });
-        navigate('/dashboard/admin/device_list');
+        navigate('/admin/device_list');
       })
       .catch(e => {
         notification.error({
@@ -115,11 +115,11 @@ export default function DeviceDetail() {
           separator=">"
           items={[
             {
-              title: <Link to="/dashboard/device_list">All Device</Link>,
+              title: <Link to="/device_list">All Device</Link>,
             },
             {
               title: (
-                <Link to={`/dashboard/device_list/detail/${id}`}>
+                <Link to={`/device_list/detail/${id}`}>
                   {deviceDetail.attributes?.name}
                 </Link>
               ),

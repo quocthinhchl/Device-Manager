@@ -151,7 +151,7 @@ export default function EditCategory() {
           message: 'Cập nhật thành công',
           description: `Cập nhật thành công ${response.data.attributes.name}.`,
         });
-        navigate(`/dashboard/admin/category_list/detail/${id}`);
+        navigate(`/admin/category_list/detail/${id}`);
       })
       .catch(error => {
         notification.error({
@@ -168,11 +168,11 @@ export default function EditCategory() {
           separator=">"
           items={[
             {
-              title: <Link to="/dashboard/device_list">All Device</Link>,
+              title: <Link to="/device_list">All Device</Link>,
             },
             {
               title: (
-                <Link to={`/dashboard/device_list/edit/${id}`}>
+                <Link to={`/device_list/edit/${id}`}>
                   {categoryDetail.attributes?.name}
                 </Link>
               ),
@@ -238,7 +238,7 @@ export default function EditCategory() {
                 </Button>
                 <Button
                   onClick={() => {
-                    navigate('/dashboard/admin/category_list');
+                    navigate('/admin/category_list');
                   }}
                 >
                   Cancel
