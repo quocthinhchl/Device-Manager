@@ -22,11 +22,6 @@ export default function AdminDashboard() {
     <Routes>
       <Route path="/" element={<Navigate to="users_list" replace />} />
 
-      {/* My Profile */}
-      <Route path="myprofile" element={<ViewProfile />} />
-      <Route path="myprofile/update" element={<UpdateProfile />} />
-      <Route path="myprofile/change" element={<ChangePass />} />
-
       {/* User List */}
       <Route path="users_list" index element={<UserManager />} />
       <Route path="users_list/create" element={<CreateUser />} />
