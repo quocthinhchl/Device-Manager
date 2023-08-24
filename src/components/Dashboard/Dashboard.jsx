@@ -75,18 +75,6 @@ function Dashboard() {
             <Route path="myprofile/change" element={<ChangePass />} />
           )}
 
-          {/* User List */}
-          {/* <Route path="users_list" index element={<UserManager />} />
-          <Route path="users_list/create" element={<CreateUser />} />
-          <Route path="users_list/detail/:id" element={<UserDetails />} />
-          <Route path="users_list/edit/:id" element={<UpdateUser />} /> */}
-
-          {/* Device List */}
-          {/* <Route path="device_list" element={<DeviceManager />} />
-          <Route path="device_list/create" element={<AddDevice />} />
-          <Route path="device_list/detail/:id" element={<DeviceDetail />} />
-          <Route path="device_list/edit/:id" element={<EditDevice />} /> */}
-
           <Route path="admin/*" index element={<AdminDashboard />} />
           <Route path="user/*" index element={<UserDashboard />} />
 
