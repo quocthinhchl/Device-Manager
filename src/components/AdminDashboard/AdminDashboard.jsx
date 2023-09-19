@@ -1,21 +1,21 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router';
-import ViewProfile from '../../pages/MyProfile/ViewProfile/ViewProfile';
-import UpdateProfile from '../../pages/MyProfile/UpdateProfile/UpdateProfile';
-import ChangePass from '../../pages/MyProfile/ChangePassword/ChangePassword';
-import UserManager from '../../pages/UserMangager/UserList/UserManager';
-import CreateUser from '../../pages/UserMangager/CreateUser/CreateUser';
-import UserDetails from '../../pages/UserMangager/UserDetails/UserDetails';
-import UpdateUser from '../../pages/UserMangager/UpdateUser/UpdateUser';
-import DeviceManager from '../../pages/Devices/DevicesList/DeviceManager';
-import AddDevice from '../../pages/Devices/AddDevice/AddDevice';
-import DeviceDetail from '../../pages/Devices/DeviceDetail/DeviceDetail';
-import EditDevice from '../../pages/Devices/EditDevice/EditDevice';
+
+import UserManager from '../../pages/Admin/UserMangager/UserList/UserManager';
+import CreateUser from '../../pages/Admin/UserMangager/CreateUser/CreateUser';
+import UserDetails from '../../pages/Admin/UserMangager/UserDetails/UserDetails';
+import UpdateUser from '../../pages/Admin/UserMangager/UpdateUser/UpdateUser';
+import DeviceManager from '../../pages/Admin/Devices/DevicesList/DeviceManager';
+import AddDevice from '../../pages/Admin/Devices/AddDevice/AddDevice';
+import DeviceDetail from '../../pages/Admin/Devices/DeviceDetail/DeviceDetail';
+import EditDevice from '../../pages/Admin/Devices/EditDevice/EditDevice';
+import CategoryManager from '../../pages/Admin/Category/CategoryList/CategoryManager';
+import AddCategory from '../../pages/Admin/Category/AddCategory/AddCategory';
+import CategoryDetail from '../../pages/Admin/Category/CategoryDetail/CategoryDetail';
+import EditCategory from '../../pages/Admin/Category/EditCategory/EditCategory';
 import ErrorPage from '../../pages/Error/Error';
-import CategoryManager from '../../pages/Category/CategoryList/CategoryManager';
-import CategoryDetail from '../../pages/Category/CategoryDetail/CategoryDetail';
-import EditCategory from '../../pages/Category/EditCategory/EditCategory';
-import AddCategory from '../../pages/Category/AddCategory/AddCategory';
+import BorrowRequestList from '../../pages/Admin/BorrowRequest/BorrowRequestList/BorrowRequestList';
+import AdminRepairRequestList from '../../pages/Admin/RepairRequest/RepairRequestList/AdminRepairRequestList';
 
 export default function AdminDashboard() {
   return (
@@ -39,6 +39,12 @@ export default function AdminDashboard() {
       <Route path="category_list/create" element={<AddCategory />} />
       <Route path="category_list/detail/:id" element={<CategoryDetail />} />
       <Route path="category_list/edit/:id" element={<EditCategory />} />
+
+      {/* Borrow Request List */}
+      <Route path="borrow_request_list" element={<BorrowRequestList />} />
+
+      {/* Repair Request List */}
+      <Route path="repair_request_list" element={<AdminRepairRequestList />} />
 
       {/* Error Page */}
       <Route path="/error" element={<ErrorPage />} />

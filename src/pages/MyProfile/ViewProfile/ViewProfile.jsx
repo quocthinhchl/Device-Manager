@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Layout,
   Menu,
@@ -10,22 +10,21 @@ import {
   Button,
   Space,
   Divider,
-} from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import styled from "styled-components";
-import { useLocation, useNavigate } from "react-router-dom";
-import axiosInstance from "../../../shared/services/http-client";
-import { API } from "../../../shared/constants";
-import { UserProfile } from "../../../stores/Slice/UserSlice";
-import { useSelector } from "react-redux";
-import UserAvatar from '../../../assets/images/user-avatar.png'
+} from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axiosInstance from '../../../shared/services/http-client';
+import { API } from '../../../shared/constants';
+import { UserProfile } from '../../../stores/Slice/UserSlice';
+import { useSelector } from 'react-redux';
+import UserAvatar from '../../../assets/images/user-avatar.png';
 const url =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU";
-
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsj7e0UFTEaWkuKIk__YXeQpDgi8BOQq3CUg&usqp=CAU';
 
 const PathName = styled.p`
   margin: 10px 25px 0px 20px;
-  font-family: "Poppins";
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 700;
   font-size: 18px;
@@ -43,8 +42,8 @@ const Content = styled.div`
 `;
 const ViewProfile = () => {
   const buttonStyle = {
-    backgroundColor: "#8767E1",
-    color: "#fff",
+    backgroundColor: '#8767E1',
+    color: '#fff',
   };
 
   const [collapsed, setCollapsed] = useState(false);
@@ -52,7 +51,7 @@ const ViewProfile = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
-  const userProfile = useSelector(UserProfile)
+  const userProfile = useSelector(UserProfile);
 
   return (
     <>
@@ -67,7 +66,14 @@ const ViewProfile = () => {
                 flexGrow: 1,
               }}
             >
-              {userProfile.user_profile.avatar ? <Avatar size={200} src={API + userProfile.user_profile.avatar?.url} /> : <Avatar size={200} src={UserAvatar} />}
+              {userProfile.user_profile.avatar ? (
+                <Avatar
+                  size={200}
+                  src={API + userProfile.user_profile.avatar?.url}
+                />
+              ) : (
+                <Avatar size={200} src={UserAvatar} />
+              )}
             </Col>
             <Col
               span={16}
@@ -92,6 +98,9 @@ const ViewProfile = () => {
                 <Descriptions.Item label="Role">
                   {userProfile.user_profile.role?.name}
                 </Descriptions.Item>
+                <Descriptions.Item label="Position">
+                  {userProfile.user_profile.position}
+                </Descriptions.Item>
                 {/* {console.log(4, props.userData.id)} */}
               </Descriptions>
             </Col>
@@ -101,15 +110,15 @@ const ViewProfile = () => {
             <Space>
               <Button
                 style={buttonStyle}
-                onClick={(id) => {
-                  navigate("update");
+                onClick={id => {
+                  navigate('update');
                 }}
               >
                 Update Profile
               </Button>
               <Button
                 onClick={() => {
-                  navigate("change");
+                  navigate('change');
                 }}
               >
                 Change Password

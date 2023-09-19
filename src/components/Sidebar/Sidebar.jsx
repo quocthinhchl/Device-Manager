@@ -38,39 +38,62 @@ const SideBar = styled.div`
   }
 `;
 
-const items = [
+const itemsUser = [
   {
-    key: '/users_list',
-    icon: <UserOutlined />,
-    label: 'Users',
+    key: '/user/my_device',
+    icon: <UserIcon />,
+    label: 'Thiết bị của tôi',
   },
   {
-    key: '/device_list',
+    key: '/user/device_list',
     icon: <UserIcon />,
-    label: 'Device',
+    label: 'Danh sách thiết bị',
+  },
+  {
+    key: '/user/borrow_history',
+    icon: <UserIcon />,
+    label: 'Lịch sử mượn trả',
   },
 ];
 
 const itemsAdmin = [
   {
+    key: '/admin/dashboard',
+    icon: <UserOutlined />,
+    label: 'Thống kê',
+  },
+  {
     key: '/admin/users_list',
     icon: <UserOutlined />,
-    label: 'Users',
+    label: 'Quản lý người dùng',
   },
   {
     key: '/admin/device_list',
     icon: <UserIcon />,
-    label: 'Device',
+    label: 'Quản lý thiết bị',
   },
   {
     key: '/admin/category_list',
     icon: <UserIcon />,
-    label: 'Category',
+    label: 'Quản lý loại thiết bị',
   },
   {
-    key: '/device_list',
+    key: '/admin/borrow_request_list',
     icon: <OrderedListOutlined />,
-    label: 'Borrow',
+    label: 'Quản lý mượn trả',
+  },
+  {
+    key: '/admin/repair_request_list',
+    icon: <OrderedListOutlined />,
+    label: 'Quản lý yêu cầu sửa chữa',
+  },
+];
+
+const itemsRepair = [
+  {
+    key: '/staff/repair_request_list',
+    icon: <UserIcon />,
+    label: 'Quán lý yêu cầu sửa chữa',
   },
 ];
 
@@ -83,9 +106,13 @@ const Sidebar = props => {
 
   useEffect(() => {
     const currentPath = location.pathname;
-    const matchingItem = itemsAdmin.find(item =>
-      currentPath.includes(item.key)
-    );
+
+    const matchingItem =
+      userProfile.role === 'admin'
+        ? itemsAdmin.find(item => currentPath.includes(item.key))
+        : userProfile.role === 'user'
+        ? itemsUser.find(item => currentPath.includes(item.key))
+        : itemsRepair.find(item => currentPath.includes(item.key));
     if (matchingItem) {
       setSelectedKeys([matchingItem.key]);
     } else setSelectedKeys(null);
@@ -117,7 +144,13 @@ const Sidebar = props => {
             setSelectedKeys([item.key]);
           }}
           mode="inline"
-          items={userProfile.isAdmin ? itemsAdmin : items}
+          items={
+            userProfile.role === 'admin'
+              ? itemsAdmin
+              : userProfile.role === 'user'
+              ? itemsUser
+              : itemsRepair
+          }
           selectedKeys={selectedKeys}
           style={{ height: '100%', borderRight: 0 }}
         ></Menu>

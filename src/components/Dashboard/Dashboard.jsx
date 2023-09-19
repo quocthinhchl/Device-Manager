@@ -2,29 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from '../Sidebar/Sidebar';
 import { Layout } from 'antd';
 import Navbar from '../Navbar/Navbar';
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router';
+import { Navigate, Route, Routes, useNavigate } from 'react-router';
 import ViewProfile from '../../pages/MyProfile/ViewProfile/ViewProfile';
 import UpdateProfile from '../../pages/MyProfile/UpdateProfile/UpdateProfile';
-import { BrowserRouter } from 'react-router-dom';
 import ChangePass from '../../pages/MyProfile/ChangePassword/ChangePassword';
-import UserDetails from '../../pages/UserMangager/UserDetails/UserDetails';
-import UpdateUser from '../../pages/UserMangager/UpdateUser/UpdateUser';
-import UserManager from '../../pages/UserMangager/UserList/UserManager';
-import CreateUser from '../../pages/UserMangager/CreateUser/CreateUser';
-import axiosInstance from '../../shared/services/http-client';
-import WelcomePage from '../../pages/Welcome/Welcome';
-import DeviceManager from '../../pages/Devices/DevicesList/DeviceManager';
-import ErrorPage from '../../pages/Error/Error';
-import AddDevice from '../../pages/Devices/AddDevice/AddDevice';
-import DeviceDetail from '../../pages/Devices/DeviceDetail/DeviceDetail';
-import EditDevice from '../../pages/Devices/EditDevice/EditDevice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   UserProfile,
@@ -32,6 +13,7 @@ import {
 } from '../../stores/Slice/UserSlice';
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
 import UserDashboard from '../UserDashboard/UserDashboard';
+import StaffDashboard from '../StaffDashboard/StaffDashboard';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -57,10 +39,12 @@ function Dashboard() {
             <Route
               path="/"
               element={
-                userProfile.isAdmin ? (
+                userProfile.role === 'admin' ? (
                   <Navigate to="admin" replace />
-                ) : (
+                ) : userProfile.role === 'user' ? (
                   <Navigate to="user" replace />
+                ) : (
+                  <Navigate to="staff" replace />
                 )
               }
             />
@@ -77,9 +61,7 @@ function Dashboard() {
 
           <Route path="admin/*" index element={<AdminDashboard />} />
           <Route path="user/*" index element={<UserDashboard />} />
-
-          {/* Error Page */}
-          <Route path="/error" element={<ErrorPage />} />
+          <Route path="staff/*" index element={<StaffDashboard />} />
         </Routes>
       </Layout>
     </div>
