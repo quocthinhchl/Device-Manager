@@ -170,6 +170,7 @@ const UpdateProfile = props => {
 
         dob: dayjs(userProfile.user_profile.dob, 'YYYY-MM-DD'),
         role: userProfile.user_profile.role?.name,
+        position: userProfile.user_profile.position,
       });
     }
     setFileList([
@@ -333,6 +334,14 @@ const UpdateProfile = props => {
               <Input
                 style={{ width: '100%' }}
                 placeholder="role"
+                // defaultValue={props.userData.role.name}
+                disabled
+              />
+            </Form.Item>
+            <Form.Item name="position" label="Position:">
+              <Input
+                style={{ width: '100%' }}
+                placeholder="Position"
                 // defaultValue={props.userData.role.name}
                 disabled
               />

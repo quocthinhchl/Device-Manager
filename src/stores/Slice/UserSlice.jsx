@@ -32,6 +32,7 @@ export const userSlice = createSlice({
   initialState: {
     user_profile: [],
     isAdmin: false,
+    role: 2,
     token: null,
   },
   reducers: {
@@ -51,6 +52,12 @@ export const userSlice = createSlice({
       state.loading = false;
       const checkRole = state.user_profile?.role?.id === 1; // Kiểm tra giá trị role
       state.isAdmin = checkRole;
+      state.role =
+        state.user_profile?.role?.id === 1
+          ? 'admin'
+          : state.user_profile?.role?.id === 2
+          ? 'user'
+          : 'repair_specialist';
     });
     builder.addCase(fetchUserProfileAction.rejected, (state, action) => {
       state.loading = false;
