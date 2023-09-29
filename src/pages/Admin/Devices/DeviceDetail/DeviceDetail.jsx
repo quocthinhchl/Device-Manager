@@ -8,12 +8,13 @@ import {
   Breadcrumb,
   Modal,
   Avatar,
+  QRCode,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import axiosInstance from '../../../../shared/services/http-client';
-import { Navigate, useNavigate, useParams } from 'react-router';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { API } from '../../../../shared/constants';
 
@@ -63,6 +64,7 @@ export default function DeviceDetail() {
   const [deviceDetail, setDeviceDetail] = useState('');
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const location = useLocation();
   const { id } = useParams();
 
   useEffect(() => {
@@ -140,23 +142,26 @@ export default function DeviceDetail() {
           </div>
           <div style={{ marginRight: '20px', flex: '2' }}>
             <Descriptions layout="vertical" column={3}>
-              <Descriptions.Item label="Code">
+              <Descriptions.Item label="Mã thiết bị">
                 {deviceDetail.attributes?.code}
               </Descriptions.Item>
-              <Descriptions.Item label="Name">
+              <Descriptions.Item label="Tên thiết bị">
                 {deviceDetail.attributes?.name}
               </Descriptions.Item>
-              <Descriptions.Item label="Status">
+              <Descriptions.Item label="Trạng thái">
                 {deviceDetail.attributes?.status}
               </Descriptions.Item>
-              <Descriptions.Item label="Category">
+              <Descriptions.Item label="Loại thiết bị">
                 {deviceDetail.attributes?.category.data?.attributes.name}
               </Descriptions.Item>
-              <Descriptions.Item label="Location" span={2}>
+              <Descriptions.Item label="Vị trí" span={2}>
                 {deviceDetail.attributes?.location}
               </Descriptions.Item>
-              <Descriptions.Item label="Description" span={3}>
+              <Descriptions.Item label="Mô tả" span={3}>
                 {deviceDetail.attributes?.description}
+              </Descriptions.Item>
+              <Descriptions.Item label="QR code" span={3}>
+                <QRCode value={API + location.pathname} />
               </Descriptions.Item>
             </Descriptions>
           </div>

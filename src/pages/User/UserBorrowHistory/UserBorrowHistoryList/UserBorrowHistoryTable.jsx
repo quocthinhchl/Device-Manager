@@ -9,6 +9,7 @@ import { API } from '../../../../shared/constants';
 import UserAvatar from '../../../../assets/images/user-avatar.png';
 import { useSelector } from 'react-redux';
 import { UserProfile } from '../../../../stores/Slice/UserSlice';
+import UserBorrowHistoryDetail from '../UserBorrowHistoryDetail/UserBorrowHistoryDetail';
 
 const TableData = styled.div`
   width: 100%;
@@ -113,9 +114,9 @@ const UserBorrowHistoryTable = props => {
       render: (_, code) => <span>{code.attributes.status}</span>,
     },
     {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
+      title: 'Hành động',
+      dataIndex: 'Hành động',
+      key: 'Hành động',
       render: (text, useData) => (
         <span>
           <span>
@@ -138,7 +139,7 @@ const UserBorrowHistoryTable = props => {
         pagination={{ pageSize: 10 }}
         rowKey="id"
       />
-      <UserBorrowHistoryTable
+      <UserBorrowHistoryDetail
         open={isModalOpen}
         onCancel={handleCancel}
         idBorrow={currentChoice}

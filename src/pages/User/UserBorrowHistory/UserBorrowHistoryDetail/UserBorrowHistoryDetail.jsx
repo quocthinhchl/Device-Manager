@@ -32,14 +32,17 @@ const UserBorrowHistoryDetail = ({ open, onCancel, idBorrow }) => {
     >
       <br />
       <Descriptions>
-        <Descriptions.Item label="Người dùng" span={3}>
+        {/* <Descriptions.Item label="Người dùng" span={3}>
           {borrowData?.attributes?.user.data?.attributes.username}
         </Descriptions.Item>
         <Descriptions.Item label="Chức vụ" span={3}>
           {borrowData?.attributes?.user.data?.attributes.position}
-        </Descriptions.Item>
+        </Descriptions.Item> */}
         <Descriptions.Item label="Thiết bị" span={3}>
           {borrowData?.attributes?.device.data?.attributes.name}
+        </Descriptions.Item>
+        <Descriptions.Item label="Vị trí" span={3}>
+          {borrowData?.attributes?.location}
         </Descriptions.Item>
         <Descriptions.Item label="Ngày mượn" span={3}>
           {borrowData?.attributes?.borrow_date}

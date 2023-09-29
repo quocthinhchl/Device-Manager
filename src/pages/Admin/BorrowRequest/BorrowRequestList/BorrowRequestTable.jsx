@@ -95,12 +95,11 @@ const BorrowRequestTable = props => {
               devices: newDevices,
             });
           });
-
-        // axiosInstance.put(`devices/${deviceId}`, {
-        //   data: {
-        //     status: 'Đang mượn',
-        //   },
-        // });
+        axiosInstance.put(`devices/${deviceId}`, {
+          data: {
+            status: 'Đang mượn',
+          },
+        });
         break;
       case 'Từ chối':
         axiosInstance.put(`devices/${deviceId}`, {
@@ -234,9 +233,9 @@ const BorrowRequestTable = props => {
       render: (_, code) => <span>{code.attributes.status}</span>,
     },
     {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
+      title: 'Hành động',
+      dataIndex: 'Hành động',
+      key: 'Hành động',
       render: (text, useData) => (
         <span>
           <span>

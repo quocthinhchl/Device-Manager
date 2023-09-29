@@ -1,4 +1,4 @@
-import { Button, Form, Image, Input, Row, notification } from 'antd';
+import { Button, Form, Image, Input, Row, Select, notification } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axiosInstance from '../../../shared/services/http-client';
@@ -71,6 +71,7 @@ export const SignUp = () => {
       fullname: values.fullname,
       username: values.username,
       email: values.email,
+      position: values.position,
       password: values.password,
       role: 2,
       // confirmed: true,
@@ -82,7 +83,7 @@ export const SignUp = () => {
       .post('/users', data)
       .then(response => {
         if (response != null) {
-          navigate('/');
+          navigate('/sign_in');
           // logOut()
           notification.success({
             message: 'Tạo tài khoản thành công',
@@ -164,6 +165,46 @@ export const SignUp = () => {
             </Form.Item>
 
             <Form.Item
+              label="Position"
+              name="position"
+              rules={[
+                {
+                  required: true,
+
+                  message: 'Please input owner position!',
+                },
+              ]}
+            >
+              <Select
+                size="default size"
+                showSearch
+                style={{ width: '100%' }}
+                name="position"
+                placeholder=" Select owner position"
+                optionFilterProp="children"
+                getOptionLabel={option => option.value.toString()}
+                filterOption={(input, option) =>
+                  (option?.label ?? '').includes(input)
+                }
+                filterSort={(optionA, optionB) =>
+                  (optionA?.label ?? '')
+                    .toLowerCase()
+                    .localeCompare((optionB?.label ?? '').toLowerCase())
+                }
+                options={[
+                  {
+                    value: 'Học sinh',
+                    label: 'Học sinh',
+                  },
+                  {
+                    value: 'Giảng viên',
+                    label: 'Giảng viên',
+                  },
+                ]}
+              />
+            </Form.Item>
+
+            <Form.Item
               label="Password"
               name="password"
               rules={[
@@ -227,7 +268,7 @@ export const SignUp = () => {
             <p
               className="Login"
               onClick={() => {
-                navigate('/');
+                navigate('/sign_in');
               }}
             >
               Had Account? Login

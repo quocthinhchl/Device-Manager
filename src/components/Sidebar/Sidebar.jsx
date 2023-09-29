@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Menu } from 'antd';
-import { OrderedListOutlined, UserOutlined } from '@ant-design/icons';
 import Sider from 'antd/es/layout/Sider';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ReactComponent as UserIcon } from '../../assets/icons/Users.svg';
 import styled from 'styled-components';
 import logo from '../../assets/images/logo.png';
 import { useSelector } from 'react-redux';
 import { UserProfile } from '../../stores/Slice/UserSlice';
+import { GiHistogram } from 'react-icons/gi';
+import { MdDevices } from 'react-icons/md';
+import { BiCategoryAlt } from 'react-icons/bi';
+import { FiUsers } from 'react-icons/fi';
+import { GrNotes } from 'react-icons/gr';
+import { GiAutoRepair } from 'react-icons/gi';
+import { BsBoxSeam } from 'react-icons/bs';
 
 const SideBar = styled.div`
   .ant-layout-sider .ant-layout-sider-children > ul {
     /* margin-top: 25px; */
   }
-  .ant-layout-sider .ant-layout-sider-children ul li span {
+  /* .ant-layout-sider .ant-layout-sider-children ul li span {
     color: #8767e1;
-  }
+  } */
   .ant-layout-sider .ant-layout-sider-children p {
     width: 45px;
     height: 24px;
@@ -41,50 +46,50 @@ const SideBar = styled.div`
 const itemsUser = [
   {
     key: '/user/my_device',
-    icon: <UserIcon />,
+    icon: <BsBoxSeam size={18} />,
     label: 'Thiết bị của tôi',
   },
   {
     key: '/user/device_list',
-    icon: <UserIcon />,
+    icon: <MdDevices size={20} />,
     label: 'Danh sách thiết bị',
   },
   {
     key: '/user/borrow_history',
-    icon: <UserIcon />,
+    icon: <GrNotes size={18} />,
     label: 'Lịch sử mượn trả',
   },
 ];
 
 const itemsAdmin = [
   {
-    key: '/admin/dashboard',
-    icon: <UserOutlined />,
+    key: '/admin/statistical',
+    icon: <GiHistogram size={18} />,
     label: 'Thống kê',
   },
   {
     key: '/admin/users_list',
-    icon: <UserOutlined />,
+    icon: <FiUsers size={18} />,
     label: 'Quản lý người dùng',
   },
   {
     key: '/admin/device_list',
-    icon: <UserIcon />,
+    icon: <MdDevices size={18} />,
     label: 'Quản lý thiết bị',
   },
   {
     key: '/admin/category_list',
-    icon: <UserIcon />,
+    icon: <BiCategoryAlt size={18} />,
     label: 'Quản lý loại thiết bị',
   },
   {
     key: '/admin/borrow_request_list',
-    icon: <OrderedListOutlined />,
+    icon: <GrNotes size={18} />,
     label: 'Quản lý mượn trả',
   },
   {
     key: '/admin/repair_request_list',
-    icon: <OrderedListOutlined />,
+    icon: <GiAutoRepair size={18} />,
     label: 'Quản lý yêu cầu sửa chữa',
   },
 ];
@@ -92,7 +97,7 @@ const itemsAdmin = [
 const itemsRepair = [
   {
     key: '/staff/repair_request_list',
-    icon: <UserIcon />,
+    icon: <GiAutoRepair size={18} />,
     label: 'Quán lý yêu cầu sửa chữa',
   },
 ];

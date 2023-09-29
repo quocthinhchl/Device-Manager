@@ -16,11 +16,14 @@ import EditCategory from '../../pages/Admin/Category/EditCategory/EditCategory';
 import ErrorPage from '../../pages/Error/Error';
 import BorrowRequestList from '../../pages/Admin/BorrowRequest/BorrowRequestList/BorrowRequestList';
 import AdminRepairRequestList from '../../pages/Admin/RepairRequest/RepairRequestList/AdminRepairRequestList';
+import StatisticalPage from '../../pages/Admin/Statistical/StatisticalPage';
 
 export default function AdminDashboard() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="users_list" replace />} />
+      <Route path="/" element={<Navigate to="statistical" replace />} />
+
+      <Route path="statistical" index element={<StatisticalPage />} />
 
       {/* User List */}
       <Route path="users_list" index element={<UserManager />} />

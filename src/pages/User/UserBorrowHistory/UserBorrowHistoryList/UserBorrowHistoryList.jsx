@@ -117,7 +117,7 @@ function UserBorrowHistoryList() {
         <Space direction="vertical" size={24}>
           <Row justify={'space-between'}>
             <Col>
-              <h3>All Device</h3>
+              <h3>Lịch sử mượn trả</h3>
             </Col>
           </Row>
 
