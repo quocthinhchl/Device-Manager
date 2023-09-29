@@ -159,9 +159,9 @@ const AdminRepairRequestTable = props => {
       render: (_, code) => <span>{code.attributes.status}</span>,
     },
     {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
+      title: 'Hành động',
+      dataIndex: 'Hành động',
+      key: 'Hành động',
       render: (text, useData) => (
         <span>
           <span>

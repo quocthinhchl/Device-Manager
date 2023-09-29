@@ -226,14 +226,14 @@ const MyDeviceTable = props => {
       render: (_, code) => <span>{code.attributes.status}</span>,
     },
     {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
+      title: 'Hành động',
+      dataIndex: 'Hành động',
+      key: 'Hành động',
       render: (text, useData) => (
         <span>
           <Button onClick={() => handleDetail(useData.id)}>Xem</Button>
           <Button type="primary" onClick={() => handleRepair(useData.id)}>
-            Báo lỗi
+            Báo hỏng
           </Button>
         </span>
       ),

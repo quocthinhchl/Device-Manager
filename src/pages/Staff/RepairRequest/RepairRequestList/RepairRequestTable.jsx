@@ -38,7 +38,7 @@ const RepairRequestTable = props => {
   // console.log(22, props.idCategory);
 
   function renderData() {
-    let APIUrl = `/repair-requests?&populate=user,device,staff&filters[staff][id][$eq]=${userProfile.user_profile.id}`;
+    let APIUrl = `/repair-requests?&populate=user,device,staff&filters[staff][id][$eq]=${userProfile.user_profile.id}&sort=createdAt:desc`;
     props.keyWord === ''
       ? (APIUrl += '')
       : (APIUrl += `&filters[user][id][$eq]=${props.keyWord}`);
@@ -170,9 +170,9 @@ const RepairRequestTable = props => {
       render: (_, code) => <span>{code.attributes.status}</span>,
     },
     {
-      title: 'Actions',
-      dataIndex: 'actions',
-      key: 'actions',
+      title: 'Hành động',
+      dataIndex: 'Hành động',
+      key: 'Hành động',
       render: (text, useData) => (
         <span>
           <span>

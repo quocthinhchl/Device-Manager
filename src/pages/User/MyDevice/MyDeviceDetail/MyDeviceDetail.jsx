@@ -11,13 +11,14 @@ import {
   Input,
   DatePicker,
   Avatar,
+  QRCode,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 import { UserOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import axiosInstance from '../../../../shared/services/http-client';
-import { Navigate, useNavigate, useParams } from 'react-router';
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { UserProfile } from '../../../../stores/Slice/UserSlice';
@@ -69,10 +70,11 @@ export default function MyDeviceDetail() {
   const userProfile = useSelector(UserProfile);
   const { id } = useParams();
   const [form] = Form.useForm();
+  const location = useLocation();
 
   useEffect(() => {
     axiosInstance
-      .get(`/devices/${id}?populate=category`)
+      .get(`/devices/${id}?populate=category,image`)
       .then(res => {
         setDeviceDetail(res.data);
       })
@@ -93,6 +95,38 @@ export default function MyDeviceDetail() {
       });
     }
   }, [deviceDetail, form]);
+
+  const handlePayBack = async () => {
+    await axiosInstance
+      .put(`borrow-requests/${id}`, { data: { status: 'Đã trả' } })
+      .then(() => {
+        notification.success({
+          message: 'Trả thiết bị thành công',
+        });
+      })
+      .catch(e => {
+        notification.error({
+          message: e.error.message,
+          description: `Có lỗi xảy ra vui lòng thử lại`,
+        });
+      });
+    await axiosInstance
+      .get(`users/${userProfile.user_profile.id}?populate=devices`)
+      .then(res => {
+        const oldDevices = res.devices?.map(device => {
+          return device.id;
+        });
+        const newDevices = oldDevices.filter(device => device !== id);
+        axiosInstance.put(`users/${userProfile.user_profile.id}`, {
+          devices: newDevices,
+        });
+      });
+    axiosInstance.put(`devices/${id}`, {
+      data: {
+        status: 'Sẵn sàng',
+      },
+    });
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -131,6 +165,17 @@ export default function MyDeviceDetail() {
               status: 'Hỏng',
             },
           });
+          axiosInstance
+            .get(`users/${userProfile.user_profile.id}?populate=devices`)
+            .then(res => {
+              const oldDevices = res.devices?.map(device => {
+                return device.id;
+              });
+              const newDevices = oldDevices.filter(device => device !== id);
+              axiosInstance.put(`users/${userProfile.user_profile.id}`, {
+                devices: newDevices,
+              });
+            });
           notification.success({
             message: 'Gửi yêu cầu sửa chữa thành công',
           });
@@ -179,20 +224,26 @@ export default function MyDeviceDetail() {
           </div>
           <div style={{ marginRight: '20px', flex: '2' }}>
             <Descriptions layout="vertical" column={3}>
-              <Descriptions.Item label="Code">
+              <Descriptions.Item label="Mã thiết bị">
                 {deviceDetail.attributes?.code}
               </Descriptions.Item>
-              <Descriptions.Item label="Name">
+              <Descriptions.Item label="Tên thiết bị">
                 {deviceDetail.attributes?.name}
               </Descriptions.Item>
-              <Descriptions.Item label="Status">
+              <Descriptions.Item label="Trạng thái">
                 {deviceDetail.attributes?.status}
               </Descriptions.Item>
-              <Descriptions.Item label="Category">
+              <Descriptions.Item label="Loại thiết bị">
                 {deviceDetail.attributes?.category.data?.attributes.name}
               </Descriptions.Item>
-              <Descriptions.Item label="Location">
+              <Descriptions.Item label="Vị trí" span={2}>
                 {deviceDetail.attributes?.location}
+              </Descriptions.Item>
+              <Descriptions.Item label="Mô tả" span={3}>
+                {deviceDetail.attributes?.description}
+              </Descriptions.Item>
+              <Descriptions.Item label="QR code" span={3}>
+                <QRCode value={API + location.pathname} />
               </Descriptions.Item>
             </Descriptions>
           </div>
@@ -200,11 +251,14 @@ export default function MyDeviceDetail() {
         <Row>
           <Divider />
           <Space>
-            <Button type="primary" onClick={showModal}>
-              Failure report
+            <Button type="primary" onClick={handlePayBack}>
+              Trả thiết bị
+            </Button>
+            <Button danger onClick={showModal}>
+              Thông báo hỏng hóc
             </Button>
             <Button onClick={() => navigate('/user/device_list')}>
-              Cancel
+              Trở về
             </Button>
           </Space>
         </Row>
