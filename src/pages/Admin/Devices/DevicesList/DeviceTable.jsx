@@ -29,14 +29,24 @@ const DeviceTable = props => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentChoice, setCurrentChoice] = useState('');
   const [rowIndex, setRowIndex] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     renderData();
-  }, [props.selectOption, props.keyWord, props.status, props.idCategory]);
+  }, [
+    props.selectOption,
+    props.keyWord,
+    props.status,
+    props.idCategory,
+    page,
+    pageSize,
+  ]);
   // console.log(22, props.idCategory);
 
   function renderData() {
-    let APIUrl = '/devices?populate=category,image,user.avatar';
+    let APIUrl = `/devices?populate=category,image,user.avatar&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
 
     props.selectOption !== 'id'
       ? (APIUrl += `&filters[${props.selectOption}][$contains]=${props.keyWord}`)
@@ -60,6 +70,7 @@ const DeviceTable = props => {
           ...item,
           rowIndex: rowIndex + index + 1,
         }));
+        setTotal(res.meta?.pagination.total);
         setData(formattedData);
         // setData(res.data);
       })
@@ -71,6 +82,25 @@ const DeviceTable = props => {
         });
       });
   }
+
+  const onShowSizeChange = (current, pageSize) => {
+    setPageSize(pageSize);
+  };
+
+  const handleChangePage = value => {
+    setPage(value);
+  };
+
+  const paginationConfig = {
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    onChange: page => {
+      handleChangePage(page);
+    },
+    pageSize: pageSize,
+    current: page,
+    total: total,
+  };
 
   const handleOk = async () => {
     await axiosInstance
@@ -170,21 +200,7 @@ const DeviceTable = props => {
       title: 'Tình trạng',
       dataIndex: 'status',
       key: 'status',
-      render: (_, code) => (
-        <span>
-          {/* {(code.attributes.status === 'Inactive') |
-          (code.attributes.status === 'Faulty') ? (
-            <Tag color={'volcano'} key={code.attributes.status}>
-              {code.attributes.status}
-            </Tag>
-          ) : (
-            <Tag color={'green'} key={'code.attributes.status'}>
-              {code.attributes.status}
-            </Tag>
-          )} */}
-          {code.attributes.status}
-        </span>
-      ),
+      render: (_, code) => <span>{code.attributes.status}</span>,
     },
     {
       title: 'Hành động',
@@ -219,7 +235,7 @@ const DeviceTable = props => {
         columns={columns}
         dataSource={useData}
         style={{ width: '100%' }}
-        pagination={{ pageSize: 10 }}
+        pagination={paginationConfig}
         rowKey="id"
       />
       <Modal

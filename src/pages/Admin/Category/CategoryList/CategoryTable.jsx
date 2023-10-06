@@ -26,23 +26,27 @@ const CategoryTable = props => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentChoice, setCurrentChoice] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     renderData();
-  }, [props.selectOption, props.keyWord]);
+  }, [props.selectOption, props.keyWord, page, pageSize]);
 
   function renderData() {
     axiosInstance
       .get(
-        `/categories?filters[${props.selectOption}][$contains]=${props.keyWord}&populate=devices`
+        `/categories?filters[${props.selectOption}][$contains]=${props.keyWord}&populate=devices&pagination[page]=${page}&pagination[pageSize]=${pageSize}`
       )
       .then(res => {
-        console.log(22, res.data);
+        // console.log(22, res.data);
         const formattedData = res.data?.map((item, index) => ({
           ...item,
           total: item.attributes.devices.data?.length,
           rowIndex: index + 1,
         }));
+        setTotal(res.meta?.pagination.total);
         setData(formattedData);
       })
       .catch(error => {
@@ -53,6 +57,25 @@ const CategoryTable = props => {
         });
       });
   }
+
+  const onShowSizeChange = (current, pageSize) => {
+    setPageSize(pageSize);
+  };
+
+  const handleChangePage = value => {
+    setPage(value);
+  };
+
+  const paginationConfig = {
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    onChange: page => {
+      handleChangePage(page);
+    },
+    pageSize: pageSize,
+    current: page,
+    total: total,
+  };
 
   const handleOk = async () => {
     await axiosInstance.delete(`/categories/${currentChoice.id}`).catch(e => {
@@ -143,7 +166,7 @@ const CategoryTable = props => {
         columns={columns}
         dataSource={data}
         style={{ width: '100%' }}
-        pagination={{ pageSize: 10 }}
+        pagination={paginationConfig}
         rowKey="id"
       />
       <Modal

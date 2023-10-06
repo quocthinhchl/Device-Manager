@@ -45,13 +45,23 @@ const UserDeviceTable = props => {
   const [borrowDate, setBorrowDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
   const [currentChoice, setCurrentChoice] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
   const userProfile = useSelector(UserProfile);
   const [rowIndex, setRowIndex] = useState(0);
   const [form] = Form.useForm();
 
   useEffect(() => {
     renderData();
-  }, [props.selectOption, props.keyWord, props.status, props.idCategory]);
+  }, [
+    props.selectOption,
+    props.keyWord,
+    props.status,
+    props.idCategory,
+    page,
+    pageSize,
+  ]);
 
   useEffect(() => {
     axiosInstance
@@ -78,7 +88,7 @@ const UserDeviceTable = props => {
   }, [deviceDetail, form]);
 
   function renderData() {
-    let APIUrl = `/devices?populate=category,image&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[status][$eq]=Sẵn sàng`;
+    let APIUrl = `/devices?populate=category,image&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[status][$eq]=Sẵn sàng&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
 
     if (props.idCategory === []) {
       APIUrl += '';
@@ -95,6 +105,7 @@ const UserDeviceTable = props => {
           ...item,
           rowIndex: rowIndex + index + 1,
         }));
+        setTotal(res.meta?.pagination.total);
         setData(formattedData);
       })
       .catch(error => {
@@ -104,6 +115,25 @@ const UserDeviceTable = props => {
         });
       });
   }
+
+  const onShowSizeChange = (current, pageSize) => {
+    setPageSize(pageSize);
+  };
+
+  const handleChangePage = value => {
+    setPage(value);
+  };
+
+  const paginationConfig = {
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    onChange: page => {
+      handleChangePage(page);
+    },
+    pageSize: pageSize,
+    current: page,
+    total: total,
+  };
 
   function handleDetail(id) {
     navigate(`/user/device_list/detail/${id}`);
@@ -243,7 +273,7 @@ const UserDeviceTable = props => {
         columns={columns}
         dataSource={useData}
         style={{ width: '100%' }}
-        pagination={{ pageSize: 10 }}
+        pagination={paginationConfig}
         rowKey="id"
       />
       <Modal

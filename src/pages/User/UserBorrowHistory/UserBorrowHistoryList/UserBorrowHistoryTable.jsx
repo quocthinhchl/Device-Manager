@@ -33,14 +33,24 @@ const UserBorrowHistoryTable = props => {
   const [currentChoice, setCurrentChoice] = useState('');
   const [rowIndex, setRowIndex] = useState(0);
   const userProfile = useSelector(UserProfile);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     renderData();
-  }, [props.selectOption, props.keyWord, props.status, props.idCategory]);
+  }, [
+    props.selectOption,
+    props.keyWord,
+    props.status,
+    props.idCategory,
+    page,
+    pageSize,
+  ]);
   // console.log(22, props.idCategory);
 
   function renderData() {
-    let APIUrl = `/borrow-requests?filters[user][id][$eq]=${userProfile.user_profile.id}&populate=device&sort=createdAt:desc`;
+    let APIUrl = `/borrow-requests?filters[user][id][$eq]=${userProfile.user_profile.id}&populate=device&sort=createdAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
 
     axiosInstance
       .get(APIUrl)
@@ -49,6 +59,7 @@ const UserBorrowHistoryTable = props => {
           ...item,
           rowIndex: rowIndex + index + 1,
         }));
+        setTotal(res.meta?.pagination.total);
         setData(formattedData);
       })
       .catch(error => {
@@ -58,6 +69,25 @@ const UserBorrowHistoryTable = props => {
         });
       });
   }
+
+  const onShowSizeChange = (current, pageSize) => {
+    setPageSize(pageSize);
+  };
+
+  const handleChangePage = value => {
+    setPage(value);
+  };
+
+  const paginationConfig = {
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    onChange: page => {
+      handleChangePage(page);
+    },
+    pageSize: pageSize,
+    current: page,
+    total: total,
+  };
 
   function handleDetail(id) {
     setCurrentChoice(id);
@@ -136,7 +166,7 @@ const UserBorrowHistoryTable = props => {
         columns={columns}
         dataSource={useData}
         style={{ width: '100%' }}
-        pagination={{ pageSize: 10 }}
+        pagination={paginationConfig}
         rowKey="id"
       />
       <UserBorrowHistoryDetail

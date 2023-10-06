@@ -51,6 +51,9 @@ const MyDeviceTable = props => {
     location: '',
     description: '',
   });
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
   const userProfile = useSelector(UserProfile);
   const [form] = Form.useForm();
 
@@ -80,11 +83,18 @@ const MyDeviceTable = props => {
 
   useEffect(() => {
     renderData();
-  }, [props.selectOption, props.keyWord, props.status, props.idCategory]);
+  }, [
+    props.selectOption,
+    props.keyWord,
+    props.status,
+    props.idCategory,
+    page,
+    pageSize,
+  ]);
   // console.log(22, props.idCategory);
 
   function renderData() {
-    let APIUrl = `/devices?populate=category,image&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[user][id][$eq]=${userProfile.user_profile.id}`;
+    let APIUrl = `/devices?populate=category,image&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[user][id][$eq]=${userProfile.user_profile.id}&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
 
     if (props.idCategory === []) {
       APIUrl += '';
@@ -102,6 +112,7 @@ const MyDeviceTable = props => {
           ...item,
           rowIndex: rowIndex + index + 1,
         }));
+        setTotal(res.meta?.pagination.total);
         setData(formattedData);
         // setData(res.data);
       })
@@ -112,6 +123,25 @@ const MyDeviceTable = props => {
         });
       });
   }
+
+  const onShowSizeChange = (current, pageSize) => {
+    setPageSize(pageSize);
+  };
+
+  const handleChangePage = value => {
+    setPage(value);
+  };
+
+  const paginationConfig = {
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    onChange: page => {
+      handleChangePage(page);
+    },
+    pageSize: pageSize,
+    current: page,
+    total: total,
+  };
 
   function handleDetail(id) {
     navigate(`/user/my_device/detail/${id}`);
@@ -248,7 +278,7 @@ const MyDeviceTable = props => {
           columns={columns}
           dataSource={useData}
           style={{ width: '100%' }}
-          pagination={{ pageSize: 10 }}
+          pagination={paginationConfig}
           rowKey="id"
         />
       </TableData>
