@@ -33,13 +33,16 @@ const BorrowRequestTable = props => {
   const [currentChoice, setCurrentChoice] = useState('');
   const [rowIndex, setRowIndex] = useState(0);
   const userProfile = useSelector(UserProfile);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     renderData();
-  }, [props.selectOption, props.keyWord, props.status]);
+  }, [props.selectOption, props.keyWord, props.status, page, pageSize]);
 
   function renderData() {
-    let APIUrl = `/borrow-requests?&populate=user,device&sort=createdAt:desc`;
+    let APIUrl = `/borrow-requests?&populate=user,device&sort=createdAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
     props.keyWord === ''
       ? (APIUrl += '')
       : (APIUrl += `&filters[user][id][$eq]=${props.keyWord}`);
@@ -55,6 +58,7 @@ const BorrowRequestTable = props => {
           ...item,
           rowIndex: rowIndex + index + 1,
         }));
+        setTotal(res.meta?.pagination.total);
         setData(formattedData);
       })
       .catch(error => {
@@ -64,6 +68,25 @@ const BorrowRequestTable = props => {
         });
       });
   }
+
+  const onShowSizeChange = (current, pageSize) => {
+    setPageSize(pageSize);
+  };
+
+  const handleChangePage = value => {
+    setPage(value);
+  };
+
+  const paginationConfig = {
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    onChange: page => {
+      handleChangePage(page);
+    },
+    pageSize: pageSize,
+    current: page,
+    total: total,
+  };
 
   const handleOk = async (userId, deviceId, status) => {
     const data = { data: { status: status } };
@@ -255,7 +278,7 @@ const BorrowRequestTable = props => {
         columns={columns}
         dataSource={useData}
         style={{ width: '100%' }}
-        pagination={{ pageSize: 10 }}
+        pagination={paginationConfig}
         rowKey="id"
       />
       <BorrowRequestDetail

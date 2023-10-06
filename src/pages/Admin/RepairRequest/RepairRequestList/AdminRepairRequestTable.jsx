@@ -31,14 +31,17 @@ const AdminRepairRequestTable = props => {
   const [currentChoice, setCurrentChoice] = useState('');
   const [rowIndex, setRowIndex] = useState(0);
   const userProfile = useSelector(UserProfile);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     renderData();
-  }, [props.selectOption, props.keyWord, props.status]);
+  }, [props.selectOption, props.keyWord, props.status, page, pageSize]);
   // console.log(22, props.idCategory);
 
   function renderData() {
-    let APIUrl = `/repair-requests?&populate=user,device,staff&sort=createdAt:desc`;
+    let APIUrl = `/repair-requests?&populate=user,device,staff&sort=createdAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`;
     props.keyWord === ''
       ? (APIUrl += '')
       : (APIUrl += `&filters[user][id][$eq]=${props.keyWord}`);
@@ -54,6 +57,7 @@ const AdminRepairRequestTable = props => {
           ...item,
           rowIndex: rowIndex + index + 1,
         }));
+        setTotal(res.meta?.pagination.total);
         setData(formattedData);
       })
       .catch(error => {
@@ -63,6 +67,25 @@ const AdminRepairRequestTable = props => {
         });
       });
   }
+
+  const onShowSizeChange = (current, pageSize) => {
+    setPageSize(pageSize);
+  };
+
+  const handleChangePage = value => {
+    setPage(value);
+  };
+
+  const paginationConfig = {
+    showSizeChanger: true,
+    onShowSizeChange: onShowSizeChange,
+    onChange: page => {
+      handleChangePage(page);
+    },
+    pageSize: pageSize,
+    current: page,
+    total: total,
+  };
 
   const handleOk = async id => {
     const data = { data: { staff: id, status: 'Chờ sửa chữa' } };
@@ -181,7 +204,7 @@ const AdminRepairRequestTable = props => {
         columns={columns}
         dataSource={useData}
         style={{ width: '100%' }}
-        pagination={{ pageSize: 10 }}
+        pagination={paginationConfig}
         rowKey="id"
       />
       <AdminRepairRequestDetail

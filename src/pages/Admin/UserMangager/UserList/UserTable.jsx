@@ -9,6 +9,7 @@ import { API } from '../../../../shared/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserProfile } from '../../../../stores/Slice/UserSlice';
 import UserAvatar from '../../../../assets/images/user-avatar.png';
+
 const TableData = styled.div`
   width: 100%;
   /* max-height: 450px; Đặt chiều cao tối đa cho container */
@@ -32,7 +33,6 @@ const UserTable = props => {
   const userProfile = useSelector(UserProfile);
   const [rowIndex, setRowIndex] = useState(0);
 
-  let imgUrl;
   useEffect(() => {
     renderData();
   }, [props.selectOption, props.keyWord, props.blocked]);
@@ -186,8 +186,8 @@ const UserTable = props => {
         columns={columns}
         dataSource={useData}
         style={{ width: '100%' }}
-        pagination={{ pageSize: 10 }}
         rowKey="id"
+        pagination={{ pageSize: 10 }}
       />
       <Modal
         title="Detele"
