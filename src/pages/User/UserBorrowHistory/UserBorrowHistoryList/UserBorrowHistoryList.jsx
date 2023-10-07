@@ -6,6 +6,9 @@ import { SearchOutlined, ShrinkOutlined } from '@ant-design/icons';
 import debounce from 'lodash.debounce';
 import axiosInstance from '../../../../shared/services/http-client';
 import UserBorrowHistoryTable from './UserBorrowHistoryTable';
+import exportExcel from '../../../../components/exportExcel/exportExcel';
+import { useSelector } from 'react-redux';
+import { UserProfile } from '../../../../stores/Slice/UserSlice';
 const { Option } = Select;
 
 const UserLayout = styled.div`
@@ -58,6 +61,7 @@ function UserBorrowHistoryList() {
   const [keyWord, setKeyWord] = useState('');
   const [categories, setCategories] = useState('');
   const [idCategory, setIdCategory] = useState([]);
+  const userProfile = useSelector(UserProfile);
 
   useEffect(() => {
     axiosInstance
@@ -73,6 +77,23 @@ function UserBorrowHistoryList() {
         });
       });
   }, []);
+
+  const handleExportExcel = () => {
+    axiosInstance
+      .get(
+        `/borrow-requests?&populate=user,device&filters[user][id][$eq]=${userProfile.user_profile.id}`
+      )
+      .then(res => {
+        // console.log(22, res.data);
+        const data = res.data.map(borrowRequest => ({
+          id: borrowRequest.id,
+          ...borrowRequest.attributes,
+          device: borrowRequest.attributes.device.data?.attributes.name,
+          user: borrowRequest.attributes.user.data?.attributes.fullname,
+        }));
+        exportExcel(data, 'Danh sách yêu cầu mượn trả', 'BorrowRequestList');
+      });
+  };
 
   function handleSelect(value) {
     setSelectedValue(value);
@@ -118,6 +139,16 @@ function UserBorrowHistoryList() {
           <Row justify={'space-between'}>
             <Col>
               <h3>Lịch sử mượn trả</h3>
+            </Col>
+            <Col>
+              <Button
+                style={{ marginRight: 10 }}
+                onClick={() => {
+                  handleExportExcel();
+                }}
+              >
+                Xuất excel
+              </Button>
             </Col>
           </Row>
 

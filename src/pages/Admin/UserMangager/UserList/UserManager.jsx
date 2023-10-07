@@ -19,6 +19,8 @@ import debounce from 'lodash.debounce';
 import { useSelector } from 'react-redux';
 import { UserProfile } from '../../../../stores/Slice/UserSlice';
 import { useRef } from 'react';
+import axiosInstance from '../../../../shared/services/http-client';
+import exportExcel from '../../../../components/exportExcel/exportExcel';
 const options = [
   {
     value: '',
@@ -91,6 +93,16 @@ function UserManager() {
   const navigate = useNavigate();
   const userProfile = useSelector(UserProfile);
 
+  const handleExportExcel = () => {
+    axiosInstance.get(`/users?populate=devices`).then(res => {
+      // console.log(22, res.data);
+      // const data = res.data.map(user => ({
+      //   ...user,
+      // }));
+      exportExcel(res, 'Danh sách người dùng', 'UserList');
+    });
+  };
+
   function handleSelect(value) {
     setSelectedValue(value);
   }
@@ -114,6 +126,14 @@ function UserManager() {
               <h3>Quản lý người dùng</h3>
             </Col>
             <Col>
+              <Button
+                style={{ marginRight: 10 }}
+                onClick={() => {
+                  handleExportExcel();
+                }}
+              >
+                Xuất excel
+              </Button>
               <Button
                 style={buttonStyle}
                 onClick={() => {

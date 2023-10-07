@@ -6,6 +6,8 @@ import { SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router';
 import debounce from 'lodash.debounce';
 import CategoryTable from './CategoryTable';
+import axiosInstance from '../../../../shared/services/http-client';
+import exportExcel from '../../../../components/exportExcel/exportExcel';
 
 const UserLayout = styled.div`
   display: flex;
@@ -57,6 +59,17 @@ function CategoryManager() {
 
   const navigate = useNavigate();
 
+  const handleExportExcel = () => {
+    axiosInstance.get(`/categories`).then(res => {
+      // console.log(22, res.data);
+      const data = res.data.map(category => ({
+        id: category.id,
+        ...category.attributes,
+      }));
+      exportExcel(data, 'Danh sách loại thiết bị', 'CategoryList');
+    });
+  };
+
   function handleSelect(value) {
     setSelectedValue(value);
     console.log(6666, selectedValue);
@@ -79,6 +92,14 @@ function CategoryManager() {
               <h3>Quản lý loại thiết bị</h3>
             </Col>
             <Col>
+              <Button
+                style={{ marginRight: 10 }}
+                onClick={() => {
+                  handleExportExcel();
+                }}
+              >
+                Xuất excel
+              </Button>
               <Button
                 style={buttonStyle}
                 onClick={() => {
