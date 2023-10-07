@@ -18,6 +18,8 @@ import DeviceTable from './DeviceTable';
 import { useDebounce } from 'use-debounce';
 import debounce from 'lodash.debounce';
 import axiosInstance from '../../../../shared/services/http-client';
+import exportExcel from '../../../../components/exportExcel/exportExcel';
+import { SiMicrosoftexcel } from 'react-icons/si';
 const { Option } = Select;
 
 const UserLayout = styled.div`
@@ -140,6 +142,19 @@ function DeviceManager() {
     DebounceSearch(event.target.value);
   };
 
+  const handleExportExcel = () => {
+    axiosInstance.get(`/devices?populate=category,user`).then(res => {
+      // console.log(22, res.data);
+      const data = res.data.map(device => ({
+        id: device.id,
+        ...device.attributes,
+        category: device.attributes.category.data?.attributes.name,
+        user: device.attributes.user.data?.attributes.fullname,
+      }));
+      exportExcel(data, 'Danh sách thiết bị', 'DeviceList');
+    });
+  };
+
   const categoryOptions = () => {
     if (!categories) {
       return null;
@@ -170,6 +185,15 @@ function DeviceManager() {
               <h3>Quản lý thiết bị</h3>
             </Col>
             <Col>
+              <Button
+                style={{ marginRight: 10 }}
+                onClick={() => {
+                  handleExportExcel();
+                }}
+              >
+                Xuất excel
+              </Button>
+
               <Button
                 style={buttonStyle}
                 onClick={() => {

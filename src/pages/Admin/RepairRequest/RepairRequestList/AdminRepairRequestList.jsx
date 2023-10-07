@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { SearchOutlined, ShrinkOutlined } from '@ant-design/icons';
 import debounce from 'lodash.debounce';
 import AdminRepairRequestTable from './AdminRepairRequestTable';
+import axiosInstance from '../../../../shared/services/http-client';
+import exportExcel from '../../../../components/exportExcel/exportExcel';
 const { Option } = Select;
 
 const UserLayout = styled.div`
@@ -79,6 +81,22 @@ function AdminRepairRequestList() {
   const [status, setStatus] = useState('all');
   const [keyWord, setKeyWord] = useState('');
 
+  const handleExportExcel = () => {
+    axiosInstance
+      .get(`/repair-requests?&populate=user,device,staff`)
+      .then(res => {
+        // console.log(22, res.data);
+        const data = res.data.map(repairRequest => ({
+          id: repairRequest.id,
+          ...repairRequest.attributes,
+          user: repairRequest.attributes.user.data?.attributes.fullname,
+          device: repairRequest.attributes.device.data?.attributes.name,
+          staff: repairRequest.attributes.staff.data?.attributes.fullname,
+        }));
+        exportExcel(data, 'Danh sách yêu cầu sửa chữa', 'RepairRequestList');
+      });
+  };
+
   function handleSelect(value) {
     setSelectedValue(value);
   }
@@ -102,6 +120,16 @@ function AdminRepairRequestList() {
           <Row justify={'space-between'}>
             <Col>
               <h3>Quản lý yêu cầu sửa chữa</h3>
+            </Col>
+            <Col>
+              <Button
+                style={{ marginRight: 10 }}
+                onClick={() => {
+                  handleExportExcel();
+                }}
+              >
+                Xuất excel
+              </Button>
             </Col>
           </Row>
 

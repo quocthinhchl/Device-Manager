@@ -6,6 +6,7 @@ import { SearchOutlined, ShrinkOutlined } from '@ant-design/icons';
 import debounce from 'lodash.debounce';
 import axiosInstance from '../../../../shared/services/http-client';
 import BorrowRequestTable from './BorrowRequestTable';
+import exportExcel from '../../../../components/exportExcel/exportExcel';
 const { Option } = Select;
 
 const UserLayout = styled.div`
@@ -85,6 +86,19 @@ function BorrowRequestList() {
   const [status, setStatus] = useState('all');
   const [keyWord, setKeyWord] = useState('');
 
+  const handleExportExcel = () => {
+    axiosInstance.get(`/borrow-requests?&populate=user,device`).then(res => {
+      // console.log(22, res.data);
+      const data = res.data.map(borrowRequest => ({
+        id: borrowRequest.id,
+        ...borrowRequest.attributes,
+        device: borrowRequest.attributes.device.data?.attributes.name,
+        user: borrowRequest.attributes.user.data?.attributes.fullname,
+      }));
+      exportExcel(data, 'Danh sách yêu cầu mượn trả', 'BorrowRequestList');
+    });
+  };
+
   function handleSelect(value) {
     setSelectedValue(value);
   }
@@ -108,6 +122,16 @@ function BorrowRequestList() {
           <Row justify={'space-between'}>
             <Col>
               <h3>Quản lý mượn trả</h3>
+            </Col>
+            <Col>
+              <Button
+                style={{ marginRight: 10 }}
+                onClick={() => {
+                  handleExportExcel();
+                }}
+              >
+                Xuất excel
+              </Button>
             </Col>
           </Row>
 

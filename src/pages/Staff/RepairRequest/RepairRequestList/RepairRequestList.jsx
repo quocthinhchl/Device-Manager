@@ -4,6 +4,10 @@ import styled from 'styled-components';
 import { SearchOutlined, ShrinkOutlined } from '@ant-design/icons';
 import debounce from 'lodash.debounce';
 import RepairRequestTable from './RepairRequestTable';
+import axiosInstance from '../../../../shared/services/http-client';
+import exportExcel from '../../../../components/exportExcel/exportExcel';
+import { useSelector } from 'react-redux';
+import { UserProfile } from '../../../../stores/Slice/UserSlice';
 const { Option } = Select;
 
 const UserLayout = styled.div`
@@ -70,10 +74,29 @@ function RepairRequestList() {
   const [selectedValue, setSelectedValue] = useState('code');
   const [status, setStatus] = useState('all');
   const [keyWord, setKeyWord] = useState('');
+  const userProfile = useSelector(UserProfile);
 
   function handleSelect(value) {
     setSelectedValue(value);
   }
+
+  const handleExportExcel = () => {
+    axiosInstance
+      .get(
+        `/repair-requests?&populate=user,device,staff&filters[staff][id][$eq]=${userProfile.user_profile.id}`
+      )
+      .then(res => {
+        // console.log(22, res.data);
+        const data = res.data.map(repairRequest => ({
+          id: repairRequest.id,
+          ...repairRequest.attributes,
+          user: repairRequest.attributes.user.data?.attributes.fullname,
+          device: repairRequest.attributes.device.data?.attributes.name,
+          staff: repairRequest.attributes.staff.data?.attributes.fullname,
+        }));
+        exportExcel(data, 'Danh sách yêu cầu sửa chữa', 'RepairRequestList');
+      });
+  };
 
   function handleSelectBlocked(value) {
     setStatus(value);
@@ -94,6 +117,16 @@ function RepairRequestList() {
           <Row justify={'space-between'}>
             <Col>
               <h3>Quản lý yêu cầu sửa chữa</h3>
+            </Col>
+            <Col>
+              <Button
+                style={{ marginRight: 10 }}
+                onClick={() => {
+                  handleExportExcel();
+                }}
+              >
+                Xuất excel
+              </Button>
             </Col>
           </Row>
 
