@@ -137,7 +137,7 @@ export default function DeviceDetail() {
             <Avatar
               size={230}
               shape="square"
-              src={`${API}${deviceDetail.attributes?.image?.data?.attributes.url}`}
+              src={deviceDetail.attributes?.image?.data?.attributes.url}
             />
           </div>
           <div style={{ marginRight: '20px', flex: '2' }}>

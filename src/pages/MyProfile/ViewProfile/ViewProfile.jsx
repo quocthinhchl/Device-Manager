@@ -67,10 +67,7 @@ const ViewProfile = () => {
               }}
             >
               {userProfile.user_profile.avatar ? (
-                <Avatar
-                  size={200}
-                  src={API + userProfile.user_profile.avatar?.url}
-                />
+                <Avatar size={200} src={userProfile.user_profile.avatar?.url} />
               ) : (
                 <Avatar size={200} src={UserAvatar} />
               )}

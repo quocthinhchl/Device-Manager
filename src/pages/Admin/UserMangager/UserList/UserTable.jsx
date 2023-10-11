@@ -38,10 +38,17 @@ const UserTable = props => {
   }, [props.selectOption, props.keyWord, props.blocked]);
 
   function renderData() {
+    let APIUrl = `/users?populate=devices,avatar`;
+
+    props.blocked !== ''
+      ? (APIUrl += `&filters[blocked][$contains]=${props.blocked}`)
+      : (APIUrl += '');
+
+    props.keyWord !== ''
+      ? (APIUrl += `&filters[${props.selectOption}][$contains]=${props.keyWord}`)
+      : (APIUrl += '');
     axiosInstance
-      .get(
-        `/users?populate=devices,avatar&filters[${props.selectOption}][$contains]=${props.keyWord}&filters[blocked][$contains]=${props.blocked}`
-      )
+      .get(APIUrl)
       .then(res => {
         const formattedData = res.map((item, index) => ({
           ...item,

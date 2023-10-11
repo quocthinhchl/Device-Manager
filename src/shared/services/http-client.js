@@ -3,7 +3,8 @@ import { ACCESS_TOKEN } from '../constants';
 
 const axiosInstance = axios.create({
   // baseURL: 'https://edison-device-api.savvycom.xyz/api/',
-  baseURL: 'http://localhost:1337/api',
+  // baseURL: 'http://localhost:1337/api',
+  baseURL: 'https://clever-victory-dd3ac527ed.strapiapp.com/api',
   headers: {
     Accept: 'applications/json',
     'Content-Type': 'application/json',
@@ -35,4 +36,4 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-export default axiosInstance
+export default axiosInstance;

@@ -307,8 +307,8 @@ export default function EditDevice() {
                   rules={[
                     { required: true, message: 'Please enter device code' },
                     {
-                      pattern: /^([a-zA-Z]{3})_([0-9]{2})$/,
-                      message: 'Format must be XXX_YY with YY being 2 numbers',
+                      pattern: /^([a-zA-Z]{3})_([0-9]{3})$/,
+                      message: 'Format must be XXX_YYY with Y is a numbers',
                     },
                   ]}
                 >

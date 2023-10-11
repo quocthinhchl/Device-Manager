@@ -37,8 +37,14 @@ const LoginBg = styled.div`
     color: #ff9c00;
     /* transition: color 0.3s ease; */
   }
+
   .ant-row .ant-form .signUp:hover {
     color: #4096ff;
+  }
+
+  .ant-row .ant-form .email {
+    text-align: center;
+    color: #39c416;
   }
 `;
 
@@ -118,8 +124,8 @@ const Login = () => {
           autoComplete="off"
         >
           <Title>
-            <h1>Welcome</h1>
-            <p>Log in to your account</p>
+            <h1>Device Manager</h1>
+            <h3>Log in to your account</h3>
           </Title>
 
           <Form.Item
@@ -189,6 +195,8 @@ const Login = () => {
           >
             Create Account
           </p>
+
+          <p className="email">Có vấn đề gì xin liên hệ email xxx@gmail.com</p>
         </Form>
       </Row>
     </LoginBg>
