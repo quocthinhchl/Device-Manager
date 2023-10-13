@@ -100,7 +100,7 @@ const uploadButton = (
 
 export default function EditDevice() {
   const [categories, setCategories] = useState('');
-  const [status, setStatus] = useState('Available');
+  const [status, setStatus] = useState('Sẵn sàng');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [deviceDetail, setDeviceDetail] = useState('');
   const [previewOpen, setPreviewOpen] = useState(false);

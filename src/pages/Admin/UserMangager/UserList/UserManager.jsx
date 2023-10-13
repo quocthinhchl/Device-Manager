@@ -27,11 +27,11 @@ const options = [
     label: 'All',
   },
   {
-    value: '0',
+    value: 'false',
     label: 'Active',
   },
   {
-    value: '1',
+    value: 'true',
     label: 'Inactive',
   },
 ];

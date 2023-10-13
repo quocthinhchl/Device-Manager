@@ -55,24 +55,20 @@ const options = [
     label: 'All',
   },
   {
-    value: 'Available',
-    label: 'Available',
+    value: 'Chờ',
+    label: 'Chờ',
   },
   {
-    value: 'In Use',
-    label: 'In Use',
+    value: 'Chờ sửa chữa',
+    label: 'Chờ sửa chữa',
   },
   {
-    value: 'Faulty',
-    label: 'Faulty',
+    value: 'Đang sửa chữa',
+    label: 'Đang sửa chữa',
   },
   {
-    value: 'In Repair',
-    label: 'In Repair',
-  },
-  {
-    value: 'Inactive',
-    label: 'Inactive',
+    value: 'Đã xong',
+    label: 'Đã xong',
   },
 ];
 

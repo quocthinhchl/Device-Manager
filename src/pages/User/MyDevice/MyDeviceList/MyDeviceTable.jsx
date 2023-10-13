@@ -189,6 +189,19 @@ const MyDeviceTable = props => {
               status: 'Hỏng',
             },
           });
+          axiosInstance
+            .get(`users/${userProfile.user_profile.id}?populate=devices`)
+            .then(res => {
+              const oldDevices = res.devices?.map(device => {
+                return device.id;
+              });
+              const newDevices = oldDevices.filter(
+                device => device !== currentChoice
+              );
+              axiosInstance.put(`users/${userProfile.user_profile.id}`, {
+                devices: newDevices,
+              });
+            });
           notification.success({
             message: 'Gửi yêu cầu sửa chữa thành công',
           });

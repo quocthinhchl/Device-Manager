@@ -92,7 +92,7 @@ const getBase64 = file =>
   });
 
 export default function AddDevice() {
-  const [status, setStatus] = useState('Available');
+  const [status, setStatus] = useState('Sẵn sàng');
   const [categories, setCategories] = useState('');
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');

@@ -41,7 +41,7 @@ const UserTable = props => {
     let APIUrl = `/users?populate=devices,avatar`;
 
     props.blocked !== ''
-      ? (APIUrl += `&filters[blocked][$contains]=${props.blocked}`)
+      ? (APIUrl += `&filters[blocked][$eq]=${props.blocked}`)
       : (APIUrl += '');
 
     props.keyWord !== ''
